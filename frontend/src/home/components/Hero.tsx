@@ -4,7 +4,7 @@ import { HeroNavbar } from "./hero/HeroNavbar";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-20">
+    <section className="relative isolate overflow-hidden">
       <HeroNavbar />
       <div
         aria-hidden="true"
@@ -15,7 +15,7 @@ export function Hero() {
         className="absolute -top-28 right-[-8rem] -z-10 size-80 rounded-full bg-primary/10 blur-3xl sm:right-[-2rem] lg:size-[28rem]"
       />
 
-      <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1.02fr_0.98fr] lg:gap-20">
+      <div className="mx-auto grid max-w-8xl items-center gap-16 px-5 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.02fr_0.98fr] lg:gap-20 lg:px-12 lg:py-14">
         <HeroContent />
         <ProjectSpotlightCard />
       </div>

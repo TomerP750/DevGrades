@@ -1,23 +1,19 @@
-import { Archive, ArrowUpRight, CalendarIcon, MessageSquareText } from "lucide-react";
+import { BookmarkIcon, CalendarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ProjectDto } from "../../api/dummyData";
 import { Badge } from "../../../../shared/ui/Badge";
+import { formatDate } from "../../../../shared/utils/formatDate";
+import { getInitials } from "../../../../shared/utils/getInitials";
+
 
 interface ProjectCardProps {
     project: ProjectDto;
     onArchive?: (projectId: string) => void;
 }
 
-const dateFormatter = new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-});
-
 export function ProjectCard({ project, onArchive }: ProjectCardProps) {
-    const projectPath = `/projects/${project.id}`;
-    const userInitials =
-        `${project.user.firstName.charAt(0)}${project.user.lastName.charAt(0)}`.toUpperCase();
+
+    const userInitials = getInitials(project.user.firstName, project.user.lastName);
 
     return (
         <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl hover:shadow-foreground/5">
@@ -63,7 +59,7 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                             dateTime={new Date(project.createdAt).toISOString()}
                         >
                             <CalendarIcon size={20} />
-                            {dateFormatter.format(new Date(project.createdAt))}
+                            {formatDate(project.createdAt)}
                         </time>
                     </div>
 
@@ -75,16 +71,9 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                             title="Archive project"
                             className="grid size-9 cursor-pointer place-items-center rounded-lg text-muted-foreground transition hover:bg-secondary hover:text-secondary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                         >
-                            <Archive aria-hidden="true" className="size-4" />
+                            <BookmarkIcon aria-hidden="true" className="size-5" />
                         </button>
-                        <Link
-                            to={projectPath}
-                            aria-label={`Open ${project.name}`}
-                            title="Open project"
-                            className="grid size-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        >
-                            <ArrowUpRight aria-hidden="true" className="size-4" />
-                        </Link>
+                        
                     </div>
                 </div>
 
@@ -102,11 +91,10 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                 </p>
 
                 <Link
-                    to={`${projectPath}#review`}
+                    to={`/projects/${project.id}`}
                     className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
                 >
-                    <MessageSquareText aria-hidden="true" className="size-4" />
-                    Review project
+                    Learn More To Review
                 </Link>
             </div>
         </article>
