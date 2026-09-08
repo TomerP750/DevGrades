@@ -5,7 +5,10 @@ import {
     UserRoundIcon,
 } from "lucide-react";
 import type { ProjectDto } from "../../api/dummyData";
-import { ProgressBar } from "../../../../shared/ui/ProgressBar";
+import {
+    getScoreColor,
+    ProgressBar,
+} from "../../../../shared/ui/ProgressBar";
 import { formatDate } from "../../../../shared/utils/formatDate";
 
 interface ProjectDetailsAsideProps {
@@ -14,10 +17,10 @@ interface ProjectDetailsAsideProps {
 
 const reviewScores = [
     { label: "Functionality", value: 9.1 },
-    { label: "Code quality", value: 8.7 },
+    { label: "Code quality", value: 2.7 },
     { label: "UI & UX", value: 8.4 },
     { label: "Performance", value: 8.0 },
-    { label: "Documentation", value: 7.6 },
+    { label: "Documentation", value: 5.6 },
 ];
 
 export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
@@ -123,7 +126,9 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                                 <span className="font-medium text-foreground">
                                     {score.label}
                                 </span>
-                                <span className="tabular-nums font-bold text-primary">
+                                <span
+                                    className={`tabular-nums font-bold ${getScoreColor(score.value)}`}
+                                >
                                     {score.value.toFixed(1)}
                                 </span>
                             </div>

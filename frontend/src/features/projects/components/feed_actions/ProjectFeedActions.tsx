@@ -8,24 +8,18 @@ import {
 import { SearchInput } from "../../../../shared/ui/SearchInput";
 
 interface ProjectFeedActionsProps {
-    onSearch: (value: string) => void;
     gridLayout: 2 | 3;
     onGridLayoutChange: (layout: 2 | 3) => void;
 }
 
-export function ProjectFeedActions({
-    onSearch,
-    gridLayout,
-    onGridLayoutChange,
-}: ProjectFeedActionsProps) {
+export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFeedActionsProps) {
 
     const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
 
     const layoutButtonClass = (active: boolean) =>
-        `grid size-9 cursor-pointer place-items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-            active
-                ? "bg-primary text-background"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+        `grid size-9 cursor-pointer place-items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${active
+            ? "bg-primary text-background"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`;
 
     return (
@@ -42,7 +36,7 @@ export function ProjectFeedActions({
             </button>
 
             <SearchInput
-                onSearch={onSearch}
+                onSearch={() => {}}
                 placeholder="Search projects or creators"
                 label="Search projects"
                 className="flex-1"
@@ -81,7 +75,7 @@ export function ProjectFeedActions({
                 >
                     <Grid3X3 aria-hidden="true" className="size-4" />
                 </button>
-                
+
             </div>
         </div>
     );

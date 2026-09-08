@@ -4,15 +4,8 @@ import { ProjectFeedActions } from "../components/feed_actions/ProjectFeedAction
 import { ProjectCard } from "../components/project_card/ProjectCard";
 
 export default function ProjectsFeedPage() {
-    const [search, setSearch] = useState("");
-    const [gridLayout, setGridLayout] = useState<2 | 3>(2);
 
-    const normalizedSearch = search.trim().toLowerCase();
-    const filteredProjects = dummyData.filter((project) =>
-        [project.name, project.description, project.user.username].some((value) =>
-            value.toLowerCase().includes(normalizedSearch),
-        ),
-    );
+    const [gridLayout, setGridLayout] = useState<2 | 3>(2);
 
     return (
         <>
@@ -30,12 +23,11 @@ export default function ProjectsFeedPage() {
             </header>
 
             <ProjectFeedActions
-                onSearch={setSearch}
                 gridLayout={gridLayout}
                 onGridLayoutChange={setGridLayout}
             />
 
-            {filteredProjects.length > 0 ? (
+            {dummyData.length > 0 ? (
                 <section
                     aria-label="Projects"
                     className={
@@ -44,7 +36,7 @@ export default function ProjectsFeedPage() {
                             : "grid grid-cols-1 gap-6 md:grid-cols-2"
                     }
                 >
-                    {filteredProjects.map((project) => (
+                    {dummyData.map((project) => (
                         <ProjectCard key={project.id} project={project} />
                     ))}
                 </section>

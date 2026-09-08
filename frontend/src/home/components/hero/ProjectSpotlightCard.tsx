@@ -1,28 +1,34 @@
 import { Check, Star } from "lucide-react";
-import { ProgressBar } from "../../../shared/ui/ProgressBar";
+import {
+  getScoreColor,
+  ProgressBar,
+} from "../../../shared/ui/ProgressBar";
 
 const ratings = [
-  { label: "UI / UX", score: "4.9", value: 98 },
-  { label: "Performance", score: "4.7", value: 94 },
-  { label: "Accessibility", score: "4.8", value: 96 },
+  { label: "UI / UX", value: 9.8 },
+  { label: "Performance", value: 9.4 },
+  { label: "Accessibility", value: 9.6 },
 ];
 
 function RatingMetric({
   label,
-  score,
   value,
 }: {
   label: string;
-  score: string;
   value: number;
 }) {
   return (
     <div>
       <div className="mb-2 flex justify-between text-sm">
         <span className="font-medium text-card-foreground">{label}</span>
-        <span className="font-bold text-primary">{score}</span>
+        <span className={`font-bold ${getScoreColor(value)}`}>
+          {value.toFixed(1)}
+        </span>
       </div>
-      <ProgressBar value={value} label={`${label} score`} />
+      <ProgressBar
+        value={value}
+        label={`${label} score: ${value} out of 10`}
+      />
     </div>
   );
 }
