@@ -3,20 +3,18 @@ import {
     Columns2,
     Grid3X3,
     Plus,
-    Search,
     SlidersHorizontal,
 } from "lucide-react";
+import { SearchInput } from "../../../../shared/ui/SearchInput";
 
 interface ProjectFeedActionsProps {
-    search: string;
-    onSearchChange: (value: string) => void;
+    onSearch: (value: string) => void;
     gridLayout: 2 | 3;
     onGridLayoutChange: (layout: 2 | 3) => void;
 }
 
 export function ProjectFeedActions({
-    search,
-    onSearchChange,
+    onSearch,
     gridLayout,
     onGridLayoutChange,
 }: ProjectFeedActionsProps) {
@@ -25,7 +23,7 @@ export function ProjectFeedActions({
     const layoutButtonClass = (active: boolean) =>
         `grid size-9 cursor-pointer place-items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
             active
-                ? "bg-foreground text-background"
+                ? "bg-primary text-background"
                 : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`;
 
@@ -42,20 +40,12 @@ export function ProjectFeedActions({
                 Create project
             </button>
 
-            <label className="relative min-w-0 flex-1">
-                <Search
-                    aria-hidden="true"
-                    className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                />
-                <span className="sr-only">Search projects</span>
-                <input
-                    type="search"
-                    value={search}
-                    onChange={(event) => onSearchChange(event.target.value)}
-                    placeholder="Search projects or creators"
-                    className="h-10 w-full border border-input bg-card pl-9 pr-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
-                />
-            </label>
+            <SearchInput
+                onSearch={onSearch}
+                placeholder="Search projects or creators"
+                label="Search projects"
+                className="flex-1"
+            />
 
             <button
                 type="button"
