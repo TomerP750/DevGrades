@@ -1,5 +1,5 @@
 import { AtSign, LockKeyhole, Mail, UserRound } from "lucide-react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
@@ -51,7 +51,7 @@ export function SignUpPage() {
                     <Input
                         label="First name"
                         autoComplete="given-name"
-                        placeholder="Alex"
+                        placeholder="First name"
                         leadingIcon={<UserRound className="size-[1.125rem]" />}
                         error={errors.firstName?.message}
                         {...register("firstName", {
@@ -62,7 +62,7 @@ export function SignUpPage() {
                     <Input
                         label="Last name"
                         autoComplete="family-name"
-                        placeholder="Morgan"
+                        placeholder="Last name"
                         error={errors.lastName?.message}
                         {...register("lastName", {
                             required: "Last name is required.",
@@ -74,7 +74,7 @@ export function SignUpPage() {
                 <Input
                     label="Username"
                     autoComplete="username"
-                    placeholder="alexbuilds"
+                    placeholder="Username"
                     hint="This is how other developers will see you."
                     leadingIcon={<AtSign className="size-[1.125rem]" />}
                     error={errors.username?.message}

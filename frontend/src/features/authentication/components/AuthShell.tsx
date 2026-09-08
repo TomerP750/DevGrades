@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Code2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Logo } from "../../../shared/ui/Logo";
 
 interface AuthShellProps {
   eyebrow: string;
@@ -14,23 +15,24 @@ export function AuthShell({
   footer,
 }: AuthShellProps) {
   return (
-    <main className="flex h-dvh items-center justify-center overflow-hidden bg-background px-4 py-8 sm:px-6 lg:py-12">
-      <div className="grid max-h-[calc(100dvh-4rem)] w-full max-w-5xl overflow-hidden rounded-2xl border border-border bg-card shadow-xl shadow-foreground/8 lg:max-h-[calc(100dvh-6rem)] lg:grid-cols-[minmax(20rem,0.85fr)_minmax(30rem,1.15fr)]">
+    <main className="relative isolate flex h-dvh items-center justify-center overflow-hidden bg-background px-4 py-8 sm:px-6 lg:py-12">
+      {/* Background effects */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-0 h-3/4 opacity-[0.14] [background-image:radial-gradient(circle,var(--primary)_1.25px,transparent_1.25px)] [background-size:24px_24px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
+        <div className="absolute left-[8%] top-[18%] size-40 rounded-full border border-primary/20" />
+        <div className="absolute bottom-[12%] right-[7%] size-56 rounded-full border border-primary/15" />
+        <div className="absolute -left-16 bottom-[8%] h-24 w-64 -rotate-12 border-y border-primary/15 bg-primary/5" />
+        <div className="absolute -right-20 top-[12%] h-28 w-72 rotate-12 border-y border-primary/15 bg-primary/5" />
+      </div>
+
+      <div className="relative z-10 grid max-h-[calc(100dvh-4rem)] w-full max-w-5xl overflow-hidden rounded-2xl border border-border bg-card shadow-2xl shadow-primary/30 lg:max-h-[calc(100dvh-6rem)] lg:grid-cols-[minmax(20rem,0.85fr)_minmax(30rem,1.15fr)]">
         <aside className="relative hidden overflow-hidden bg-primary p-10 text-primary-foreground lg:flex lg:flex-col lg:justify-between">
         <div
           aria-hidden="true"
-          className="absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:40px_40px]"
+          className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,currentColor_1px,transparent_1px),linear-gradient(to_bottom,currentColor_1px,transparent_1px)] [background-size:40px_40px]"
         />
 
-        <Link
-          to="/"
-          className="relative flex w-fit items-center gap-3 rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"
-        >
-          <span className="grid size-10 place-items-center rounded-lg bg-primary-foreground text-primary shadow-sm">
-            <Code2 aria-hidden="true" className="size-5" strokeWidth={2.25} />
-          </span>
-          <span className="text-xl font-bold tracking-tight">DevGrades</span>
-        </Link>
+        <Logo isLink={true} gradesClassName="text-primary-foreground" />
 
         <div className="relative max-w-md">
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-primary-foreground/65">
@@ -46,7 +48,7 @@ export function AuthShell({
         </p>
         </aside>
 
-        <section className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain px-5 py-8 [scrollbar-width:none] sm:px-10 sm:py-10 lg:max-h-[calc(100dvh-6rem)] lg:px-14 [&::-webkit-scrollbar]:hidden">
+        <section className="max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain px-5 py-8 sm:px-10 sm:py-10 lg:max-h-[calc(100dvh-6rem)] lg:px-14 ">
           <div className="mx-auto w-full max-w-md">
             <Link
               to="/"
@@ -66,6 +68,7 @@ export function AuthShell({
               {footer}
             </div>
           </div>
+          
         </section>
       </div>
     </main>
