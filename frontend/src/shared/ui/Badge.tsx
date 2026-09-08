@@ -1,10 +1,12 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { HTMLAttributes } from "react";
+import type { UserDto } from "../models/UserDto";
+import { getInitials } from "../utils/getInitials";
 
 type BadgeVariant = "primary" | "secondary" | "outline" | "success";
 type BadgeSize = "sm" | "md" | "lg";
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-    children: ReactNode;
+    user: UserDto;
     variant?: BadgeVariant;
     size?: BadgeSize;
 }
@@ -17,24 +19,50 @@ const variantStyles: Record<BadgeVariant, string> = {
 };
 
 const sizeStyles: Record<BadgeSize, string> = {
-    sm: "min-h-6 px-2 text-xs",
-    md: "min-h-8 px-3 text-sm",
-    lg: "min-h-10 px-4 text-base",
+    sm: "min-h-6 text-xs",
+    md: "min-h-8 text-sm",
+    lg: "min-h-10 text-base",
 };
 
 export function Badge({
-    children,
     variant = "secondary",
     size = "sm",
     className = "",
+    user,
     ...props
 }: BadgeProps) {
+
+    if (!user) {
+        return (
+            <span
+                className={`inline-flex items-center justify-center rounded-full font-semibold ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+                {...props}
+            >
+                <span className="text-sm font-semibold">G</span>
+            </span>
+        );
+    }
+
+    const { avatarUrl, firstName, lastName } = user;
+    const userInitials = getInitials(firstName, lastName);
+
     return (
+
         <span
             className={`inline-flex items-center justify-center rounded-full font-semibold ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
             {...props}
         >
-            {children}
+            {avatarUrl
+                ?
+                <img src={avatarUrl}
+                    alt="avatar"
+                    className="size-4 rounded-full"
+                />
+                :
+                <span className="text-sm font-semibold">
+                    {userInitials}
+                </span>
+            }
         </span>
     );
 }

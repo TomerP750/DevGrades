@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "../home/pages/Home";
 import { lazy, Suspense } from "react";
+import { ProjectsLayout } from "../features/projects/pages/ProjectsLayout";
 
 const SignInPage = lazy(() => import("../features/authentication/pages/SignInPage"));
 const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
@@ -14,14 +15,14 @@ export function Routing() {
             <Route path="/" element={<Home />} />
             <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
             <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
-        
 
-            <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
-            <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
+            <Route element={<ProjectsLayout />}>
+                <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+                <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
+            </Route>
             <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />
-        
         </Routes>
-    )
+    );
 }
 
 function SuspenseWrapper({ children }: { children: React.ReactNode }) {
@@ -29,5 +30,5 @@ function SuspenseWrapper({ children }: { children: React.ReactNode }) {
         <Suspense fallback={<div>Loading...</div>}>
             {children}
         </Suspense>
-    )
+    );
 }
