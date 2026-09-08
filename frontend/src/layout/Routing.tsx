@@ -1,15 +1,32 @@
 import { Route, Routes } from "react-router-dom";
-import { SignInPage } from "../features/authentication/pages/SignInPage";
-import { SignUpPage } from "../features/authentication/pages/SignUpPage";
 import { Home } from "../home/pages/Home";
+import { lazy, Suspense } from "react";
 
+const SignInPage = lazy(() => import("../features/authentication/pages/SignInPage"));
+const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
+const ProjectFeedPages = lazy(() => import("../features/projects/pages/ProjectsFeedPage"));
+const ProjectDetailsPage = lazy(() => import("../features/projects/pages/ProjectDetailsPage"));
 
 export function Routing() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
+            <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
+        
+
+            <Route path="/projects" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+            <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
+        
+        
         </Routes>
+    )
+}
+
+function SuspenseWrapper({ children }: { children: React.ReactNode }) {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            {children}
+        </Suspense>
     )
 }

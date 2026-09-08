@@ -10,7 +10,7 @@ type SignUpFormValues = SignUpDto & {
     acceptTerms: boolean;
 };
 
-export function SignUpPage() {
+export default function SignUpPage() {
     const { register, handleSubmit, getValues, formState: { errors, isSubmitting }, } = useForm<SignUpFormValues>({
         defaultValues: {
             firstName: "",

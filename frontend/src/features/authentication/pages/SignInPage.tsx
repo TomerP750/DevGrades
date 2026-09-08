@@ -8,7 +8,7 @@ import type { SignInDto } from "../models/SignInDto";
 
 
 
-export function SignInPage() {
+export default function SignInPage() {
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm<SignInDto>({
         defaultValues: { email: "", password: "" },
