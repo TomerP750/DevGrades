@@ -6,6 +6,7 @@ const SignInPage = lazy(() => import("../features/authentication/pages/SignInPag
 const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
 const ProjectFeedPages = lazy(() => import("../features/projects/pages/ProjectsFeedPage"));
 const ProjectDetailsPage = lazy(() => import("../features/projects/pages/ProjectDetailsPage"));
+const NotFoundPage = lazy(() => import("../shared/pages/NotFoundPage"));
 
 export function Routing() {
     return (
@@ -17,7 +18,7 @@ export function Routing() {
 
             <Route path="/projects" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
             <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
-        
+            <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />
         
         </Routes>
     )
