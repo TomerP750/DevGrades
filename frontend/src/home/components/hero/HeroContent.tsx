@@ -1,7 +1,7 @@
-import { ArrowRight, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "../../../shared/ui/Button";
 
-const reviewCategories = ["UI/UX", "Performance", "Accessibility"];
+const reviewCategories = ["UI/UX", "Performance", "Maintainability", "Accessibility", "And More"];
 
 export function HeroContent() {
   return (
