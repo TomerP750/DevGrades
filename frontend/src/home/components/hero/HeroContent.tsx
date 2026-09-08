@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { Button } from "../../../shared/ui/Button";
+import { Link } from "react-router-dom";
 
 const reviewCategories = ["UI/UX", "Performance", "Maintainability", "Accessibility", "And More"];
 
@@ -24,9 +25,9 @@ export function HeroContent() {
         on UI/UX, performance, accessibility, and more.
       </p>
 
-      <Button variant="primary" className="mt-5">
+      <Link to="/sign-up"><Button variant="primary" className="mt-5">
         Get Started
-      </Button>
+      </Button></Link>
 
       <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-muted-foreground">
         {reviewCategories.map((category) => (
