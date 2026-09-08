@@ -1,4 +1,4 @@
-import { Role } from "../role"
+import { Role } from "../../authentication/types/role"
 
 export class UserDto {
     firstName!: string

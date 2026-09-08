@@ -1,4 +1,4 @@
-import { Role } from "../role"
+import { Role } from "../../authentication/types/role"
 import { IsString, IsEmail, IsEnum } from "class-validator" 
 
 export class CreateUserDto {

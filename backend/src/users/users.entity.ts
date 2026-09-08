@@ -1,6 +1,6 @@
 import { IsEmail, IsString } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn, VersionColumn } from "typeorm";
-import { Role } from "./role";
+import { Role } from "../authentication/types/role";
 
 @Entity()
 export class User {
