@@ -7,21 +7,22 @@ import {
 import { Link } from "react-router-dom";
 import type { ProjectDto } from "../../api/dummyData";
 import { formatDate } from "../../../../shared/utils/formatDate";
-import { getInitials } from "../../../../shared/utils/getInitials";
+import { Badge } from "../../../../shared/ui/Badge";
+import { useState } from "react";
 
 
 interface ProjectCardProps {
     project: ProjectDto;
-    onArchive?: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, onArchive }: ProjectCardProps) {
+export function ProjectCard({ project }: ProjectCardProps) {
 
-    const userInitials = getInitials(project.user.firstName, project.user.lastName);
+    const [archived, setArchived] = useState(false);
+
     const projectPath = `/projects/${project.id}`;
 
     return (
-        <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
+        <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
             <div className="relative aspect-[5/2] overflow-hidden bg-surface">
                 {project.thumbnailUrl ? (
                     <img
@@ -65,24 +66,14 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
             <div className="flex min-h-80 flex-1 flex-col p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex min-w-0 items-center gap-3">
-                        {project.user.avatarUrl ? (
-                            <img
-                                src={project.user.avatarUrl}
-                                alt=""
-                                className="size-10 shrink-0 rounded-full border border-border object-cover"
-                            />
-                        ) : (
-                            <span
-                                aria-hidden="true"
-                                className="grid size-10 shrink-0 place-items-center rounded-full bg-accent text-xs font-bold text-accent-foreground ring-1 ring-primary/15"
-                            >
-                                {userInitials}
-                            </span>
-                        )}
+                        <Badge user={project.user} />
                         <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-card-foreground">
-                                {project.user.firstName} {project.user.lastName}
-                            </p>
+                            <Link
+                                to={`/users/${project.user.id}`}>
+                                <p className="truncate text-sm font-semibold text-card-foreground">
+                                    {project.user.firstName} {project.user.lastName}
+                                </p>
+                            </Link>
                             <p className="truncate text-xs text-muted-foreground">
                                 @{project.user.username}
                             </p>
@@ -90,12 +81,16 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                     </div>
                     <button
                         type="button"
-                        onClick={() => onArchive?.(project.id)}
+                        onClick={() => setArchived(prev => !prev)}
+                        aria-pressed={archived}
                         aria-label={`Archive ${project.name}`}
                         title="Archive project"
-                        className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg text-muted-foreground transition hover:bg-secondary hover:text-secondary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="cursor-pointer"
                     >
-                        <BookmarkIcon aria-hidden="true" className="size-5" />
+                        <BookmarkIcon
+                            aria-hidden="true"
+                            className={`size-5 ${archived ? "fill-yellow-500 text-yellow-500" : ""}`}
+                        />
                     </button>
                 </div>
 

@@ -6,6 +6,7 @@ import {
     SlidersHorizontal,
 } from "lucide-react";
 import { SearchInput } from "../../../../shared/ui/SearchInput";
+import { CreateProjectModal } from "./CreateProjectModal";
 
 interface ProjectFeedActionsProps {
     gridLayout: 2 | 3;
@@ -77,6 +78,7 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                 </button>
 
             </div>
+            <CreateProjectModal open={isCreateProjectOpen} onClose={() => setIsCreateProjectOpen(false)} />
         </div>
     );
 }
