@@ -29,6 +29,11 @@ export function HeroContent() {
         Get Started
       </Button></Link>
 
+{/* TODO remove this later */}
+      <Link to="/feed"><Button variant="primary" className="mt-5">
+        Feed
+      </Button></Link>
+
       <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-muted-foreground">
         {reviewCategories.map((category) => (
           <span key={category} className="flex items-center gap-2">

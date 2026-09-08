@@ -16,7 +16,7 @@ export function Routing() {
             <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
         
 
-            <Route path="/projects" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+            <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
             <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
             <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />
         
