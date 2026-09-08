@@ -1,9 +1,11 @@
 import { HeroContent } from "./hero/HeroContent";
 import { ProjectSpotlightCard } from "./hero/ProjectSpotlightCard";
+import { HeroNavbar } from "./hero/HeroNavbar";
 
 export function Hero() {
   return (
     <section className="relative isolate overflow-hidden px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-20">
+      <HeroNavbar />
       <div
         aria-hidden="true"
         className="absolute inset-x-0 top-0 -z-20 h-80 bg-gradient-to-b from-accent/70 to-transparent"
