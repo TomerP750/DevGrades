@@ -1,6 +1,7 @@
-import { Archive, ArrowUpRight, MessageSquareText } from "lucide-react";
+import { Archive, ArrowUpRight, CalendarIcon, MessageSquareText } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { ProjectDto } from "../../api/dummyData";
+import { Badge } from "../../../../shared/ui/Badge";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -58,9 +59,10 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                             {project.name}
                         </h2>
                         <time
-                            className="mt-1 block text-xs font-medium text-muted-foreground"
+                            className="mt-1 inline-flex gap-1 items-center block text-xs font-medium text-muted-foreground"
                             dateTime={new Date(project.createdAt).toISOString()}
                         >
+                            <CalendarIcon size={20} />
                             {dateFormatter.format(new Date(project.createdAt))}
                         </time>
                     </div>
@@ -87,20 +89,9 @@ export function ProjectCard({ project, onArchive }: ProjectCardProps) {
                 </div>
 
                 <div className="mt-4 flex items-center gap-2.5">
-                    {project.user.avatarUrl ? (
-                        <img
-                            src={project.user.avatarUrl}
-                            alt=""
-                            className="size-8 rounded-full border border-border object-cover"
-                        />
-                    ) : (
-                        <div
-                            aria-hidden="true"
-                            className="grid size-8 shrink-0 place-items-center rounded-full bg-secondary text-[0.65rem] font-bold text-secondary-foreground"
-                        >
-                            {userInitials}
-                        </div>
-                    )}
+                    <Badge variant="primary" size="md" className="size-8 px-0">
+                        {userInitials}
+                    </Badge>
                     <span className="truncate text-sm font-semibold text-card-foreground">
                         @{project.user.username}
                     </span>

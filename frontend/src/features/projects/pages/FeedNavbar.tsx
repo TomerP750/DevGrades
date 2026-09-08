@@ -2,12 +2,21 @@ import { Link } from "react-router-dom";
 import { Badge } from "../../../shared/ui/Badge";
 import { Logo } from "../../../shared/ui/Logo";
 import type { UserDto } from "../../../shared/models/UserDto";
+import { useTheme } from "../../../shared/contexts/ThemeContext";
+import { Button } from "../../../shared/ui/Button";
+import { MoonIcon, SunIcon } from "lucide-react";
+
+const projectsUnderlineClassName =
+    "relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-current after:transition-transform after:duration-200 after:content-[''] group-hover:after:scale-x-100";
 
 interface FeedNavbarProps {
     user: UserDto;
 }
 
 export function FeedNavbar({ user }: FeedNavbarProps) {
+
+    const { theme, setTheme } = useTheme();
+
     const initials =
         `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
 
@@ -25,14 +34,14 @@ export function FeedNavbar({ user }: FeedNavbarProps) {
                     <Link
                         to="/feed"
                         aria-current="page"
-                        className="px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3"
+                        className="group px-2 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3"
                     >
-                        Projects
+                        <span className={projectsUnderlineClassName}>Projects</span>
                     </Link>
                 </div>
 
-                <div className="flex items-center gap-1 sm:gap-3">
-                    
+                <div className="flex items-center gap-1">
+
                     <Link
                         to={`/users/${user.id}`}
                         aria-label={`Open ${user.firstName} ${user.lastName}'s profile`}
@@ -47,6 +56,17 @@ export function FeedNavbar({ user }: FeedNavbarProps) {
                             {initials}
                         </Badge>
                     </Link>
+
+                    <Button
+                        variant="ghost"
+                        className="rounded-full cursor-pointer hover:bg-transparent"
+                        size="sm"
+                        onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+                        {theme === "light"
+                            ? <SunIcon className="size-4" />
+                            : <MoonIcon className="size-4" />
+                        }
+                    </Button>
                 </div>
             </div>
         </nav>

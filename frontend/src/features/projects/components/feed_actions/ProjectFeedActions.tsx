@@ -18,6 +18,7 @@ export function ProjectFeedActions({
     gridLayout,
     onGridLayoutChange,
 }: ProjectFeedActionsProps) {
+
     const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
 
     const layoutButtonClass = (active: boolean) =>
@@ -80,6 +81,7 @@ export function ProjectFeedActions({
                 >
                     <Grid3X3 aria-hidden="true" className="size-4" />
                 </button>
+                
             </div>
         </div>
     );
