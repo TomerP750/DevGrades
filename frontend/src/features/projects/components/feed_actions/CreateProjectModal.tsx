@@ -75,6 +75,7 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
 
                 <TextArea
                     label="Description"
+                    rows={4}
                     placeholder="What does your project do? What did you build it with?"
                     error={errors.description?.message}
                     {...register("description", {
@@ -85,7 +86,7 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
                 <Input
                     label="GitHub URL"
                     type="url"
-                    placeholder="https://github.com/..."
+                    placeholder=""
                     leadingIcon={<Code2 className="size-[1.125rem]" />}
                     error={errors.githubUrl?.message}
                     {...register("githubUrl", {
