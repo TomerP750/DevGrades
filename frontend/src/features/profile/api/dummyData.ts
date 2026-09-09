@@ -1,0 +1,96 @@
+import type { Profile } from "../models/Profile";
+
+export const dummyData: Profile[] = [
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-1",
+            firstName: "User",
+            lastName: "One",
+            username: "userone",
+            email: "userone@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-01-15"),
+            updatedAt: new Date("2026-09-01"),
+        },
+    },
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-2",
+            firstName: "User",
+            lastName: "Two",
+            username: "usertwo",
+            email: "usertwo@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-02-15"),
+            updatedAt: new Date("2026-09-02"),
+        },
+    },
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-3",
+            firstName: "User",
+            lastName: "Three",
+            username: "userthree",
+            email: "userthree@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-03-15"),
+            updatedAt: new Date("2026-09-03"),
+        },
+    },
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-4",
+            firstName: "User",
+            lastName: "Four",
+            username: "userfour",
+            email: "userfour@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-04-15"),
+            updatedAt: new Date("2026-09-04"),
+        },
+    },
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-5",
+            firstName: "User",
+            lastName: "Five",
+            username: "userfive",
+            email: "userfive@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-05-15"),
+            updatedAt: new Date("2026-09-05"),
+        },
+    },
+    {
+        bannerUrl: "",
+        aboutBio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        gitHubUrl: "",
+        user: {
+            id: "user-6",
+            firstName: "User",
+            lastName: "Six",
+            username: "usersix",
+            email: "usersix@example.com",
+            avatarUrl: "",
+            createdAt: new Date("2026-06-15"),
+            updatedAt: new Date("2026-09-06"),
+        },
+    },
+];
+
+

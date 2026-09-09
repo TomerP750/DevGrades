@@ -68,12 +68,25 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     <div className="flex min-w-0 items-center gap-3">
                         <Badge user={project.user} />
                         <div className="min-w-0">
-                            <Link
-                                to={`/users/${project.user.id}`}>
-                                <p className="truncate text-sm font-semibold text-card-foreground">
-                                    {project.user.firstName} {project.user.lastName}
-                                </p>
-                            </Link>
+                            <div className="flex min-w-0 items-center gap-2">
+                                <Link
+                                    className="min-w-0"
+                                    to={`/users/${project.user.id}`}>
+                                    <p className="truncate text-sm font-semibold text-card-foreground">
+                                        {project.user.firstName} {project.user.lastName}
+                                    </p>
+                                </Link>
+                                <span aria-hidden="true" className="shrink-0 text-xs text-muted-foreground">
+                                    •
+                                </span>
+                                <time
+                                    className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-muted-foreground"
+                                    dateTime={new Date(project.createdAt).toISOString()}
+                                >
+                                    <CalendarDaysIcon aria-hidden="true" className="size-3.5" />
+                                    {formatDate(project.createdAt)}
+                                </time>
+                            </div>
                             <p className="truncate text-xs text-muted-foreground">
                                 @{project.user.username}
                             </p>
@@ -109,18 +122,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     {project.description}
                 </p>
 
-                <div className="mt-auto flex items-center justify-between gap-4 border-t border-border/70 pt-4">
-                    <time
-                        className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
-                        dateTime={new Date(project.createdAt).toISOString()}
-                    >
-                        <CalendarDaysIcon aria-hidden="true" className="size-3.5" />
-                        {formatDate(project.createdAt)}
-                    </time>
-
+                <div className="mt-auto border-t border-border/70 pt-4">
                     <Link
                         to={projectPath}
-                        className="inline-flex items-center gap-3 rounded-sm px-3 py-1.5 text-sm font-bold text-card-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="group/review inline-flex min-h-11 w-full items-center justify-center gap-3 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-px"
                     >
                         Review project
                         <ArrowUpRightIcon

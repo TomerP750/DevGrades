@@ -5,17 +5,16 @@ import type { UserDto } from "../../../shared/models/UserDto";
 import { useTheme } from "../../../shared/contexts/ThemeContext";
 import { Button } from "../../../shared/ui/Button";
 import { MoonIcon, SunIcon } from "lucide-react";
+import { dummyData } from "../../profile/api/dummyData";
 
 const projectsUnderlineClassName =
     "relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-current after:transition-transform after:duration-200 after:content-[''] group-hover:after:scale-x-100";
 
-interface FeedNavbarProps {
-    user: UserDto;
-}
-
-export function FeedNavbar({ user }: FeedNavbarProps) {
+export function FeedNavbar() {
 
     const { theme, setTheme } = useTheme();
+
+    const user = dummyData[0].user;
 
     return (
         <nav

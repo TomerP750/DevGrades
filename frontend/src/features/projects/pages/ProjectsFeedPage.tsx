@@ -9,19 +9,7 @@ export default function ProjectsFeedPage() {
 
     return (
         <>
-            <header className="mb-8">
-                <p className="text-sm font-bold uppercase tracking-[0.16em] text-primary">
-                    Community work
-                </p>
-                <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                    Projects feed
-                </h1>
-                <p className="mt-3 max-w-2xl text-muted-foreground">
-                    Discover projects from other developers and leave useful,
-                    actionable feedback.
-                </p>
-            </header>
-
+          
             <ProjectFeedActions
                 gridLayout={gridLayout}
                 onGridLayoutChange={setGridLayout}
