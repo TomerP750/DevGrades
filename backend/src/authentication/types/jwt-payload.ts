@@ -1,4 +1,4 @@
-import { Role } from "src/authentication/types/role"
+import { Role } from "./role"
 
 export interface JwtPayload {
     sub: string
