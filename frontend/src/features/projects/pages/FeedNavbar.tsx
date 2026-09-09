@@ -17,9 +17,6 @@ export function FeedNavbar({ user }: FeedNavbarProps) {
 
     const { theme, setTheme } = useTheme();
 
-    const initials =
-        `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
-
     return (
         <nav
             aria-label="Feed navigation"
@@ -49,12 +46,10 @@ export function FeedNavbar({ user }: FeedNavbarProps) {
                         className="rounded-full transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                         <Badge
-                            variant="primary"
+                            user={user}
                             size="md"
                             className="size-9 px-0"
-                        >
-                            {initials}
-                        </Badge>
+                        />
                     </Link>
 
                     <Button
