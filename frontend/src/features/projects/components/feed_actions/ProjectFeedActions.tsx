@@ -3,10 +3,10 @@ import {
     Columns2,
     Grid3X3,
     Plus,
-    SlidersHorizontal,
 } from "lucide-react";
 import { SearchInput } from "../../../../shared/ui/SearchInput";
 import { CreateProjectModal } from "./CreateProjectModal";
+import { FilterMenu } from "./filters/FilterMenu";
 
 interface ProjectFeedActionsProps {
     gridLayout: 2 | 3;
@@ -43,13 +43,7 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                 className="flex-1"
             />
 
-            <button
-                type="button"
-                className="inline-flex h-10 cursor-pointer items-center justify-center gap-2 border border-input bg-card px-3.5 text-sm font-medium text-card-foreground transition-colors hover:border-foreground/30 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-                <SlidersHorizontal aria-hidden="true" className="size-4" />
-                Filter
-            </button>
+            <FilterMenu />
 
             <div
                 className="flex items-center justify-center border-l border-border"

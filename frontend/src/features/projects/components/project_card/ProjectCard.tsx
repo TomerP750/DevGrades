@@ -22,7 +22,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const projectPath = `/projects/${project.id}`;
 
     return (
-        <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
+        <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
             <div className="relative aspect-[5/2] overflow-hidden bg-surface">
                 {project.thumbnailUrl ? (
                     <img
@@ -85,7 +85,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         aria-pressed={archived}
                         aria-label={`Archive ${project.name}`}
                         title="Archive project"
-                        className="cursor-pointer"
+                        className="cursor-pointer hover:scale-110 transition-transform duration-200"
                     >
                         <BookmarkIcon
                             aria-hidden="true"
