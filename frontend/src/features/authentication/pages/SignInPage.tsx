@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import { AuthShell } from "../components/AuthShell";
-import type { SignInDto } from "../models/SignInDto";
+import type { SignInDto } from "../models/SignInRequestDto";
 
 
 

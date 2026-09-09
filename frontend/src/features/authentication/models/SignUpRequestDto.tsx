@@ -1,6 +1,6 @@
 
 
-export interface SignUpDto {
+export interface SignUpRequestDto {
     firstName: string;
     lastName: string;
     username: string;

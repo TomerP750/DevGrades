@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import { AuthShell } from "../components/AuthShell";
-import type { SignUpDto } from "../models/SignUpDto";
+import type { SignUpDto } from "../models/SignUpRequestDto";
 
 type SignUpFormValues = SignUpDto & {
     acceptTerms: boolean;
