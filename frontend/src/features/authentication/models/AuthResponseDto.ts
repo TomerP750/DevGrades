@@ -1,6 +1,8 @@
 import type { UserDto } from "../../../shared/models/UserDto";
 
-export interface AuthResponseDto {
-    accessToken: string;
-    user: UserDto;
+export class AuthResponseDto {
+    constructor(
+        public accessToken: string,
+        public user: UserDto,
+    ) {}
 }

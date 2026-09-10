@@ -3,9 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
 import { Repository } from 'typeorm';
 import { UserDto } from './dto/user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { SignUpRequestDto } from '../authentication/dtos/signup.dto';
+import { hash } from 'bcrypt';
+import { Role } from '../authentication/types/role';
+
 @Injectable()
 export class UsersService {
 
@@ -13,7 +16,7 @@ export class UsersService {
         @InjectRepository(User) private usersRepository: Repository<User>,
     ) {}
 
-    async findOneUser(id: string): Promise<UserDto> {
+    async findOneUser(id: string): Promise<User> {
         const user = await this.usersRepository.findOne({ where: { id } });
         if (!user) {
             throw new NotFoundException('User not found');
@@ -21,7 +24,7 @@ export class UsersService {
         return user;
     }
 
-    async findOneUserByEmail(email: string): Promise<UserDto> {
+    async findOneUserByEmail(email: string): Promise<User> {
         const user = await this.usersRepository.findOne({ where: { email } });
         if (!user) {
             throw new NotFoundException('User not found');
@@ -29,13 +32,22 @@ export class UsersService {
         return user;
     }
 
-    async createUser(createUserDto: CreateUserDto) {
+    async createUser(createUserDto: SignUpRequestDto) {
         if (createUserDto.password !== createUserDto.confirmPassword) {
             throw new BadRequestException('Password and confirm password do not match');
         }
-        const user = this.usersRepository.create(createUserDto);
-        await this.usersRepository.save(user);
-        return user;
+
+        const hashedPassword = await hash(createUserDto.password, 12);
+        const user = this.usersRepository.create({
+            firstName: createUserDto.firstName,
+            lastName: createUserDto.lastName,
+            username: createUserDto.username,
+            email: createUserDto.email,
+            role: Role.USER,
+            password: hashedPassword,
+        });
+        return await this.usersRepository.save(user);
+        
     }
 
     async updateUser(id: string, updateUserDto: UpdateUserDto) {
@@ -62,6 +74,7 @@ export class UsersService {
         if (changePasswordDto.newPassword !== changePasswordDto.confirmNewPassword) {
             throw new BadRequestException('New password and confirm new password do not match');
         }
-        await this.usersRepository.update(id, { password: changePasswordDto.newPassword });
+        const hashedPassword = await hash(changePasswordDto.newPassword, 12);
+        await this.usersRepository.update(id, { password: hashedPassword });
     }
 }

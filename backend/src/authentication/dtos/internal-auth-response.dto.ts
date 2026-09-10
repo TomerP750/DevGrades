@@ -1,8 +1,9 @@
-import { User } from "src/users/users.entity";
+import { User } from '../../users/users.entity';
 
-
-export interface InternalAuthResponseDto {
-    accessToken: string;
-    refreshToken: string;
-    user: User;
+export class InternalAuthResponseDto {
+    constructor(
+        public accessToken: string,
+        public refreshToken: string,
+        public user: User,
+    ) {}
 }

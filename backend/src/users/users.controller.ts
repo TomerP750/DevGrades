@@ -1,15 +1,16 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
+import { Serialize } from '../shared/interceptors/serialize.interceptor';
+import { UserDto } from './dto/user.dto';
 
 @Controller('api/users')
+@Serialize(UserDto)
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {
 
-  }
+  constructor(private readonly usersService: UsersService) {}
 
   @Get('/:id')
   async getUser(@Param('id') id: string) {
