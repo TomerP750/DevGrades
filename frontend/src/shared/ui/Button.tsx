@@ -17,7 +17,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const baseStyles =
@@ -37,7 +37,7 @@ const variantStyles: Record<ButtonVariant, string> = {
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
-  sm: "min-h-9 px-3 py-2 text-sm",
+  sm: "min-h-9 px-1 py-1 text-sm",
   md: "min-h-11 px-5 py-2.5 text-sm",
   lg: "min-h-12 px-6 py-3 text-base",
 };
