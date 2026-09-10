@@ -21,6 +21,14 @@ export class UsersService {
         return user;
     }
 
+    async findOneUserByEmail(email: string): Promise<UserDto> {
+        const user = await this.usersRepository.findOne({ where: { email } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return user;
+    }
+
     async createUser(createUserDto: CreateUserDto) {
         if (createUserDto.password !== createUserDto.confirmPassword) {
             throw new BadRequestException('Password and confirm password do not match');

@@ -3,8 +3,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {
 
@@ -15,23 +16,18 @@ export class UsersController {
     return this.usersService.findOneUser(id);
   }
 
-  @Post('/create')
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.createUser(createUserDto);
+  @Put('/update')
+  async updateUser(@CurrentUserId() userId: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUser(userId, updateUserDto);
   }
 
-  @Put('/:id')
-  async updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(id, updateUserDto);
-  }
-
-  @Delete('/:id')
-  async deleteUser(@Param('id') id: string) {
-    return this.usersService.deleteUser(id);
+  @Delete('/delete')
+  async deleteUser(@CurrentUserId() userId: string) {
+    return this.usersService.deleteUser(userId);
   }
 
   @Patch("/change-password")
-  async changePassword(@Body() changePasswordDto: ChangePasswordDto) {
-    return this.usersService.changePassword(changePasswordDto);
+  async changePassword(@CurrentUserId() userId: string, @Body() changePasswordDto: ChangePasswordDto) {
+    return this.usersService.changePassword(userId, changePasswordDto);
   }
 }
