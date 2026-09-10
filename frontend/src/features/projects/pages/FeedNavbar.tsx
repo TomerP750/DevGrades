@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { Badge } from "../../../shared/ui/Badge";
 import { Logo } from "../../../shared/ui/Logo";
-import type { UserDto } from "../../../shared/models/UserDto";
 import { useTheme } from "../../../shared/contexts/ThemeContext";
 import { Button } from "../../../shared/ui/Button";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { dummyData } from "../../profile/api/dummyData";
+import { UserMenu } from "../components/UserMenu";
 
 const projectsUnderlineClassName =
     "relative after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-full after:origin-center after:scale-x-0 after:bg-current after:transition-transform after:duration-200 after:content-[''] group-hover:after:scale-x-100";
@@ -13,6 +14,7 @@ const projectsUnderlineClassName =
 export function FeedNavbar() {
 
     const { theme, setTheme } = useTheme();
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const user = dummyData[0].user;
 
@@ -38,18 +40,27 @@ export function FeedNavbar() {
 
                 <div className="flex items-center gap-1">
 
-                    <Link
-                        to={`/users/${user.id}`}
-                        aria-label={`Open ${user.firstName} ${user.lastName}'s profile`}
-                        title={`@${user.username}`}
-                        className="rounded-full transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                        <Badge
+                    <div className="relative flex justify-end">
+                        <button
+                            type="button"
+                            aria-label={`Open ${user.firstName} ${user.lastName}'s menu`}
+                            aria-expanded={isUserMenuOpen}
+                            title={`@${user.username}`}
+                            onClick={() => setIsUserMenuOpen((open) => !open)}
+                            className="cursor-pointer rounded-full transition-opacity hover:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                        >
+                            <Badge
+                                user={user}
+                                size="md"
+                                className="size-9 px-0"
+                            />
+                        </button>
+                        <UserMenu
+                            isOpen={isUserMenuOpen}
                             user={user}
-                            size="md"
-                            className="size-9 px-0"
+                            onClose={() => setIsUserMenuOpen(false)}
                         />
-                    </Link>
+                    </div>
 
                     <Button
                         variant="ghost"
