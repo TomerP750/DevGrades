@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsUrl } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { Status } from '../Status';
 import { User } from '../../users/users.entity';
@@ -18,10 +18,12 @@ export class Project {
 
     @Column()
     @IsString()
+    @IsUrl()
     githubUrl!: string;
 
     @Column()
     @IsString()
+    @IsUrl()
     demoUrl!: string;
 
     @Column({

@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Project } from './entities/project.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ProjectsService {
-  create(createProjectDto: CreateProjectDto) {
-    return 'This action adds a new project';
+
+  constructor(
+    @InjectRepository(Project)
+    private projectsRepository: Repository<Project>,
+    private usersService: UsersService,
+  ) {}
+
+  async create(userId: string, createProjectDto: CreateProjectDto) {
+    const user = await this.usersService.findOneUser(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const project = this.projectsRepository.create(createProjectDto);
+    project.user = user;
+    return this.projectsRepository.save(project);
   }
 
-  findAll() {
-    return `This action returns all projects`;
+  
+
+  async findOne(projectId: string) {
+    return this.projectsRepository.findOne({
+      where: { id: projectId },
+      relations: { user: true },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  async update(userId: string, projectId: string, updateProjectDto: UpdateProjectDto) {
+    const permitted = await this.isPermittedToOperateProject(userId, projectId);
+    if (!permitted) {
+      throw new ForbiddenException('You are not allowed to update this project');
+    }
+    await this.projectsRepository.update(projectId, updateProjectDto);
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async delete(userId: string, projectId: string) {
+    if (!await this.isPermittedToOperateProject(userId, projectId)) {
+      throw new ForbiddenException('You are not allowed to delete this project');
+    }
+    await this.projectsRepository.delete(projectId);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} project`;
+  private async isPermittedToOperateProject(userId: string, projectId: string) {
+    const project = await this.findOne(projectId);
+    return project?.user.id === userId;
   }
 }
