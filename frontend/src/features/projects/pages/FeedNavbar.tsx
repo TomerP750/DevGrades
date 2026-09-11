@@ -12,7 +12,7 @@ import { NavItem } from "../../../shared/ui/NavItem";
 
 export function FeedNavbar() {
 
-    const { theme, setTheme } = useTheme();
+    const { theme, toggleTheme } = useTheme();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const user = dummyData[0].user;
@@ -63,7 +63,7 @@ export function FeedNavbar() {
                         variant="ghost"
                         className="rounded-full cursor-pointer hover:bg-transparent"
                         size="sm"
-                        onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
+                        onClick={toggleTheme}>
                         {theme === "light"
                             ? <SunIcon className="size-4" />
                             : <MoonIcon className="size-4" />

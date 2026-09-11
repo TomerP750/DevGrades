@@ -7,7 +7,7 @@ type ThemeState = {
 }
 
 type ThemeContextValues = ThemeState & {
-    setTheme: (theme: Theme) => void;
+    toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValues | undefined>(undefined);
@@ -33,7 +33,11 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         document.documentElement.classList.toggle("dark", theme === "dark");
     }, [theme]);
 
-    const ctx = { theme, setTheme };
+    const toggleTheme = () => {
+        setTheme((prevTheme) => prevTheme === "dark" ? "light" : "dark");
+    }
+
+    const ctx = { theme, toggleTheme };
 
     return (
         <ThemeContext.Provider value={ctx}>

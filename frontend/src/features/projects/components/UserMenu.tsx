@@ -56,7 +56,7 @@ export function UserMenu({ isOpen, user, onClose }: UserMenuProps) {
                     View profile
                 </Link>
                 <Link
-                    to={`/users/${user.id}?tab=settings`}
+                    to={`/settings/account`}
                     onClick={onClose}
                     className={menuItemClassName}
                 >
