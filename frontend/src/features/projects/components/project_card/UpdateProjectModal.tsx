@@ -59,7 +59,6 @@ export function UpdateProjectModal({
             <form
                 onSubmit={handleSubmit(handleUpdateProject)}
                 className="space-y-5"
-                noValidate
             >
                 <Input
                     label="Project name"

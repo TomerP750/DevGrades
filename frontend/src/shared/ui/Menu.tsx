@@ -15,7 +15,7 @@ export function Menu({
 
     return (
         <div
-            className={`absolute right-0 top-full z-30 mt-2 border border-border bg-card text-card-foreground shadow-xl ${className}`}
+            className={`slide-down absolute right-0 top-full z-30 mt-2 border border-border bg-card text-card-foreground shadow-xl ${className}`}
         >
             {children}
         </div>
