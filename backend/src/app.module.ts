@@ -12,6 +12,7 @@ import { ProjectsModule } from './projects/projects.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { Project } from './projects/entities/project.entity';
 import { Review } from './reviews/entities/review.entity';
+import { ArchivedProjectsModule } from './archived-projects/archived-projects.module';
 
 @Module({
   imports: [
@@ -35,7 +36,8 @@ import { Review } from './reviews/entities/review.entity';
       inject: [ConfigService],
     }),
     ProjectsModule,
-    ReviewsModule
+    ReviewsModule,
+    ArchivedProjectsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
