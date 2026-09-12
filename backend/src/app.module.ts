@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshToken } from './authentication/refresh-token/refresh-tokens.entity';
 import { User } from './users/users.entity';
 import { ProjectsModule } from './projects/projects.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -31,7 +32,8 @@ import { ProjectsModule } from './projects/projects.module';
       }),
       inject: [ConfigService],
     }),
-    ProjectsModule
+    ProjectsModule,
+    ReviewsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
