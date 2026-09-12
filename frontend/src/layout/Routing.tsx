@@ -1,7 +1,8 @@
-import { Route, Routes } from "react-router-dom";
+import { Outlet, Route, Routes } from "react-router-dom";
 import { Home } from "../home/pages/Home";
 import { lazy, Suspense } from "react";
 import { ProjectsLayout } from "../features/projects/pages/ProjectsLayout";
+import { FeedNavbar } from "../features/projects/pages/FeedNavbar";
 import { AccountSettings } from "../features/settings/components/AccountSettings";
 import { DisplaySettings } from "../features/settings/components/DisplaySettings";
 import { SecuritySettings } from "../features/settings/components/SecuritySettings";
@@ -20,25 +21,38 @@ export function Routing() {
         <Routes>
             
             <Route path="/" element={<Home />} />
-            <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
-            <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
 
-            <Route element={<ProjectsLayout />}>
-                <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
-                <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
-            </Route>
+            <Route element={<FeatureLayout />}>
+                <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
+                <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
 
-            <Route path="/users/:id" element={<SuspenseWrapper><ProfilePage /></SuspenseWrapper>} />
+                <Route element={<ProjectsLayout />}>
+                    <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+                    <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
+                </Route>
 
-            <Route path="/settings" element={<SuspenseWrapper><SettingsPage /></SuspenseWrapper>}>
-                <Route path="security" element={<SuspenseWrapper><SecuritySettings /></SuspenseWrapper>} />
-                <Route path="display" element={<SuspenseWrapper><DisplaySettings /></SuspenseWrapper>} />
-                <Route path="account" element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
+                <Route path="/users/:id" element={<SuspenseWrapper><ProfilePage /></SuspenseWrapper>} />
+
+                <Route path="/settings" element={<SuspenseWrapper><SettingsPage /></SuspenseWrapper>}>
+                    <Route index element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
+                    <Route path="security" element={<SuspenseWrapper><SecuritySettings /></SuspenseWrapper>} />
+                    <Route path="display" element={<SuspenseWrapper><DisplaySettings /></SuspenseWrapper>} />
+                    <Route path="account" element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
+                </Route>
             </Route>
 
             <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />
         
         </Routes>
+    );
+}
+
+function FeatureLayout() {
+    return (
+        <>
+            <FeedNavbar />
+            <Outlet />
+        </>
     );
 }
 

@@ -4,7 +4,6 @@ import { dummyData as projectDummyData } from "../../projects/api/dummyData";
 import { ProfileAbout } from "../components/ProfileAbout";
 import { ProfileHeader } from "../components/ProfileHeader";
 import { ProfileProjects } from "../components/ProfileProjects";
-import { FeedNavbar } from "../../projects/pages/FeedNavbar";
 
 export default function ProfilePage() {
     const { id } = useParams();
@@ -17,8 +16,7 @@ export default function ProfilePage() {
     }));
 
     return (
-        <>
-        <FeedNavbar />
+  
         <main className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
             <ProfileHeader profile={profile} />
 
@@ -27,6 +25,6 @@ export default function ProfilePage() {
                 <ProfileProjects projects={featuredProjects} />
             </div>
         </main>
-        </>
+       
     );
 }

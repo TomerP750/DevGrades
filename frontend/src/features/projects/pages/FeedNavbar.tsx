@@ -1,18 +1,14 @@
 import { useState } from "react";
 import { Badge } from "../../../shared/ui/Badge";
 import { Logo } from "../../../shared/ui/Logo";
-import { useTheme } from "../../../shared/contexts/ThemeContext";
-import { Button } from "../../../shared/ui/Button";
-import { MoonIcon, SunIcon } from "lucide-react";
+import { NavItem } from "../../../shared/ui/NavItem";
 import { dummyData } from "../../profile/api/dummyData";
 import { UserMenu } from "../components/UserMenu";
 import { navItems } from "./navItems";
-import { NavItem } from "../../../shared/ui/NavItem";
 
 
 export function FeedNavbar() {
 
-    const { theme, toggleTheme } = useTheme();
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     const user = dummyData[0].user;
@@ -59,16 +55,6 @@ export function FeedNavbar() {
                         />
                     </div>
 
-                    <Button
-                        variant="ghost"
-                        className="rounded-full cursor-pointer hover:bg-transparent"
-                        size="sm"
-                        onClick={toggleTheme}>
-                        {theme === "light"
-                            ? <SunIcon className="size-4" />
-                            : <MoonIcon className="size-4" />
-                        }
-                    </Button>
                 </div>
             </div>
         </nav>

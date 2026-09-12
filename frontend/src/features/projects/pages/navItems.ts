@@ -4,8 +4,8 @@ import type { NavItem } from "../../../shared/models/NavItem";
 
 export const navItems: NavItem[] = [
     {
-        label: "Projects",
-        to: "/projects",
+        label: "Feed",
+        to: "/feed",
         Icon: LayoutDashboardIcon
     },
     {
