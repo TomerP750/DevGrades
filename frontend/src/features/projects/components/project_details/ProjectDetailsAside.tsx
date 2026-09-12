@@ -16,11 +16,11 @@ interface ProjectDetailsAsideProps {
 }
 
 const reviewScores = [
-    { label: "Functionality", value: 9.1 },
+    { label: "Functionality", value: 3.1 },
     { label: "Code quality", value: 2.7 },
-    { label: "UI & UX", value: 8.4 },
-    { label: "Performance", value: 8.0 },
-    { label: "Documentation", value: 5.6 },
+    { label: "UI & UX", value: 4.4 },
+    { label: "Performance", value: 2.0 },
+    { label: "Documentation", value: 5 },
 ];
 
 export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
@@ -134,8 +134,7 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                             </div>
                             <ProgressBar
                                 value={score.value}
-                                max={10}
-                                label={`${score.label} score: ${score.value} out of 10`}
+                                label={`${score.label} score: ${score.value} out of 5`}
                                 size="sm"
                             />
                         </li>

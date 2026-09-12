@@ -17,16 +17,16 @@ const sizeStyles: Record<ProgressBarSize, string> = {
 };
 
 function getRankColor(percentage: number) {
-  if (percentage >= 70) return "bg-success";
+  if (percentage >= 80) return "bg-success";
   if (percentage >= 40) return "bg-warning";
   return "bg-danger";
 }
 
-export function getScoreColor(value: number, max = 10) {
-  const safeMax = max > 0 ? max : 10;
+export function getScoreColor(value: number, max = 5) {
+  const safeMax = max > 0 ? max : 5;
   const percentage = (Math.min(Math.max(value, 0), safeMax) / safeMax) * 100;
 
-  if (percentage >= 70) return "text-success";
+  if (percentage >= 80) return "text-success";
   if (percentage >= 40) return "text-warning";
   return "text-danger";
 }
@@ -37,13 +37,13 @@ function joinClassNames(...classes: Array<string | undefined>) {
 
 export function ProgressBar({
   value,
-  max = 10,
+  max = 5,
   label,
   size = "md",
   className,
   indicatorClassName,
 }: ProgressBarProps) {
-  const safeMax = max > 0 ? max : 10;
+  const safeMax = max > 0 ? max : 5;
   const safeValue = Math.min(Math.max(value, 0), safeMax);
   const percentage = (safeValue / safeMax) * 100;
 

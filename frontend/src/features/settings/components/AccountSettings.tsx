@@ -37,7 +37,7 @@ export function AccountSettings() {
                 className="border-y border-border"
                 noValidate
             >
-                <div className="grid gap-8 border-b border-border p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+                <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
                     <div>
                         <h2 className="text-base font-semibold text-card-foreground">
                             Profile photo

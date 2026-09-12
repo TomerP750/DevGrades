@@ -27,7 +27,7 @@ function RatingMetric({
       </div>
       <ProgressBar
         value={value}
-        label={`${label} score: ${value} out of 10`}
+        label={`${label} score: ${value} out of 5`}
       />
     </div>
   );
