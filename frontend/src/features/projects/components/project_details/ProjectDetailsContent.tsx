@@ -1,11 +1,15 @@
 import { ArrowUpRightIcon, MessageSquareTextIcon } from "lucide-react";
 import type { ProjectDto } from "../../api/dummyData";
+import { useState } from "react";
+import { ReviewCardModal } from "../../../reviews/components/ReviewCardModal";
 
 interface ProjectDetailsContentProps {
     project: ProjectDto;
 }
 
 export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
     return (
         <div>
             <section aria-labelledby="about-project">
@@ -41,11 +45,18 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                 <button
                     type="button"
                     className="mt-6 inline-flex cursor-pointer items-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    onClick={() => setIsReviewModalOpen(true)}
                 >
                     Write a review
                     <ArrowUpRightIcon className="size-4" />
                 </button>
             </section>
+
+            <ReviewCardModal
+                open={isReviewModalOpen}
+                onClose={() => setIsReviewModalOpen(false)}
+                projectId={project.id}
+            />
         </div>
     );
 }

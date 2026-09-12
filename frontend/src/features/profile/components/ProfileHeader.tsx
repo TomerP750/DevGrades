@@ -1,6 +1,5 @@
 import { MessageCircleIcon } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge";
-import { Button } from "../../../shared/ui/Button";
 import type { Profile } from "../models/Profile";
 
 interface ProfileHeaderProps {
