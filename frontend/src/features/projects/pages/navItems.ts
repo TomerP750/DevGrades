@@ -1,4 +1,4 @@
-import { BrainCog, LayoutDashboardIcon } from "lucide-react";
+import { BrainCog, NewspaperIcon } from "lucide-react";
 import type { NavItem } from "../../../shared/models/NavItem";
 
 
@@ -6,7 +6,7 @@ export const navItems: NavItem[] = [
     {
         label: "Feed",
         to: "/feed",
-        Icon: LayoutDashboardIcon
+        Icon: NewspaperIcon
     },
     {
         label: "AI Review",

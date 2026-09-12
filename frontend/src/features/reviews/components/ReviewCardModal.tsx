@@ -13,12 +13,12 @@ interface ReviewCardModalProps {
 }
 
 const defaultValues: CreateReviewDto = {
-    overallScore: 0,
-    codeQualityScore: 0,
-    optimizationScore: 0,
-    maintainabilityScore: 0,
-    scalabilityScore: 0,
-    uiuxScore: 0,
+    overallScore: 1,
+    codeQualityScore: 1,
+    optimizationScore: 1,
+    maintainabilityScore: 1,
+    scalabilityScore: 1,
+    uiuxScore: 1,
     comment: "",
 };
 
@@ -77,6 +77,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
                             min={1}
                             max={5}
                             step={1}
+                            defaultValue={1}
                             autoFocus={index === 0}
                             error={errors[name]?.message}
                             {...register(name, {
