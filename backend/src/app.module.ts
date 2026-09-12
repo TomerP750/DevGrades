@@ -10,6 +10,8 @@ import { RefreshToken } from './authentication/refresh-token/refresh-tokens.enti
 import { User } from './users/users.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { Project } from './projects/entities/project.entity';
+import { Review } from './reviews/entities/review.entity';
 
 @Module({
   imports: [
@@ -27,7 +29,7 @@ import { ReviewsModule } from './reviews/reviews.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, RefreshToken],
+        entities: [User, RefreshToken, Project, Review],
         synchronize: true, 
       }),
       inject: [ConfigService],

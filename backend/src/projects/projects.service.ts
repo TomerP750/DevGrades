@@ -37,6 +37,10 @@ export class ProjectsService {
     return project;
   }
 
+  async findAll() {
+
+  }
+
   async update(userId: string, projectId: string, updateProjectDto: UpdateProjectDto) {
     const permitted = await this.isPermittedToOperateProject(userId, projectId);
     if (!permitted) {
