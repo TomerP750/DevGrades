@@ -25,13 +25,16 @@ export class ProjectsService {
     return this.projectsRepository.save(project);
   }
 
-  
 
   async findOne(projectId: string) {
-    return this.projectsRepository.findOne({
+    const project = await this.projectsRepository.findOne({
       where: { id: projectId },
       relations: { user: true },
     });
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+    return project;
   }
 
   async update(userId: string, projectId: string, updateProjectDto: UpdateProjectDto) {
