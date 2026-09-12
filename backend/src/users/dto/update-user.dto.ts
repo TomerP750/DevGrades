@@ -18,11 +18,7 @@ export class UpdateUserDto {
     @IsEmail()
     @IsOptional()
     email?: string
-
-    @IsEnum(Role)
-    @IsOptional()
-    role?: Role
-
+    
     @IsString()
     @IsOptional()
     avatarUrl?: string

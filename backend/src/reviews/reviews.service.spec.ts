@@ -64,6 +64,8 @@ describe('ReviewsService', () => {
       status: Status.OPEN,
       user: projectOwner,
       imageUrl: '',
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     review = {

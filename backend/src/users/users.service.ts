@@ -6,7 +6,7 @@ import { UserDto } from './dto/user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { SignUpRequestDto } from '../authentication/dtos/signup.dto';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { Role } from '../authentication/types/role';
 
 @Injectable()
@@ -68,12 +68,20 @@ export class UsersService {
 
     async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
         const user = await this.usersRepository.findOne({ where: { id } });
+
         if (!user) {
             throw new NotFoundException('User not found');
         }
+
+        const isOldPasswordCorrect = await compare(changePasswordDto.oldPassword, user.password);
+        if (!isOldPasswordCorrect) {
+            throw new BadRequestException('Old password is incorrect');
+        }
+        
         if (changePasswordDto.newPassword !== changePasswordDto.confirmNewPassword) {
             throw new BadRequestException('New password and confirm new password do not match');
         }
+
         const hashedPassword = await hash(changePasswordDto.newPassword, 12);
         await this.usersRepository.update(id, { password: hashedPassword });
     }
