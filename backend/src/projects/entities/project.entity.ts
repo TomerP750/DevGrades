@@ -1,9 +1,10 @@
 import { IsString, IsUrl } from 'class-validator';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, Index, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { Status } from '../Status';
 import { User } from '../../users/users.entity';
 
 @Entity()
+@Index('IDX_project_feed_cursor', ['createdAt', 'id'])
 export class Project {
     @PrimaryGeneratedColumn('uuid')
     id!: string;
@@ -39,4 +40,10 @@ export class Project {
     @Column()
     @IsString()
     imageUrl!: string;
+
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt!: Date;
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt!: Date;
 }
