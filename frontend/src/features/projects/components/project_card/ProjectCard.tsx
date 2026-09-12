@@ -7,9 +7,10 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
 import { formatDate } from "../../../../shared/utils/formatDate";
-import type { ProjectDto } from "../../api/dummyData";
+// import { useAuth } from "../../../authentication/contexts/AuthContext";
+import { type ProjectDto } from "../../api/dummyData";
 import { ProjectMenu } from "./ProjectMenu";
-import { Thumbnail } from "./thumbnail";
+import { Thumbnail } from "./Thumbnail";
 
 
 interface ProjectCardProps {
@@ -18,18 +19,20 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
 
+    // const { user } = useAuth();
+
     const [archived, setArchived] = useState(false);
 
     const projectPath = `/projects/${project.id}`;
 
     return (
-        <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
+        <article className="group flex h-full flex-col overflow-hidden rounded-sm border border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
             <Thumbnail thumbnailUrl={project.thumbnailUrl} />
 
             <div className="flex min-h-80 flex-1 flex-col p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex min-w-0 items-center gap-3">
-                        <Badge user={project.user} />
+                        <Badge user={project.user} size="lg" />
                         <div className="min-w-0">
                             <div className="flex min-w-0 items-center gap-2">
                                 <Link

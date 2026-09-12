@@ -48,7 +48,7 @@ export function UserMenu({ isOpen, user, onClose }: UserMenuProps) {
 
             <div className="grid gap-1">
                 <Link
-                    to={`/users/${user.id}`}
+                    to={`/u/${user.id}`}
                     onClick={onClose}
                     className={menuItemClassName}
                 >

@@ -21,17 +21,17 @@ export function Routing() {
         <Routes>
             
             <Route path="/" element={<Home />} />
+            <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
+            <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
 
             <Route element={<FeatureLayout />}>
-                <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
-                <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
-
+               
                 <Route element={<ProjectsLayout />}>
                     <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
                     <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
                 </Route>
 
-                <Route path="/users/:id" element={<SuspenseWrapper><ProfilePage /></SuspenseWrapper>} />
+                <Route path="/u/:id" element={<SuspenseWrapper><ProfilePage /></SuspenseWrapper>} />
 
                 <Route path="/settings" element={<SuspenseWrapper><SettingsPage /></SuspenseWrapper>}>
                     <Route index element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
