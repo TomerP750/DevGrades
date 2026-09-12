@@ -60,7 +60,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
             className="max-w-2xl rounded-xl"
         >
             <p className="mb-6 text-sm leading-6 text-muted-foreground">
-                Rate each area from 1 to 10 and share constructive feedback.
+                Rate each area from 1 to 5 and share constructive feedback.
             </p>
 
             <form
@@ -75,7 +75,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
                             label={label}
                             type="number"
                             min={1}
-                            max={10}
+                            max={5}
                             step={1}
                             autoFocus={index === 0}
                             error={errors[name]?.message}
@@ -87,8 +87,8 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
                                     message: "Score must be at least 1.",
                                 },
                                 max: {
-                                    value: 10,
-                                    message: "Score cannot exceed 10.",
+                                    value: 5,
+                                    message: "Score cannot exceed 5.",
                                 },
                             })}
                             required
