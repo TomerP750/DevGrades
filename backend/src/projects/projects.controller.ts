@@ -6,7 +6,7 @@ import { CurrentUserId } from '../authentication/decorators/current-user.decorat
 import { ProjectDto } from './dto/project.dto';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 
-@Controller('projects')
+@Controller('/api/projects')
 @Serialize(ProjectDto)
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
