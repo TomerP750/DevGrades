@@ -45,7 +45,7 @@ export class ReviewsService {
   }
 
   async updateReview(userId: string, reviewId: string, updateReviewDto: UpdateReviewDto): Promise<void> {
-    const isAllowed = await this.isPermittedToOperateOnReview(userId, reviewId);
+    const isAllowed = await this.isReviewOwner(userId, reviewId);
     if (!isAllowed) {
       throw new ForbiddenException('You are not allowed to operate on this review');
     }
@@ -54,22 +54,27 @@ export class ReviewsService {
 
   async deleteReview(userId: string, reviewId: string): Promise<void> {
 
-    const isAllowed = await this.isPermittedToOperateOnReview(userId, reviewId);
-    if (!isAllowed) {
+    const isReviewOwner = await this.isReviewOwner(userId, reviewId);
+    if (!isReviewOwner) {
       throw new ForbiddenException('You are not allowed to operate on this review');
     }
     await this.reviewsRepository.delete(reviewId);
   }
 
-  private async findOneReview(reviewId: string): Promise<Review> {
-    const review = await this.reviewsRepository.findOne({ where: { id: reviewId } });
+  async findOneReview(reviewId: string): Promise<Review> {
+    const review = await this.reviewsRepository.findOne({ 
+      where: { id: reviewId },
+      relations: {
+        user: true,
+      }
+    });
     if (!review) {
       throw new NotFoundException('Review not found');
     }
     return review;
   }
 
-  private async isPermittedToOperateOnReview(userId: string, reviewId: string): Promise<boolean> {
+  private async isReviewOwner(userId: string, reviewId: string): Promise<boolean> {
     const review = await this.findOneReview(reviewId);
     if (review.user.id !== userId) {
       return false;

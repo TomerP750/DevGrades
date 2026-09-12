@@ -42,4 +42,10 @@ export class Review {
     @ManyToOne(() => Project, { nullable: false })
     project!: Project;
 
+    @CreateDateColumn()
+    createdAt!: Date;
+
+    @UpdateDateColumn()
+    updatedAt!: Date;
+
 }
