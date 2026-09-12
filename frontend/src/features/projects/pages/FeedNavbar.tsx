@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { Badge } from "../../../shared/ui/Badge";
 import { Logo } from "../../../shared/ui/Logo";
-import { NavItem } from "../../../shared/ui/NavItem";
+import { getActiveNavItemClasses } from "../../../shared/utils/isActiveNavItem";
 import { dummyData } from "../../profile/api/dummyData";
 import { UserMenu } from "../components/UserMenu";
 import { navItems } from "./navItems";
@@ -23,12 +24,17 @@ export function FeedNavbar() {
                     <Logo isLink />
                 </div>
 
-                <div className="flex items-center gap-2 sm:gap-4">
-                    {navItems.map(item => {
-                        return (
-                            <NavItem key={item.label} item={item} />
-                        )
-                    })}
+                <div className="flex self-stretch items-center gap-2 sm:gap-4">
+                    {navItems.map(item => (
+                        <NavLink
+                            key={item.label}
+                            to={item.to}
+                            className={(state) => `${getActiveNavItemClasses(state)} h-full gap-1.5`}
+                        >
+                            <item.Icon className="size-5" />
+                            <span>{item.label}</span>
+                        </NavLink>
+                    ))}
                 </div>
 
                 <div className="flex items-center gap-1">
