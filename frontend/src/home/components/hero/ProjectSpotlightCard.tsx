@@ -5,9 +5,9 @@ import {
 } from "../../../shared/ui/ProgressBar";
 
 const ratings = [
-  { label: "UI / UX", value: 9.8 },
-  { label: "Performance", value: 9.4 },
-  { label: "Accessibility", value: 9.6 },
+  { label: "UI / UX", value: 4.8 },
+  { label: "Performance", value: 3.4 },
+  { label: "Accessibility", value: 4.6 },
 ];
 
 function RatingMetric({

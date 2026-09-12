@@ -1,4 +1,5 @@
 import {
+    ArrowUpRightIcon,
     CalendarDaysIcon,
     GitForkIcon,
     GlobeIcon,
@@ -16,6 +17,7 @@ interface ProjectDetailsAsideProps {
 }
 
 const reviewScores = [
+    { label: "Overall", value: 3.1 },
     { label: "Functionality", value: 3.1 },
     { label: "Code quality", value: 2.7 },
     { label: "UI & UX", value: 4.4 },
@@ -25,6 +27,7 @@ const reviewScores = [
 
 export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
     const { githubUrl, demoUrl, user, createdAt } = project;
+    //TODO get Review dto with tanstack query
 
     return (
         <aside className="h-fit border-t border-border pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
@@ -114,9 +117,6 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                             Review scores
                         </h2>
                     </div>
-                    <span className="text-sm font-semibold text-muted-foreground">
-                        / 10
-                    </span>
                 </div>
 
                 <ul className="mt-6 space-y-5">
@@ -139,6 +139,13 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                             />
                         </li>
                     ))}
+                    <button
+                        type="button"
+                        className="inline-flex cursor-pointer items-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    >
+                        Write a review
+                        <ArrowUpRightIcon className="size-4" />
+                    </button>
                 </ul>
             </section>
         </aside>

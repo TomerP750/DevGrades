@@ -50,6 +50,7 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                     Write a review
                     <ArrowUpRightIcon className="size-4" />
                 </button>
+                
             </section>
 
             <ReviewCardModal
