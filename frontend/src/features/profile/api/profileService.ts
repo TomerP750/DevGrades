@@ -4,7 +4,7 @@ import { baseApiUrl } from "../../../shared/utils/baseApi";
 class ProfileService {
 
     async getProfile(id: string) {
-        return (await axios.get(`${baseApiUrl}/api/profile/${id}`)).data;
+        return (await axios.get(`${baseApiUrl}/api/profiles/${id}`)).data;
     }
 }
 

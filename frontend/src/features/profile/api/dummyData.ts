@@ -1,4 +1,4 @@
-import type { Profile } from "../models/Profile";
+import type { Profile } from "../models/ProfileDto";
 
 export const dummyData: Profile[] = [
     {

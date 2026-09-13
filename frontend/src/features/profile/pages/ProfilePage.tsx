@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { ProfileAbout } from "../components/ProfileAbout";
 import { ProfileHeader } from "../components/ProfileHeader";
-import { ProfileProjects } from "../components/ProfileProjects";
 import { useQuery } from "@tanstack/react-query";
 import profileService from "../api/profileService";
 import NotFoundPage from "../../../shared/pages/NotFoundPage";
@@ -19,6 +18,10 @@ export default function ProfilePage() {
         queryKey: ["profile", id],
         queryFn: () => profileService.getProfile(id),
     })
+
+    if (!profile) {
+        return <NotFoundPage />;
+    }
 
     return (
   

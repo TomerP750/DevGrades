@@ -1,6 +1,6 @@
 import type { UserDto } from "../../../shared/models/UserDto";
 
-export interface Profile {
+export interface ProfileDto {
     bannerUrl: string;
     aboutBio: string;
     gitHubUrl: string;

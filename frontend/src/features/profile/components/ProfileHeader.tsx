@@ -1,12 +1,13 @@
 import { MessageCircleIcon } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge";
-import type { Profile } from "../models/Profile";
+import type { ProfileDto } from "../models/ProfileDto";
 
 interface ProfileHeaderProps {
-    profile: Profile;
+    profile: ProfileDto;
 }
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
+
     const { user } = profile;
 
     return (

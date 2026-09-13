@@ -3,17 +3,21 @@ import { NavLink } from "react-router-dom";
 import { Badge } from "../../../shared/ui/Badge";
 import { Logo } from "../../../shared/ui/Logo";
 import { getActiveNavItemClasses } from "../../../shared/utils/isActiveNavItem";
-import { dummyData } from "../../profile/api/dummyData";
 import { UserMenu } from "../components/UserMenu";
 import { navItems } from "./navItems";
 import { DeviceNavbar } from "./DeviceNavbar";
+import { useAuth } from "../../authentication/contexts/AuthContext";
 
 export function FeedNavbar() {
 
+    const { user } = useAuth();
+
     const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
 
-    const user = dummyData[0].user;
-
+    if (!user) {
+        return null;
+    }
+    
     return (
         <>
             <nav

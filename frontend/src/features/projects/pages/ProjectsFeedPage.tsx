@@ -10,10 +10,14 @@ export default function ProjectsFeedPage() {
     const [gridLayout, setGridLayout] = useState<2 | 3>(2);
 
     // TODO: Change to cursor pagination
-    const { data: projects } = useQuery<ProjectDto[]>({
-        queryKey: ["projects"],
-        queryFn: () => projectService.allProjects(),
-    });
+    // const { data: projects } = useQuery<ProjectDto[]>({
+    //     queryKey: ["projects"],
+    //     queryFn: () => projectService.allProjects(),
+    // });
+
+    const projects: ProjectDto[] = [
+       
+    ];
 
     return (
         <>
@@ -34,6 +38,7 @@ export default function ProjectsFeedPage() {
                 {projects?.map((project: ProjectDto) => (
                     <ProjectCard key={project.id} project={project} />
                 ))}
+
             </section>
 
         </>
