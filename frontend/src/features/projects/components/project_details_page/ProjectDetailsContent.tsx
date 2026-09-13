@@ -1,5 +1,5 @@
 import { ArrowUpRightIcon, MessageSquareTextIcon } from "lucide-react";
-import type { ProjectDto } from "../../api/dummyData";
+import type { ProjectDto } from "../../models/ProjectDto";
 import { useState } from "react";
 import { ReviewCardModal } from "../../../reviews/components/ReviewCardModal";
 

@@ -3,8 +3,13 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
+import userService from "../api/userService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function AccountSettings() {
+
+    const queryClient = useQueryClient();
+    
     const {
         register,
         handleSubmit,
@@ -21,6 +26,20 @@ export function AccountSettings() {
         },
     });
 
+    const { mutate: updateUser } = useMutation({
+        mutationFn: (dto: UpdateUserDto) => userService.updateUser(dto),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    const handleUpdateUser = (dto: UpdateUserDto) => {
+        updateUser(dto);
+    };
+
     return (
         <section className="py-8">
             <div className="mb-8">
@@ -33,7 +52,7 @@ export function AccountSettings() {
             </div>
 
             <form
-                onSubmit={handleSubmit(() => undefined)}
+                onSubmit={handleSubmit(handleUpdateUser)}
                 className="border-y border-border"
                 noValidate
             >

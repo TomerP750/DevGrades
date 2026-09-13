@@ -5,12 +5,13 @@ import {
     GlobeIcon,
     UserRoundIcon,
 } from "lucide-react";
-import type { ProjectDto } from "../../api/dummyData";
+
 import {
     getScoreColor,
     ProgressBar,
 } from "../../../../shared/ui/ProgressBar";
 import { formatDate } from "../../../../shared/utils/formatDate";
+import type { ProjectDto } from "../../models/ProjectDto";
 
 interface ProjectDetailsAsideProps {
     project: ProjectDto;

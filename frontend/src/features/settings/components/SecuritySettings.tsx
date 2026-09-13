@@ -3,8 +3,13 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import type { ChangePasswordDto } from "../models/ChangePasswordDto";
+import userService from "../api/userService";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function SecuritySettings() {
+
+    const queryClient = useQueryClient();
+
     const {
         register,
         handleSubmit,
@@ -19,6 +24,20 @@ export function SecuritySettings() {
         },
     });
 
+    const { mutate: changePassword } = useMutation({
+        mutationFn: (dto: ChangePasswordDto) => userService.changePassword(dto),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user"] });
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    const handleChangePassword = (dto: ChangePasswordDto) => {
+        changePassword(dto);
+    };
+
     return (
         <section className="py-8">
             <div className="mb-8">
@@ -31,7 +50,7 @@ export function SecuritySettings() {
             </div>
 
             <form
-                onSubmit={handleSubmit(() => undefined)}
+                onSubmit={handleSubmit(handleChangePassword)}
                 className="border-y border-border"
                 noValidate
             >

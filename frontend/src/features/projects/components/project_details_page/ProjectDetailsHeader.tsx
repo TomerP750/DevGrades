@@ -1,4 +1,4 @@
-import type { ProjectDto } from "../../api/dummyData";
+import type { ProjectDto } from "../../models/ProjectDto";
 import { Badge } from "../../../../shared/ui/Badge";
 
 interface ProjectDetailsHeaderProps {
