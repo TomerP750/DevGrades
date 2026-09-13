@@ -5,7 +5,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Menu } from "../../../../shared/ui/Menu";
-import type { ProjectDto } from "../../api/dummyData";
+import type { ProjectDto } from "../../models/ProjectDto";
 import { UpdateProjectModal } from "./UpdateProjectModal";
 
 

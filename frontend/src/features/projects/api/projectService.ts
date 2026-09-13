@@ -1,12 +1,19 @@
 import axios from "axios";
 import { baseApiUrl } from "../../../shared/utils/baseApi";
+import type { CursorPageResponse } from "../../../shared/models/CursorPage";
 import type { CreateProjectDto } from "../models/CreateProjectDto";
+import type { ProjectDto } from "../models/ProjectDto";
 import type { UpdateProjectDto } from "../models/UpdateProjectDto";
+
+interface ProjectFeedParams {
+    cursor?: string;
+    limit?: number;
+}
 
 class ProjectService {
 
-    async allProjects() {
-        return (await axios.get(`${baseApiUrl}/api/projects/all}`)).data;
+    async allProjects(params: ProjectFeedParams): Promise<CursorPageResponse<ProjectDto>> {
+        return (await axios.get(`${baseApiUrl}/api/projects/all`, { params })).data;
     }
 
     async oneProject(projectId: string) {

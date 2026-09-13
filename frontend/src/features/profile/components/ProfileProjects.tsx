@@ -1,4 +1,4 @@
-import type { ProjectDto } from "../../projects/api/dummyData";
+import type { ProjectDto } from "../../projects/models/ProjectDto";
 import { ProjectCard } from "../../projects/components/project_card/ProjectCard";
 
 interface ProfileProjectsProps {

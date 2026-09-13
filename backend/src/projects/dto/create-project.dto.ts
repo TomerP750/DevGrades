@@ -1,4 +1,4 @@
-import { IsEnum, IsString, IsUrl } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUrl } from 'class-validator';
 import { Status } from '../Status';
 
 export class CreateProjectDto {
@@ -10,14 +10,18 @@ export class CreateProjectDto {
     description!: string;
     
     @IsUrl()
-    githubUrl!: string;
+    @IsOptional()
+    githubUrl?: string;
 
     @IsUrl()
-    demoUrl!: string;
+    @IsOptional()
+    demoUrl?: string;
 
     @IsEnum(Status)
-    status!: Status;
+    @IsOptional()
+    status?: Status = Status.OPEN;
 
     @IsString()
-    imageUrl!: string;
+    @IsOptional()
+    imageUrl?: string;
 }

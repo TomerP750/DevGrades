@@ -27,7 +27,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
     return (
         <article className="group flex h-full flex-col overflow-hidden rounded-sm border border-border/80 bg-card shadow-sm transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:shadow-foreground/8">
-            <Thumbnail thumbnailUrl={project.thumbnailUrl} />
+            <Thumbnail thumbnailUrl={project.imageUrl} />
 
             <div className="flex min-h-80 flex-1 flex-col p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-4">
