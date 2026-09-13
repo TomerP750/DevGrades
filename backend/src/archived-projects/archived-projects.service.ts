@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
-import { CreateArchivedProjectDto } from './dto/create-archived-project.dto';
-import { UpdateArchivedProjectDto } from './dto/update-archived-project.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ArchivedProject } from './entities/archived-project.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UsersService } from '../users/users.service';
+import { ProjectsService } from '../projects/projects.service';
 
 @Injectable()
 export class ArchivedProjectsService {
-  create(createArchivedProjectDto: CreateArchivedProjectDto) {
-    return 'This action adds a new archivedProject';
+
+  constructor(
+    @InjectRepository(ArchivedProject)
+    private readonly archivedProjectsRepository: Repository<ArchivedProject>,
+    private readonly usersService: UsersService,
+    private readonly projectsService: ProjectsService,
+  ) {}
+
+  async toggleArchiveProject(userId: string, projectId: string) {
+
+    const user = await this.usersService.findOneUser(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const project = await this.projectsService.findOne(projectId);
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+
+    const archivedProject = await this.findArchivedProject(userId, projectId);
+    if (!archivedProject) {
+      await this.archivedProjectsRepository.save({
+        user,
+        project,
+      });
+      return true;
+    }
+    await this.archivedProjectsRepository.delete(archivedProject.id);
+    return false;
   }
 
-  findAll() {
-    return `This action returns all archivedProjects`;
+  async getArchivedProjects(userId: string) {
+
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} archivedProject`;
+  private async findArchivedProject(userId: string, projectId: string) {
+    return await this.archivedProjectsRepository.findOne({
+      where: { user: { id: userId }, project: { id: projectId } },
+    });
   }
 
-  update(id: number, updateArchivedProjectDto: UpdateArchivedProjectDto) {
-    return `This action updates a #${id} archivedProject`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} archivedProject`;
-  }
+
+
 }
