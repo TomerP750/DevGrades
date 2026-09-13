@@ -16,9 +16,11 @@ export class RefreshTokenService {
 
     async createRefreshToken(userId: string): Promise<string> {
 
-        const rawToken = await this.generateRawRefreshToken();
-        const hashedToken = await this.hashRefreshToken(rawToken);
-        const expiresAt = new Date(Date.now() + ms(this.configService.getOrThrow<StringValue>('JWT_REFRESH_TOKEN_EXPIRATION')));
+        const rawToken = this.generateRawRefreshToken();
+        const hashedToken = this.hashRefreshToken(rawToken);
+        const expiresAt = new Date(Date.now() + ms(
+            this.configService.getOrThrow<StringValue>('REFRESH_TOKEN_EXPIRATION_TIME')
+        ));
         const refreshToken = this.refreshTokenRepository.create({
             tokenHash: hashedToken,
             userId,

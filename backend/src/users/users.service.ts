@@ -24,12 +24,8 @@ export class UsersService {
         return user;
     }
 
-    async findOneUserByEmail(email: string): Promise<User> {
-        const user = await this.usersRepository.findOne({ where: { email } });
-        if (!user) {
-            throw new NotFoundException('User not found');
-        }
-        return user;
+    async findOneUserByEmail(email: string): Promise<User | null> {
+        return await this.usersRepository.findOne({ where: { email } });
     }
 
     /** Returns `null` rather than throwing, so callers can answer with
