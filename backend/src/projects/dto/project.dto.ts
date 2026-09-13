@@ -19,4 +19,6 @@ export class ProjectDto {
     imageUrl!: string;
     @Expose()
     user!: UserDto;
+    @Expose()
+    createdAt!: Date;
 }

@@ -13,6 +13,7 @@ import { ReviewsModule } from './reviews/reviews.module';
 import { Project } from './projects/entities/project.entity';
 import { Review } from './reviews/entities/review.entity';
 import { ArchivedProjectsModule } from './archived-projects/archived-projects.module';
+import { ArchivedProject } from './archived-projects/entities/archived-project.entity';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { ArchivedProjectsModule } from './archived-projects/archived-projects.mo
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, RefreshToken, Project, Review],
+        entities: [User, RefreshToken, Project, Review, ArchivedProject],
         synchronize: true, 
       }),
       inject: [ConfigService],

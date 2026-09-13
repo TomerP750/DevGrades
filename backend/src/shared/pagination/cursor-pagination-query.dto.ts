@@ -4,12 +4,12 @@ import { IsString, IsOptional, IsInt, Min, Max } from 'class-validator';
 export class CursorPaginationQueryDto {
     @IsString()
     @IsOptional()
-    cursor!: string;
+    cursor?: string;
 
     @Type(() => Number)
     @IsInt()
     @Min(1)
-    @Max(10)
+    @Max(50)
     @IsOptional()
     limit: number = 10;
 }

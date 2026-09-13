@@ -5,6 +5,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Project } from './entities/project.entity';
 import { UsersService } from '../users/users.service';
+import { buildCursorPage } from '../shared/pagination/build-cursor-page';
+import { decodeCursor, encodeCursor } from '../shared/pagination/cursor-codec';
+import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination-query.dto';
+import { CursorPaginatedResult } from '../shared/pagination/cursor-pagination.types';
 
 @Injectable()
 export class ProjectsService {
@@ -13,7 +17,7 @@ export class ProjectsService {
     @InjectRepository(Project)
     private projectsRepository: Repository<Project>,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   async create(userId: string, createProjectDto: CreateProjectDto) {
     const user = await this.usersService.findOneUser(userId);
@@ -37,8 +41,27 @@ export class ProjectsService {
     return project;
   }
 
-  async findAll() {
+  async findAll({ cursor, limit }: CursorPaginationQueryDto): Promise<CursorPaginatedResult<Project>> {
+    const queryBuilder = this.projectsRepository
+      .createQueryBuilder('project')
+      .innerJoinAndSelect('project.user', 'user')
+      .orderBy('project.createdAt', 'DESC')
+      .addOrderBy('project.id', 'DESC')
+      .limit(limit + 1);
 
+    if (cursor) {
+      const { createdAt, id } = decodeCursor(cursor);
+      queryBuilder.where(
+        '(project.createdAt < :createdAt OR (project.createdAt = :createdAt AND project.id < :id))',
+        { createdAt, id },
+      );
+    }
+
+    const projects = await queryBuilder.getMany();
+
+    return buildCursorPage(projects, limit, (project) =>
+      encodeCursor({ createdAt: project.createdAt, id: project.id }),
+    );
   }
 
   async update(userId: string, projectId: string, updateProjectDto: UpdateProjectDto) {
