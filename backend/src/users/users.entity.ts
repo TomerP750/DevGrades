@@ -30,7 +30,9 @@ export class User {
     })
     role!: Role;
 
-    @Column()
+    /** Never selected by default, so a forgotten response DTO cannot leak it.
+     *  Read it through `UsersService`'s `*WithPassword` finders. */
+    @Column({ select: false })
     @IsString()
     password!: string;
 

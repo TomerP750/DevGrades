@@ -19,7 +19,7 @@ export class AuthenticationService {
 
     async signIn(signInRequestDto: SignInRequestDto): Promise<InternalAuthResponseDto> {
         const { email, password } = signInRequestDto;
-        const user = await this.usersService.findOneUserByEmail(email);
+        const user = await this.usersService.findOneUserByEmailWithPassword(email);
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
         }

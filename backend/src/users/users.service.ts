@@ -32,6 +32,14 @@ export class UsersService {
         return user;
     }
 
+    /** Returns `null` rather than throwing, so callers can answer with
+     *  'invalid credentials' instead of revealing whether the email exists. */
+    async findOneUserByEmailWithPassword(email: string): Promise<User | null> {
+        return this.selectUserWithPassword()
+            .where('user.email = :email', { email })
+            .getOne();
+    }
+
     async createUser(createUserDto: SignUpRequestDto) {
         if (createUserDto.password !== createUserDto.confirmPassword) {
             throw new BadRequestException('Password and confirm password do not match');
@@ -67,7 +75,9 @@ export class UsersService {
     }
 
     async changePassword(id: string, changePasswordDto: ChangePasswordDto) {
-        const user = await this.usersRepository.findOne({ where: { id } });
+        const user = await this.selectUserWithPassword()
+            .where('user.id = :id', { id })
+            .getOne();
 
         if (!user) {
             throw new NotFoundException('User not found');
@@ -84,5 +94,13 @@ export class UsersService {
 
         const hashedPassword = await hash(changePasswordDto.newPassword, 12);
         await this.usersRepository.update(id, { password: hashedPassword });
+    }
+
+    /** `addSelect` re-adds the `select: false` password column on top of the
+     *  default selection, so callers still get a fully hydrated `User`. */
+    private selectUserWithPassword() {
+        return this.usersRepository
+            .createQueryBuilder('user')
+            .addSelect('user.password');
     }
 }

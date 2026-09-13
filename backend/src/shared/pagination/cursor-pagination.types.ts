@@ -1,20 +1,10 @@
 
-
-export type CursorPageInfo = {
-    nextCursor: string | null;
+export interface CursorPaginationInfo {
     hasNextPage: boolean;
+    nextCursor: string | null;
 }
-/**
- * Example of a cursor paginated result
- * {
-  "data": [],
-  "pageInfo": {
-    "nextCursor": null,
-    "hasNextPage": false
-  }
-}
- */
+
 export interface CursorPaginatedResult<T> {
     data: T[];
-    pageInfo: CursorPageInfo;
+    pageInfo: CursorPaginationInfo;
 }

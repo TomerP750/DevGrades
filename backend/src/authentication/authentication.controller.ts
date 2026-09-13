@@ -9,7 +9,7 @@ import { SignUpRequestDto } from './dtos/signup.dto';
 import type { Response, Request } from 'express';
 import ms, { type StringValue } from 'ms';
 
-@Controller('authentication')
+@Controller('api/auth')
 export class AuthenticationController {
   constructor(
     private readonly authenticationService: AuthenticationService,

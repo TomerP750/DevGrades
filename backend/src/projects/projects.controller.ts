@@ -1,15 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ProjectsService } from './projects.service';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
-import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
+import { Controller, Get, Query } from '@nestjs/common';
+import { SerializePage } from '../shared/interceptors/serialize.interceptor';
+import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination-query.dto';
+import { CursorPaginatedResult } from '../shared/pagination/cursor-pagination.types';
 import { ProjectDto } from './dto/project.dto';
-import { Serialize } from '../shared/interceptors/serialize.interceptor';
+import { Project } from './entities/project.entity';
+import { ProjectsService } from './projects.service';
 
 @Controller('/api/projects')
-@Serialize(ProjectDto)
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
+
+  @Get("/all")
+  @SerializePage(ProjectDto)
+  async allProjects(@Query() query: CursorPaginationQueryDto): Promise<CursorPaginatedResult<Project>> {
+    return this.projectsService.findAll(query);
+  }
 
   
 }

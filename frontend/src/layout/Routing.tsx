@@ -6,6 +6,7 @@ import { FeedNavbar } from "../features/projects/pages/FeedNavbar";
 import { AccountSettings } from "../features/settings/components/AccountSettings";
 import { DisplaySettings } from "../features/settings/components/DisplaySettings";
 import { SecuritySettings } from "../features/settings/components/SecuritySettings";
+import { ProtectedRoute } from "../features/authentication/components/ProtectedRoute";
 
 const SignInPage = lazy(() => import("../features/authentication/pages/SignInPage"));
 const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
