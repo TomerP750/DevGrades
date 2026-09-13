@@ -1,34 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { ArchivedProjectsService } from './archived-projects.service';
-import { CreateArchivedProjectDto } from './dto/create-archived-project.dto';
-import { UpdateArchivedProjectDto } from './dto/update-archived-project.dto';
+import { Serialize } from '../shared/interceptors/serialize.interceptor';
+import { UserDto } from '../users/dto/user.dto';
+import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
+
 
 @Controller('archived-projects')
+@Serialize(UserDto)
 export class ArchivedProjectsController {
   constructor(private readonly archivedProjectsService: ArchivedProjectsService) {}
 
-  @Post()
-  create(@Body() createArchivedProjectDto: CreateArchivedProjectDto) {
-    return this.archivedProjectsService.create(createArchivedProjectDto);
+  @Get("/all")
+  async getArchivedProjects(@CurrentUserId() userId: string) {
+    return this.archivedProjectsService.getArchivedProjects(userId);
   }
 
-  @Get()
-  findAll() {
-    return this.archivedProjectsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.archivedProjectsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateArchivedProjectDto: UpdateArchivedProjectDto) {
-    return this.archivedProjectsService.update(+id, updateArchivedProjectDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.archivedProjectsService.remove(+id);
+  @Post("/toggle/:projectId")
+  async toggleArchiveProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string) {
+    return this.archivedProjectsService.toggleArchiveProject(userId, projectId);
   }
 }
