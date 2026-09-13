@@ -1,19 +1,24 @@
 import { useParams } from "react-router-dom";
-import { dummyData as profileDummyData } from "../api/dummyData";
-import { dummyData as projectDummyData } from "../../projects/api/dummyData";
 import { ProfileAbout } from "../components/ProfileAbout";
 import { ProfileHeader } from "../components/ProfileHeader";
 import { ProfileProjects } from "../components/ProfileProjects";
+import { useQuery } from "@tanstack/react-query";
+import profileService from "../api/profileService";
+import NotFoundPage from "../../../shared/pages/NotFoundPage";
+
 
 export default function ProfilePage() {
-    const { id } = useParams();
-    const profile =
-        profileDummyData.find(({ user }) => user.id === id) ?? profileDummyData[0];
 
-    const featuredProjects = projectDummyData.slice(0, 3).map((project) => ({
-        ...project,
-        user: profile.user,
-    }));
+    const { id } = useParams();
+
+    if (!id) {
+        return <NotFoundPage />;
+    }
+
+    const { data: profile } = useQuery({
+        queryKey: ["profile", id],
+        queryFn: () => profileService.getProfile(id),
+    })
 
     return (
   
@@ -22,7 +27,7 @@ export default function ProfilePage() {
 
             <div className="mt-6 space-y-10">
                 <ProfileAbout aboutBio={profile.aboutBio} />
-                <ProfileProjects projects={featuredProjects} />
+                {/* <ProfileProjects projects={featuredProjects} /> */}
             </div>
         </main>
        

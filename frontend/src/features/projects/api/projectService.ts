@@ -1,0 +1,30 @@
+import axios from "axios";
+import { baseApiUrl } from "../../../shared/utils/baseApi";
+import type { CreateProjectDto } from "../models/CreateProjectDto";
+import type { UpdateProjectDto } from "../models/UpdateProjectDto";
+
+class ProjectService {
+
+    async allProjects() {
+        return (await axios.get(`${baseApiUrl}/api/projects/all}`)).data;
+    }
+
+    async oneProject(projectId: string) {
+        return (await axios.get(`${baseApiUrl}/api/projects/${projectId}`)).data;
+    }
+
+    async createProject(dto: CreateProjectDto) {
+        return (await axios.post(`${baseApiUrl}/api/projects/create`, dto)).data;
+    }
+
+    async updateProject(projectId: string, dto: UpdateProjectDto) {
+        return (await axios.put(`${baseApiUrl}/api/projects/update/${projectId}`, dto)).data;
+    }
+
+    async deleteProject(projectId: string) {
+        return (await axios.delete(`${baseApiUrl}/api/projects/delete/${projectId}`)).data;
+    }
+}
+
+const projectService = new ProjectService();
+export default projectService;

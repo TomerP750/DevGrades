@@ -8,10 +8,10 @@ import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
 import { formatDate } from "../../../../shared/utils/formatDate";
 // import { useAuth } from "../../../authentication/contexts/AuthContext";
-import { type ProjectDto } from "../../api/dummyData";
 import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
-
+import type { ProjectDto } from "../../models/ProjectDto";
+import { useAuth } from "../../../authentication/contexts/AuthContext";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -19,7 +19,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
 
-    // const { user } = useAuth();
+    const { user } = useAuth();
 
     const [archived, setArchived] = useState(false);
 
