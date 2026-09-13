@@ -79,7 +79,7 @@ export class RefreshTokenService {
             const rotationTimestamp = new Date();
             const refreshTokenExpiration = new Date(
                 rotationTimestamp.getTime() +
-                ms(this.configService.getOrThrow<StringValue>('JWT_REFRESH_TOKEN_EXPIRATION')),
+                ms(this.configService.getOrThrow<StringValue>('REFRESH_TOKEN_EXPIRATION_TIME')),
             );
 
             oldRefreshToken.revoked = true;

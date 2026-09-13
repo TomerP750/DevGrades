@@ -23,9 +23,13 @@ export class ReviewsService {
   async createReview(userId: string, projectId: string, createReviewDto: CreateReviewDto): Promise<void> {
     
     const [user, project] = await Promise.all([
-      this.usersService.findOneUser(userId),
+      this.usersService.findOneUserById(userId),
       this.projectsService.findOne(projectId)
     ]);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
     if (project.user.id === userId) {
       throw new ForbiddenException('You are not allowed to create a review for your own project');

@@ -21,7 +21,7 @@ export class ProjectsService {
   ) { }
 
   async create(userId: string, createProjectDto: CreateProjectDto) {
-    const user = await this.usersService.findOneUser(userId);
+    const user = await this.usersService.findOneUserById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }

@@ -14,7 +14,7 @@ export class UsersController {
 
   @Get('/:id')
   async getUser(@Param('id') id: string) {
-    return this.usersService.findOneUser(id);
+    return this.usersService.findOneUserById(id);
   }
 
   @Put('/update')

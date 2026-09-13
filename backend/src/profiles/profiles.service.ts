@@ -1,8 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Profile } from './entities/profile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UsersService } from '../users/users.service';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class ProfilesService {
@@ -10,14 +10,9 @@ export class ProfilesService {
   constructor(
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
-    private readonly usersService: UsersService,
   ) {}
 
-  async createProfile(userId: string): Promise<void> {
-    const user = await this.usersService.findOneUserById(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
+  async createProfile(user: User): Promise<void> {
     const newProfile: Omit<Profile, 'id'> = {
       user,
       bannerUrl: undefined,

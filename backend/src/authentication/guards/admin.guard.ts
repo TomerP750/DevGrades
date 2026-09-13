@@ -43,7 +43,7 @@ export class AdminGuard implements CanActivate {
             }
         }
 
-        const user = await this.usersService.findOneUser(payload!.sub);
+        const user = await this.usersService.findOneUserById(payload!.sub);
         if (!user) {
             throw new UnauthorizedException('Unauthorized');
         }

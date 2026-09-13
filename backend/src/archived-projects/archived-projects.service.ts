@@ -17,7 +17,7 @@ export class ArchivedProjectsService {
 
   async toggleArchiveProject(userId: string, projectId: string) {
 
-    const user = await this.usersService.findOneUser(userId);
+    const user = await this.usersService.findOneUserById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }

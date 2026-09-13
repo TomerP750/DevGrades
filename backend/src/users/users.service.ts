@@ -49,7 +49,7 @@ export class UsersService {
         });
 
         const savedUser = await this.usersRepository.save(user);
-        await this.profilesService.createProfile(savedUser.id);
+        await this.profilesService.createProfile(savedUser);
         return savedUser;
   
     }
