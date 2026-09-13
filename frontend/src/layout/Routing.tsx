@@ -1,8 +1,7 @@
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Home } from "../home/pages/Home";
 import { lazy, Suspense } from "react";
 import { ProjectsLayout } from "../features/projects/pages/ProjectsLayout";
-import { FeedNavbar } from "../features/projects/pages/FeedNavbar";
 import { AccountSettings } from "../features/settings/components/AccountSettings";
 import { DisplaySettings } from "../features/settings/components/DisplaySettings";
 import { SecuritySettings } from "../features/settings/components/SecuritySettings";
@@ -25,7 +24,7 @@ export function Routing() {
             <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
             <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
 
-            <Route element={<FeatureLayout />}>
+            <Route element={<ProtectedRoute />}>
                
                 <Route element={<ProjectsLayout />}>
                     <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
@@ -45,15 +44,6 @@ export function Routing() {
             <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />
         
         </Routes>
-    );
-}
-
-function FeatureLayout() {
-    return (
-        <>
-            <FeedNavbar />
-            <Outlet />
-        </>
     );
 }
 
