@@ -1,7 +1,7 @@
 export interface UpdateProjectDto {
     name?: string;
     description?: string;
-    gitHubUrl?: string;
+    githubUrl?: string;
     demoUrl?: string;
     thumbnailUrl?: string;
 }

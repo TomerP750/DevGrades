@@ -4,8 +4,8 @@ import { Button } from "../../../../shared/ui/Button";
 import { Input } from "../../../../shared/ui/Input";
 import { Modal } from "../../../../shared/ui/Modal";
 import { TextArea } from "../../../../shared/ui/TextArea";
-import type { ProjectDto } from "../../api/dummyData";
 import type { UpdateProjectDto } from "../../models/UpdateProjectDto";
+import type { ProjectDto } from "../../models/ProjectDto";
 
 interface UpdateProjectModalProps {
     open: boolean;
@@ -29,7 +29,7 @@ export function UpdateProjectModal({
         defaultValues: {
             name: project.name,
             description: project.description,
-            gitHubUrl: project.githubUrl ?? "",
+            githubUrl: project.githubUrl ?? "",
             demoUrl: project.demoUrl ?? "",
             thumbnailUrl: project.thumbnailUrl ?? "",
         },
@@ -92,8 +92,8 @@ export function UpdateProjectModal({
                     label="GitHub URL"
                     type="url"
                     leadingIcon={<Code2 className="size-[1.125rem]" />}
-                    error={errors.gitHubUrl?.message}
-                    {...register("gitHubUrl", {
+                    error={errors.githubUrl?.message}
+                    {...register("githubUrl", {
                         pattern: {
                             value: URL_PATTERN,
                             message: "Enter a valid URL beginning with http:// or https://.",

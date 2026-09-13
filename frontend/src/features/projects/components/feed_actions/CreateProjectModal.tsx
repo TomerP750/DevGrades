@@ -5,6 +5,8 @@ import { Input } from "../../../../shared/ui/Input";
 import { Modal } from "../../../../shared/ui/Modal";
 import type { CreateProjectDto } from "../../models/CreateProjectDto";
 import { TextArea } from "../../../../shared/ui/TextArea";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import projectService from "../../api/projectService";
 
 interface CreateProjectModalProps {
     open: boolean;
@@ -14,6 +16,9 @@ interface CreateProjectModalProps {
 const URL_PATTERN = /^https?:\/\/.+/i;
 
 export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
+    
+    const queryClient = useQueryClient();
+
     const {
         register,
         handleSubmit,
@@ -28,13 +33,24 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
         },
     });
 
+    const { mutate: createProject } = useMutation({
+        mutationFn: (data: CreateProjectDto) => projectService.createProject(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            handleClose();
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
     const handleClose = () => {
         reset();
         onClose();
     };
 
     const handleCreateProject = (data: CreateProjectDto) => {
-        console.log(data);
+        createProject(data);
         handleClose();
     };
 
