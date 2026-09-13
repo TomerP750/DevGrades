@@ -1,17 +1,19 @@
 import { AtSign, LockKeyhole, Mail, UserRound } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import { AuthShell } from "../components/AuthShell";
-import type { SignUpDto } from "../models/SignUpRequestDto";
+import type { SignUpRequestDto } from "../models/SignUpRequestDto";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "../contexts/AuthContext";
 
-type SignUpFormValues = SignUpDto & {
+type SignUpFormValues = SignUpRequestDto & {
     acceptTerms: boolean;
 };
 
 export default function SignUpPage() {
-    const { register, handleSubmit, getValues, formState: { errors, isSubmitting }, } = useForm<SignUpFormValues>({
+    const { register, handleSubmit, getValues, formState: { errors } } = useForm<SignUpFormValues>({
         defaultValues: {
             firstName: "",
             lastName: "",
@@ -23,8 +25,21 @@ export default function SignUpPage() {
         },
     });
 
-    const handleSignUp = (data: SignUpDto) => {
-        console.log(data);
+    const { signUp: authSignUp } = useAuth();
+    const navigate = useNavigate();
+
+    const { mutate: signUpUser, isPending } = useMutation({
+        mutationFn: (data: SignUpRequestDto) => authSignUp(data),
+        onSuccess: () => {
+            navigate("/");
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    const handleSignUp = (data: SignUpRequestDto) => {
+        signUpUser(data);
     }
 
     return (
@@ -177,7 +192,11 @@ export default function SignUpPage() {
                     </p>
                 )}
 
-                <Button type="submit" size="lg" fullWidth isLoading={isSubmitting}>
+                <Button
+                    type="submit"
+                    size="lg"
+                    fullWidth
+                    isLoading={isPending}>
                     Create account
                 </Button>
             </form>

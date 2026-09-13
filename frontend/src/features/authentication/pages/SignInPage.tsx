@@ -1,21 +1,34 @@
 import { LockKeyhole, Mail } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
 import { AuthShell } from "../components/AuthShell";
-import type { SignInDto } from "../models/SignInRequestDto";
-
-
+import type { SignInRequestDto } from "../models/SignInRequestDto";
+import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function SignInPage() {
 
-    const { register, handleSubmit, formState: { errors, isSubmitting }, } = useForm<SignInDto>({
+    const { signIn: AuthSignIn } = useAuth();
+    const navigate = useNavigate();
+
+    const { register, handleSubmit, formState: { errors } } = useForm<SignInRequestDto>({
         defaultValues: { email: "", password: "" },
     });
 
-    const handleSignIn = (data: SignInDto) => {
-        console.log(data);
+    const { mutate: signInUser, isPending } = useMutation({
+        mutationFn: (data: SignInRequestDto) => AuthSignIn(data),
+        onSuccess: () => {
+            navigate("/");
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
+
+    const handleSignIn = (data: SignInRequestDto) => {
+        signInUser(data);
     }
 
     return (
@@ -77,7 +90,11 @@ export default function SignInPage() {
                     </a>
                 </div>
 
-                <Button type="submit" size="lg" fullWidth isLoading={isSubmitting}>
+                <Button
+                    type="submit"
+                    size="lg"
+                    fullWidth
+                    isLoading={isPending}>
                     Sign in
                 </Button>
             </form>

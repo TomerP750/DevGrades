@@ -29,8 +29,7 @@ export class ProjectsService {
     project.user = user;
     return this.projectsRepository.save(project);
   }
-
-
+  
   async findOne(projectId: string) {
     const project = await this.projectsRepository.findOne({
       where: { id: projectId },
