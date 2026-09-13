@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SignInRequestDto } from './dtos/signin.dto';
 import { SignUpRequestDto } from './dtos/signup.dto';
@@ -63,9 +63,13 @@ export class AuthenticationService {
     }
 
     async rotateRefreshToken(rawRefreshToken: string): Promise<InternalAuthResponseDto> {
+        
         const { refreshToken, userId } = await this.refreshTokenService.rotate(rawRefreshToken);
 
-        const user = await this.usersService.findOneUser(userId);
+        const user = await this.usersService.findOneUserById(userId);
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
 
         return new InternalAuthResponseDto(
             this.generateAccessToken(user),

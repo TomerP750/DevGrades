@@ -14,6 +14,7 @@ import { Project } from './projects/entities/project.entity';
 import { Review } from './reviews/entities/review.entity';
 import { ArchivedProjectsModule } from './archived-projects/archived-projects.module';
 import { ArchivedProject } from './archived-projects/entities/archived-project.entity';
+import { ProfilesModule } from './profiles/profiles.module';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { ArchivedProject } from './archived-projects/entities/archived-project.e
     }),
     ProjectsModule,
     ReviewsModule,
-    ArchivedProjectsModule
+    ArchivedProjectsModule,
+    ProfilesModule
   ],
   controllers: [AppController],
   providers: [AppService, {
