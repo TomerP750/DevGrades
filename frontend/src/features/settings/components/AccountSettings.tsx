@@ -90,7 +90,7 @@ export function AccountSettings() {
                     </div>
                 </div>
 
-                <hr className="h-px border-0 bg-border" />
+                <hr className="h-px border-0 my-4 bg-border" />
 
                 <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
                     <div>
@@ -176,7 +176,9 @@ export function AccountSettings() {
                     </div>
                 </div>
             </form>
-            <hr className="h-px border-0 bg-border" />
+
+            <hr className="h-px border-0 my-4 bg-border" />
+
             <DeleteAccountSection />
         </section>
     );
