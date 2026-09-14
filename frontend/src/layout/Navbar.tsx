@@ -2,12 +2,12 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../features/authentication/contexts/AuthContext";
 import { UserMenu } from "../features/projects/components/UserMenu";
-import { DeviceNavbar } from "../features/projects/pages/DeviceNavbar";
-import { navItems } from "../features/projects/pages/navItems";
+import { DeviceNavbar } from "./DeviceNavbar";
 import { Badge } from "../shared/ui/Badge";
 import { Button } from "../shared/ui/Button";
 import { Logo } from "../shared/ui/Logo";
 import { getActiveNavItemClasses } from "../shared/utils/isActiveNavItem";
+import { navItems } from "./navItems";
 
 export function Navbar() {
     const { user } = useAuth();

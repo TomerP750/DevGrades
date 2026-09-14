@@ -5,7 +5,7 @@ import type { NavItem } from "../../../shared/models/NavItem";
 export const navItems: NavItem[] = [
     {
         label: "Feed",
-        to: "/feed",
+        to: "/",
         Icon: NewspaperIcon
     },
     {
@@ -20,7 +20,7 @@ export const navItems: NavItem[] = [
 export const deviceNavItems = (userId: string): NavItem[] => [
     {
         label: "Feed",
-        to: "/feed",
+        to: "/",
         Icon: NewspaperIcon
     },
     {

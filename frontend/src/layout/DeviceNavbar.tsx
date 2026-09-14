@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { getActiveNavItemClasses } from "../../../shared/utils/isActiveNavItem";
+import { getActiveNavItemClasses } from "../shared/utils/isActiveNavItem";
 import { deviceNavItems } from "./navItems";
 
 interface DeviceNavbarProps {
