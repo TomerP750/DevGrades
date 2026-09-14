@@ -42,7 +42,7 @@ export function DisplaySettings() {
                             }
                             className={`group flex min-h-24 items-center gap-4 border px-5 py-4 text-left transition after:ml-auto after:size-3 after:shrink-0 after:rounded-full after:border hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                                 theme === "light"
-                                    ? "border-primary ring-1 ring-primary after:border-primary after:bg-primary"
+                                    ? "bg-white border-primary ring-1 ring-primary after:border-primary after:bg-primary"
                                     : "border-border after:border-input"
                             }`}
                         >
@@ -69,7 +69,7 @@ export function DisplaySettings() {
                             className={`group flex min-h-24 items-center gap-4 border px-5 py-4 text-left transition after:ml-auto after:size-3 after:shrink-0 after:rounded-full after:border hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                                 theme === "dark"
                                     ? "border-primary ring-1 ring-primary after:border-primary after:bg-primary"
-                                    : "border-border after:border-input"
+                                    : "bg-white border-border after:border-input"
                             }`}
                         >
                                 <span>
@@ -100,7 +100,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={language === "en"}
                             onClick={() => setLanguage("en")}
-                            className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            className="bg-white dark:bg-stone-950 flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                             leftIcon={
                                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
                                     <Languages className="size-5" />
@@ -130,7 +130,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={language === "he"}
                             onClick={() => setLanguage("he")}
-                            className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            className="bg-white dark:bg-stone-950 flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                             leftIcon={
                                 <span
                                     lang="he"

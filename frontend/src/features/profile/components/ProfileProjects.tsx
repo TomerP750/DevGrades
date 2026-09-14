@@ -16,7 +16,7 @@ export function ProfileProjects({ projects }: ProfileProjectsProps) {
                     id="profile-projects-heading"
                     className="mt-1 text-2xl font-bold tracking-tight text-foreground"
                 >
-                    Projects
+                    Projects ({projects.length})
                 </h2>
             </div>
 

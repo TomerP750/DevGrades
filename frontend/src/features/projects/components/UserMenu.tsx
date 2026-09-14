@@ -31,7 +31,7 @@ export function UserMenu({ isOpen, user, onClose }: UserMenuProps) {
     return (
         <Menu
             isOpen={isOpen}
-            className="right-0 w-68 p-4 rounded-lg bg-stone-950"
+            className="right-0 w-68 p-4 rounded-lg"
         >
             <div className="flex items-center gap-3">
                 <Badge user={user} size="lg" />

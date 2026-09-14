@@ -38,9 +38,15 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
                             <div className="flex gap-2">
                                 <Button
                                     type="button"
-                                    variant="outline"
+                                    variant="primary"
                                     size="sm"
-                                    rightIcon={<MessageCircleIcon className="size-4" />}
+                                    className="min-h-10 shrink-0 rounded-full px-4 shadow-md shadow-primary/20"
+                                    leftIcon={
+                                        <MessageCircleIcon
+                                            className="size-4"
+                                            strokeWidth={2.25}
+                                        />
+                                    }
                                 >
                                     Message
                                 </Button>
