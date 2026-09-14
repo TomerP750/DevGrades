@@ -13,18 +13,19 @@ export class Project {
     @IsString()
     name!: string;
 
-    @Column()
+    //TODO remove the default empty string
+    @Column({default: ''})
     @IsString()
     description!: string;
 
-    @Column()
+    @Column({default: ''})
     @IsString()
-    @IsUrl()
+    // @IsUrl()
     githubUrl!: string;
 
-    @Column()
+    @Column({default: ''})
     @IsString()
-    @IsUrl()
+    // @IsUrl()
     demoUrl!: string;
 
     @Column({
@@ -37,7 +38,7 @@ export class Project {
     @ManyToOne(() => User, { nullable: false })
     user!: User;
 
-    @Column()
+    @Column({default: ''})
     @IsString()
     imageUrl!: string;
 

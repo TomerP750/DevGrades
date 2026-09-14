@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
-import { SerializePage } from '../shared/interceptors/serialize.interceptor';
+import { Serialize, SerializePage } from '../shared/interceptors/serialize.interceptor';
 import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination-query.dto';
 import { CursorPaginatedResult } from '../shared/pagination/cursor-pagination.types';
 import { ProjectDto } from './dto/project.dto';
@@ -17,6 +17,12 @@ export class ProjectsController {
   @SerializePage(ProjectDto)
   async allProjects(@Query() query: CursorPaginationQueryDto): Promise<CursorPaginatedResult<Project>> {
     return this.projectsService.findAll(query);
+  }
+
+  @Get(":projectId")
+  @Serialize(ProjectDto)
+  async oneProject(@Param("projectId") projectId: string): Promise<Project> {
+    return this.projectsService.findOne(projectId);
   }
 
   @Post("/create")

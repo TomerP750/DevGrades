@@ -1,6 +1,6 @@
 import { Status } from "../Status";
 import { UserDto } from "../../users/dto/user.dto";
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 
 export class ProjectDto {
     @Expose()
@@ -18,6 +18,7 @@ export class ProjectDto {
     @Expose()
     imageUrl!: string;
     @Expose()
+    @Type(() => UserDto)
     user!: UserDto;
     @Expose()
     createdAt!: Date;

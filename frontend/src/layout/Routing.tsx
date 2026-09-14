@@ -38,7 +38,7 @@ export function Routing() {
                     {user && (
                         <Route path="/" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
                     )}
-                    <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
+                    <Route path="/projects/:projectId" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
                 </Route>
 
                 <Route path="/u/:id" element={<SuspenseWrapper><ProfilePage /></SuspenseWrapper>} />

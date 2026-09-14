@@ -1,15 +1,19 @@
 import { useParams } from "react-router-dom";
 import NotFoundPage from "../../../shared/pages/NotFoundPage";
-import { dummyData } from "../api/dummyData";
 import { ProjectDetailsAside } from "../components/project_details_page/ProjectDetailsAside";
 import { ProjectDetailsContent } from "../components/project_details_page/ProjectDetailsContent";
 import { ProjectDetailsHeader } from "../components/project_details_page/ProjectDetailsHeader";
+import { useQuery } from "@tanstack/react-query";
+import projectService from "../api/projectService";
 
 export default function ProjectDetailsPage() {
 
-    const { id } = useParams();
+    const { projectId } = useParams();
 
-    const project = dummyData.find((item) => item.id === id);
+    const { data: project } = useQuery({
+        queryKey: ["project", projectId],
+        queryFn: () => projectService.oneProject(projectId!),
+    });
 
     if (!project) {
         return (

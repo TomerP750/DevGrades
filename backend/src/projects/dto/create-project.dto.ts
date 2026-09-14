@@ -17,10 +17,6 @@ export class CreateProjectDto {
     @IsOptional()
     demoUrl?: string;
 
-    @IsEnum(Status)
-    @IsOptional()
-    status?: Status = Status.OPEN;
-
     @IsString()
     @IsOptional()
     imageUrl?: string;

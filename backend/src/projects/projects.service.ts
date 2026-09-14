@@ -9,6 +9,7 @@ import { buildCursorPage } from '../shared/pagination/build-cursor-page';
 import { decodeCursor, encodeCursor } from '../shared/pagination/cursor-codec';
 import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination-query.dto';
 import { CursorPaginatedResult } from '../shared/pagination/cursor-pagination.types';
+import { Status } from './Status';
 
 
 @Injectable()
@@ -25,9 +26,13 @@ export class ProjectsService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const project = this.projectsRepository.create(createProjectDto);
-    project.user = user;
-    return this.projectsRepository.save(project);
+    const newProject = {
+      ...createProjectDto,
+      status: Status.OPEN,
+      user,
+    }
+    const project = this.projectsRepository.create(newProject);
+    await this.projectsRepository.save(project);
   }
   
   async findOne(projectId: string) {

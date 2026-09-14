@@ -6,6 +6,7 @@ interface ProjectDetailsHeaderProps {
 }
 
 export function ProjectDetailsHeader({ project }: ProjectDetailsHeaderProps) {
+    
     const { name, user } = project;
     const { firstName, lastName, username } = user;
 
