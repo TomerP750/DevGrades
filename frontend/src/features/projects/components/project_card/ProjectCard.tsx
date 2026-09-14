@@ -117,7 +117,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     {project.description}
                 </p>
 
-                {!isOwner && <div className="mt-auto border-t border-border/70 pt-4">
+                {!isOwner || <div className="mt-auto border-t border-border/70 pt-4">
                     <Link
                         to={projectPath}
                         className="group/review inline-flex min-h-11 w-full items-center justify-center gap-3 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-px"

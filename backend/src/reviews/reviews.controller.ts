@@ -12,8 +12,8 @@ import { ReviewDto } from './dto/review.dto';
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) { }
 
-  @Post('create/:projectId')
-  create(
+  @Post('/create/:projectId')
+  async create(
     @Body() createReviewDto: CreateReviewDto,
     @CurrentUserId() userId: string,
     @Param('projectId') projectId: string
@@ -21,13 +21,13 @@ export class ReviewsController {
     return this.reviewsService.createReview(userId, projectId, createReviewDto);
   }
 
-  @Get('all/:projectId')
-  findAll(@Param('projectId') projectId: string) {
+  @Get('/all/:projectId')
+  async findAll(@Param('projectId') projectId: string) {
     return this.reviewsService.allReviewsByProjectId(projectId);
   }
 
-  @Put('update/:reviewId')
-  update(
+  @Put('/update/:reviewId')
+  async update(
     @Param('reviewId') reviewId: string,
     @Body() updateReviewDto: UpdateReviewDto,
     @CurrentUserId() userId: string
@@ -35,8 +35,8 @@ export class ReviewsController {
     return this.reviewsService.updateReview(userId, reviewId, updateReviewDto);
   }
 
-  @Delete('delete/:reviewId')
-  remove(@Param('reviewId') reviewId: string, @CurrentUserId() userId: string) {
+  @Delete('/delete/:reviewId')
+  async remove(@Param('reviewId') reviewId: string, @CurrentUserId() userId: string) {
     return this.reviewsService.deleteReview(userId, reviewId);
   }
 
