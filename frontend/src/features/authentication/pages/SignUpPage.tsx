@@ -7,6 +7,7 @@ import { AuthShell } from "../components/AuthShell";
 import type { SignUpRequestDto } from "../models/SignUpRequestDto";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 type SignUpFormValues = SignUpRequestDto & {
     acceptTerms: boolean;
@@ -31,10 +32,11 @@ export default function SignUpPage() {
     const { mutate: signUpUser, isPending } = useMutation({
         mutationFn: (data: SignUpRequestDto) => authSignUp(data),
         onSuccess: () => {
+            toast.success("Signed up successfully.");
             navigate("/feed");
         },
         onError: (error) => {
-            console.error(error);
+            toast.error(error.message);
         },
     });
 

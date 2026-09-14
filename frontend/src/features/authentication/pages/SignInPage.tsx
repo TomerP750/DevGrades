@@ -7,6 +7,7 @@ import { AuthShell } from "../components/AuthShell";
 import type { SignInRequestDto } from "../models/SignInRequestDto";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
 
@@ -20,10 +21,11 @@ export default function SignInPage() {
     const { mutate: signInUser, isPending } = useMutation({
         mutationFn: (data: SignInRequestDto) => AuthSignIn(data),
         onSuccess: () => {
+            toast.success("Signed in successfully.");
             navigate("/");
         },
         onError: (error) => {
-            console.error(error);
+            toast.error(error.message);
         },
     });
 

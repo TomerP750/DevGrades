@@ -7,6 +7,7 @@ import type { CreateProjectDto } from "../../models/CreateProjectDto";
 import { TextArea } from "../../../../shared/ui/TextArea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import projectService from "../../api/projectService";
+import { toast } from "react-toastify";
 
 interface CreateProjectModalProps {
     open: boolean;
@@ -50,6 +51,10 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
     };
 
     const handleCreateProject = (data: CreateProjectDto) => {
+        if (!data.demoUrl || !data.githubUrl) {
+            toast.error("At least one of the URLs is required.");
+            return;
+        }
         createProject(data);
     };
 
@@ -91,6 +96,7 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
                 <TextArea
                     label="Description"
                     rows={4}
+                    required
                     placeholder="What does your project do? What did you build it with?"
                     error={errors.description?.message}
                     {...register("description", {
