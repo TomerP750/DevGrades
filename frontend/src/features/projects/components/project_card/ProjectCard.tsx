@@ -12,6 +12,9 @@ import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { useIsOwner } from "../../hooks/useIsOwner";
+import archiveProjectService from "../../api/archiveProjectService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../../../authentication/contexts/AuthContext";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -19,7 +22,25 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
 
-    const [archived, setArchived] = useState(false);
+    const { user } = useAuth();
+
+    const queryClient = useQueryClient();
+    
+    const { mutate: toggleArchive } = useMutation({
+        mutationFn: archiveProjectService.toggleArchive,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["archived-projects", user?.id, project.id] });
+        },
+    });
+
+    function handleToggleArchive() {
+        toggleArchive(project.id);
+    }
+
+    const { data: archived } = useQuery({
+        queryKey: ["archived-projects", user?.id, project.id],
+        queryFn: () => archiveProjectService.isArchived(project.id),
+    });
 
     const isOwner = useIsOwner(project);
 
@@ -62,7 +83,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         <Button
                             type="button"
                             variant="unstyled"
-                            onClick={() => setArchived(prev => !prev)}
+                            onClick={handleToggleArchive}
                             aria-pressed={archived}
                             aria-label={`Archive ${project.name}`}
                             title="Archive project"

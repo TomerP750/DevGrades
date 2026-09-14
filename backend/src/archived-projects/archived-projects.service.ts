@@ -39,8 +39,9 @@ export class ArchivedProjectsService {
     return false;
   }
 
-  async getArchivedProjects(userId: string) {
-
+  async isArchived(userId: string, projectId: string): Promise<boolean> {
+    const archivedProject = await this.findArchivedProject(userId, projectId);
+    return !!archivedProject;
   }
 
   private async findArchivedProject(userId: string, projectId: string) {

@@ -48,6 +48,10 @@
   --radius-xl: calc(var(--radius) + 0.25rem);
 }
 
+* {
+  font-family: 'Outfit', sans-serif;
+}
+
 :root {
   color-scheme: light;
 

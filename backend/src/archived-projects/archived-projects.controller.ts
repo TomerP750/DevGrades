@@ -5,14 +5,14 @@ import { UserDto } from '../users/dto/user.dto';
 import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
 
 
-@Controller('archived-projects')
+@Controller('/api/archived-projects')
 @Serialize(UserDto)
 export class ArchivedProjectsController {
   constructor(private readonly archivedProjectsService: ArchivedProjectsService) {}
 
-  @Get("/all")
-  async getArchivedProjects(@CurrentUserId() userId: string) {
-    return this.archivedProjectsService.getArchivedProjects(userId);
+  @Get("/is-archived/:projectId")
+  async isArchived(@CurrentUserId() userId: string, @Param("projectId") projectId: string) {
+    return this.archivedProjectsService.isArchived(userId, projectId);
   }
 
   @Post("/toggle/:projectId")
