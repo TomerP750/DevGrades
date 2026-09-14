@@ -35,6 +35,10 @@ export class ReviewsService {
       throw new ForbiddenException('You are not allowed to create a review for your own project');
     }
 
+    if (await this.isUserAlreadyReviewed(userId, projectId)) {
+      throw new ForbiddenException('You have already reviewed this project');
+    }
+
     const review = {
       ...createReviewDto,
       user: user,
@@ -86,6 +90,17 @@ export class ReviewsService {
   private async isReviewOwner(userId: string, reviewId: string): Promise<boolean> {
     const review = await this.findOneReview(reviewId);
     if (review.user.id !== userId) {
+      return false;
+    }
+    return true;
+  }
+
+  private async isUserAlreadyReviewed(userId: string, projectId: string): Promise<boolean> {
+    const review = await this.reviewsRepository.findOne({
+      where: { user: { id: userId }, project: { id: projectId } }
+    });
+ 
+    if(!review) {
       return false;
     }
     return true;
