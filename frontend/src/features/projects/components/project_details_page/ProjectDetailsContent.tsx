@@ -1,8 +1,9 @@
 import { ArrowUpRightIcon, MessageSquareTextIcon } from "lucide-react";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { useState } from "react";
-import { ReviewCardModal } from "../../../reviews/components/ReviewCardModal";
 import { Button } from "../../../../shared/ui/Button";
+import { CreateReviewModal } from "../../../reviews/components/CreateReviewModal";
+import { ReviewsSection } from "../../../reviews/pages/ReviewsSection";
 
 interface ProjectDetailsContentProps {
     project: ProjectDto;
@@ -46,7 +47,7 @@ export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsConten
                 </p>
                 <Button
                     type="button"
-                    size="sm"
+                    size="md"
                     className="mt-6"
                     onClick={() => setIsReviewModalOpen(true)}
                     rightIcon={<ArrowUpRightIcon className="size-4" />}
@@ -56,7 +57,9 @@ export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsConten
                 
             </section>}
 
-            <ReviewCardModal
+            <ReviewsSection projectId={project.id} />
+
+            <CreateReviewModal
                 open={isReviewModalOpen}
                 onClose={() => setIsReviewModalOpen(false)}
                 projectId={project.id}

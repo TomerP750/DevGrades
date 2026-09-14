@@ -2,6 +2,7 @@ import type { UserDto } from "../../../shared/models/UserDto";
 
 
 export interface ReviewDto {
+    id: string;
     overallScore: number;
     codeQualityScore: number;
     optimizationScore: number;
@@ -10,5 +11,5 @@ export interface ReviewDto {
     uiuxScore: number;
     comment: string 
     createdAt: Date;
-    userDto: UserDto;
+    user: UserDto;
 }

@@ -5,6 +5,9 @@ import { Input } from "../../../shared/ui/Input";
 import { Modal } from "../../../shared/ui/Modal";
 import { TextArea } from "../../../shared/ui/TextArea";
 import type { CreateReviewDto } from "../models/CreateReviewDto";
+import reviewService from "../api/reviewService";
+import { toast } from "react-toastify";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ReviewCardModalProps {
     open: boolean;
@@ -34,13 +37,28 @@ const scoreFields: Array<{
         { name: "uiuxScore", label: "UI/UX" },
     ];
 
-export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalProps) {
+export function CreateReviewModal({ open, onClose, projectId }: ReviewCardModalProps) {
+    
+    const queryClient = useQueryClient();
+    
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<CreateReviewDto>({ defaultValues });
+
+    const { mutate: createReview, isPending } = useMutation({
+        mutationFn: (review: CreateReviewDto) => reviewService.createReview(review),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reviews", projectId] });
+            toast.success("Review created successfully");
+            handleClose();
+        },
+        onError: () => {
+            toast.error("Failed to create review");
+        },
+    });
 
     const handleClose = () => {
         reset();
@@ -48,8 +66,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
     };
 
     const handleCreateReview = (review: CreateReviewDto) => {
-        console.log(review);
-        handleClose();
+        createReview(review);
     };
 
     return (
@@ -123,7 +140,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
                     <Button
                         type="submit"
                         rightIcon={<Send className="size-4" />}
-                        isLoading={isSubmitting}
+                        isLoading={isPending}
                     >
                         Submit review
                     </Button>

@@ -6,6 +6,7 @@ import { ProjectDetailsHeader } from "../components/project_details_page/Project
 import { useQuery } from "@tanstack/react-query";
 import projectService from "../api/projectService";
 import { useIsOwner } from "../hooks/useIsOwner";
+import { ReviewsSection } from "../../reviews/pages/ReviewsSection";
 
 export default function ProjectDetailsPage() {
 
@@ -14,15 +15,14 @@ export default function ProjectDetailsPage() {
     const { data: project } = useQuery({
         queryKey: ["project", projectId],
         queryFn: () => projectService.oneProject(projectId!),
+        enabled: Boolean(projectId),
     });
 
-    if (!project) {
-        return (
-            <NotFoundPage />
-        );
-    }
-
     const isOwner = useIsOwner(project);
+
+    if (!projectId || !project) {
+        return <NotFoundPage />;
+    }
 
     return (
         <article className="mt-4">

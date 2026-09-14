@@ -144,7 +144,7 @@ export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsidePro
                     ))}
                     {!isOwner && <Button
                         type="button"
-                        size="sm"
+                        size="md"
                         rightIcon={<ArrowUpRightIcon className="size-4" />}
                     >
                         Write a review
