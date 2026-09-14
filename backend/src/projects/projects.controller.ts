@@ -25,6 +25,12 @@ export class ProjectsController {
     return this.projectsService.findOne(projectId);
   }
 
+  @Get("user/:userId")
+  @Serialize(ProjectDto)
+  async getProjectsByUserId(@Param("userId") userId: string): Promise<Project[]> {
+    return this.projectsService.findAllByUserId(userId);
+  }
+
   @Post("/create")
   async createProject(@CurrentUserId() userId: string, @Body() createProjectDto: CreateProjectDto) {
     this.projectsService.create(userId, createProjectDto);

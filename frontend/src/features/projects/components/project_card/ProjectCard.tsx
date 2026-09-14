@@ -34,7 +34,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             <div className="flex min-w-0 items-center gap-2">
                                 <Link
                                     className="min-w-0"
-                                    to={`/users/${project.user.id}`}>
+                                    to={`/u/${project.user.id}`}>
                                     <p className="truncate text-sm font-semibold text-card-foreground">
                                         {project.user.firstName} {project.user.lastName}
                                     </p>

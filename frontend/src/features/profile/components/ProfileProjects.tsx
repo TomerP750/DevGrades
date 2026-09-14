@@ -20,8 +20,8 @@ export function ProfileProjects({ projects }: ProfileProjectsProps) {
                 </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 [&>article]:rounded-none md:grid-cols-2 xl:grid-cols-3">
-                {projects.slice(0, 3).map((project) => (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
+                {projects.map((project) => (
                     <ProjectCard key={project.id} project={project} />
                 ))}
             </div>

@@ -16,6 +16,10 @@ class ProjectService {
         return (await axios.get(`${baseApiUrl}/api/projects/all`, { params })).data;
     }
 
+    async getProjectsByUserId(userId: string) {
+        return (await axios.get(`${baseApiUrl}/api/projects/user/${userId}`)).data;
+    }
+
     async oneProject(projectId: string) {
         return (await axios.get(`${baseApiUrl}/api/projects/${projectId}`)).data;
     }

@@ -4,6 +4,8 @@ import { ProfileHeader } from "../components/ProfileHeader";
 import { useQuery } from "@tanstack/react-query";
 import profileService from "../api/profileService";
 import NotFoundPage from "../../../shared/pages/NotFoundPage";
+import projectService from "../../projects/api/projectService";
+import { ProfileProjects } from "../components/ProfileProjects";
 
 
 export default function ProfilePage() {
@@ -19,6 +21,11 @@ export default function ProfilePage() {
         queryFn: () => profileService.getProfile(id),
     })
 
+    const { data: featuredProjects } = useQuery({
+        queryKey: ["featuredProjects", id],
+        queryFn: () => projectService.getProjectsByUserId(id),
+    })
+
     if (!profile) {
         return <NotFoundPage />;
     }
@@ -30,7 +37,7 @@ export default function ProfilePage() {
 
             <div className="mt-6 space-y-10">
                 <ProfileAbout aboutBio={profile.aboutBio} />
-                {/* <ProfileProjects projects={featuredProjects} /> */}
+                <ProfileProjects projects={featuredProjects} />
             </div>
         </main>
        

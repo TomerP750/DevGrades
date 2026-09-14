@@ -69,6 +69,14 @@ export class ProjectsService {
     );
   }
 
+  async findAllByUserId(userId: string) {
+    const projects = await this.projectsRepository.find({
+      where: { user: { id: userId } },
+      relations: { user: true },
+    });
+    return projects;
+  }
+
   async update(userId: string, projectId: string, updateProjectDto: UpdateProjectDto) {
     const permitted = await this.isPermittedToOperateProject(userId, projectId);
     if (!permitted) {
