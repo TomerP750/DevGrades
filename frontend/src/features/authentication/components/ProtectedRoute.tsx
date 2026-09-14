@@ -1,6 +1,6 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { AuthenticatedNavbar } from "./AuthenticatedNavbar";
+import { Navbar } from "../../../layout/Navbar";
 
 export function ProtectedRoute() {
 
@@ -17,7 +17,7 @@ export function ProtectedRoute() {
 
     return (
         <>
-            <AuthenticatedNavbar />
+            <Navbar />
             <Outlet />
         </>
     );

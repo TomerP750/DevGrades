@@ -1,5 +1,6 @@
 import { ArrowLeft, Code2, Home, SearchX } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../ui/Button";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
@@ -53,14 +54,14 @@ export default function NotFoundPage() {
                   <Home aria-hidden="true" className="size-4" />
                   Go to homepage
                 </Link>
-                <button
+                <Button
                   type="button"
+                  variant="outline"
                   onClick={() => navigate(-1)}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-border bg-card px-5 py-2.5 text-sm font-semibold text-card-foreground shadow-sm transition hover:border-primary/40 hover:bg-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-px motion-reduce:transition-none"
+                  icon={<ArrowLeft className="size-4" />}
                 >
-                  <ArrowLeft aria-hidden="true" className="size-4" />
                   Go back
-                </button>
+                </Button>
               </div>
             </div>
 

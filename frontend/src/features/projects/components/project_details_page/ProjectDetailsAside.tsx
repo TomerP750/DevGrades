@@ -10,6 +10,7 @@ import {
     getScoreColor,
     ProgressBar,
 } from "../../../../shared/ui/ProgressBar";
+import { Button } from "../../../../shared/ui/Button";
 import { formatDate } from "../../../../shared/utils/formatDate";
 import type { ProjectDto } from "../../models/ProjectDto";
 
@@ -140,13 +141,13 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                             />
                         </li>
                     ))}
-                    <button
+                    <Button
                         type="button"
-                        className="inline-flex cursor-pointer items-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                        size="sm"
+                        icon={<ArrowUpRightIcon className="size-4" />}
                     >
                         Write a review
-                        <ArrowUpRightIcon className="size-4" />
-                    </button>
+                    </Button>
                 </ul>
             </section>
         </aside>

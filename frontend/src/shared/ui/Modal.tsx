@@ -6,6 +6,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { Button } from "./Button";
 
 interface ModalProps {
     isOpen: boolean;
@@ -64,14 +65,14 @@ export function Modal({
                         </h2>
                     )}
 
-                    <button
+                    <Button
                         type="button"
+                        variant="unstyled"
                         onClick={onClose}
                         aria-label="Close modal"
                         className="ml-auto grid size-8 shrink-0 cursor-pointer place-items-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    >
-                        <X aria-hidden="true" className="size-5" />
-                    </button>
+                        icon={<X className="size-5" />}
+                    />
                 </div>
 
                 <div className={title ? "mt-4" : ""}>{children}</div>

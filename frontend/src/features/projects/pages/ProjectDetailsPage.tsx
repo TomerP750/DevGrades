@@ -18,16 +18,13 @@ export default function ProjectDetailsPage() {
     }
 
     return (
-        <main className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-            
-            <article className="mt-4">
-                <ProjectDetailsHeader project={project} />
+        <article className="mt-4">
+            <ProjectDetailsHeader project={project} />
 
-                <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
-                    <ProjectDetailsContent project={project} />
-                    <ProjectDetailsAside project={project} />
-                </div>
-            </article>
-        </main>
+            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
+                <ProjectDetailsContent project={project} />
+                <ProjectDetailsAside project={project} />
+            </div>
+        </article>
     );
 }

@@ -2,6 +2,7 @@ import { ArrowUpRightIcon, MessageSquareTextIcon } from "lucide-react";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { useState } from "react";
 import { ReviewCardModal } from "../../../reviews/components/ReviewCardModal";
+import { Button } from "../../../../shared/ui/Button";
 
 interface ProjectDetailsContentProps {
     project: ProjectDto;
@@ -42,14 +43,15 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                     Review the project and help its creator improve with clear,
                     actionable suggestions.
                 </p>
-                <button
+                <Button
                     type="button"
-                    className="mt-6 inline-flex cursor-pointer items-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                    size="sm"
+                    className="mt-6"
                     onClick={() => setIsReviewModalOpen(true)}
+                    icon={<ArrowUpRightIcon className="size-4" />}
                 >
                     Write a review
-                    <ArrowUpRightIcon className="size-4" />
-                </button>
+                </Button>
                 
             </section>
 

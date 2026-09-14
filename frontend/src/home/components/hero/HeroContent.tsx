@@ -1,5 +1,4 @@
 import { Check } from "lucide-react";
-import { Button } from "../../../shared/ui/Button";
 import { Link } from "react-router-dom";
 
 const reviewCategories = ["UI/UX", "Performance", "Maintainability", "Accessibility", "And More"];
@@ -15,7 +14,7 @@ export function HeroContent() {
         Better feedback. Better projects.
       </div>
 
-      <h1 className="text-balance text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl lg:text-7xl">
+      <h1 className="text-balance text-5xl font-bold tracking-[-0.04em] text-foreground sm:text-6xl">
         Build something great.
         <span className="mt-1 block text-primary">Get graded by builders.</span>
       </h1>
@@ -25,14 +24,12 @@ export function HeroContent() {
         on UI/UX, performance, accessibility, and more.
       </p>
 
-      <Link to="/sign-up"><Button variant="primary" className="mt-5">
+      <Link
+        to="/sign-up"
+        className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-gradient-to-r from-emerald-700 to-emerald-400 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-emerald-700/25 transition hover:-translate-y-0.5 hover:from-emerald-600 hover:to-emerald-300 hover:shadow-xl hover:shadow-emerald-600/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none"
+      >
         Get Started
-      </Button></Link>
-
-{/* TODO remove this later */}
-      <Link to="/feed"><Button variant="primary" className="mt-5">
-        Feed
-      </Button></Link>
+      </Link>
 
       <div className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-muted-foreground">
         {reviewCategories.map((category) => (

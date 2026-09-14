@@ -1,6 +1,7 @@
 import { Languages, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "../../../shared/contexts/ThemeContext";
+import { Button } from "../../../shared/ui/Button";
 
 export function DisplaySettings() {
     const { theme, setTheme } = useTheme();
@@ -29,19 +30,22 @@ export function DisplaySettings() {
                     </div>
 
                     <div className="grid max-w-2xl gap-3 sm:grid-cols-2">
-                        <button
+                        <Button
                             type="button"
+                            variant="unstyled"
                             aria-pressed={theme === "light"}
                             onClick={() => setTheme("light")}
+                            icon={
+                                <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border bg-white text-zinc-700">
+                                    <Sun className="size-5" />
+                                </span>
+                            }
                             className={`group flex min-h-24 items-center gap-4 border px-5 py-4 text-left transition after:ml-auto after:size-3 after:shrink-0 after:rounded-full after:border hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                                 theme === "light"
                                     ? "border-primary ring-1 ring-primary after:border-primary after:bg-primary"
                                     : "border-border after:border-input"
                             }`}
                         >
-                                <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border bg-white text-zinc-700">
-                                    <Sun aria-hidden="true" className="size-5" />
-                                </span>
                                 <span>
                                     <span className="block text-sm font-semibold text-foreground">
                                         Light
@@ -50,21 +54,24 @@ export function DisplaySettings() {
                                         Bright and clear
                                     </span>
                                 </span>
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                             type="button"
+                            variant="unstyled"
                             aria-pressed={theme === "dark"}
                             onClick={() => setTheme("dark")}
+                            icon={
+                                <span className="grid size-10 shrink-0 place-items-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-100">
+                                    <Moon className="size-5" />
+                                </span>
+                            }
                             className={`group flex min-h-24 items-center gap-4 border px-5 py-4 text-left transition after:ml-auto after:size-3 after:shrink-0 after:rounded-full after:border hover:border-primary/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
                                 theme === "dark"
                                     ? "border-primary ring-1 ring-primary after:border-primary after:bg-primary"
                                     : "border-border after:border-input"
                             }`}
                         >
-                                <span className="grid size-10 shrink-0 place-items-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-100">
-                                    <Moon aria-hidden="true" className="size-5" />
-                                </span>
                                 <span>
                                     <span className="block text-sm font-semibold text-foreground">
                                         Dark
@@ -73,7 +80,7 @@ export function DisplaySettings() {
                                         Easy on the eyes
                                     </span>
                                 </span>
-                        </button>
+                        </Button>
                     </div>
                 </fieldset>
 
@@ -88,15 +95,18 @@ export function DisplaySettings() {
                     </div>
 
                     <div className="max-w-2xl divide-y divide-border border-y border-border">
-                        <button
+                        <Button
                             type="button"
+                            variant="unstyled"
                             aria-pressed={language === "en"}
                             onClick={() => setLanguage("en")}
                             className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            icon={
+                                <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
+                                    <Languages className="size-5" />
+                                </span>
+                            }
                         >
-                            <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
-                                <Languages aria-hidden="true" className="size-5" />
-                            </span>
                             <span className="min-w-0 flex-1">
                                 <span className="block text-sm font-semibold text-foreground">
                                     English
@@ -113,21 +123,24 @@ export function DisplaySettings() {
                                         : "border-input"
                                 }`}
                             />
-                        </button>
+                        </Button>
 
-                        <button
+                        <Button
                             type="button"
+                            variant="unstyled"
                             aria-pressed={language === "he"}
                             onClick={() => setLanguage("he")}
                             className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            icon={
+                                <span
+                                    lang="he"
+                                    dir="rtl"
+                                    className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-sm font-bold text-muted-foreground"
+                                >
+                                    עב
+                                </span>
+                            }
                         >
-                            <span
-                                lang="he"
-                                dir="rtl"
-                                className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-sm font-bold text-muted-foreground"
-                            >
-                                עב
-                            </span>
                             <span className="min-w-0 flex-1">
                                 <span className="block text-sm font-semibold text-foreground">
                                     Hebrew
@@ -148,7 +161,7 @@ export function DisplaySettings() {
                                         : "border-input"
                                 }`}
                             />
-                        </button>
+                        </Button>
                     </div>
                 </fieldset>
             </div>

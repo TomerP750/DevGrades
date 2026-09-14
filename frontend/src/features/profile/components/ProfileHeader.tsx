@@ -1,5 +1,6 @@
 import { MessageCircleIcon } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge";
+import { Button } from "../../../shared/ui/Button";
 import type { ProfileDto } from "../models/ProfileDto";
 
 interface ProfileHeaderProps {
@@ -35,10 +36,14 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
                                 {user.firstName} {user.lastName}
                             </h1>
                             <div className="flex gap-2">
-                                <button className="border px-3 py-2 flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
-                                    <MessageCircleIcon className="size-4" />
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    icon={<MessageCircleIcon className="size-4" />}
+                                >
                                     Message
-                                </button>
+                                </Button>
                             </div>
                         </div>
                         <p className="mt-1 truncate text-sm font-medium text-muted-foreground sm:text-base">

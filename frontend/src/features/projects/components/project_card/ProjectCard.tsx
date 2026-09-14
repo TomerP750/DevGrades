@@ -6,6 +6,7 @@ import {
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
+import { Button } from "../../../../shared/ui/Button";
 import { formatDate } from "../../../../shared/utils/formatDate";
 // import { useAuth } from "../../../authentication/contexts/AuthContext";
 import { ProjectMenu } from "./ProjectMenu";
@@ -59,19 +60,20 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         </div>
                     </div>
                     <div className="flex items-center gap-3">
-                        <button
+                        <Button
                             type="button"
+                            variant="unstyled"
                             onClick={() => setArchived(prev => !prev)}
                             aria-pressed={archived}
                             aria-label={`Archive ${project.name}`}
                             title="Archive project"
                             className="cursor-pointer hover:scale-110 transition-transform duration-200"
-                        >
-                            <BookmarkIcon
-                                aria-hidden="true"
+                            icon={
+                                <BookmarkIcon
                                 className={`size-5 ${archived ? "fill-yellow-500 text-yellow-500" : ""}`}
-                            />
-                        </button>
+                                />
+                            }
+                        />
                         <ProjectMenu project={project} />
                     </div>
                 </div>

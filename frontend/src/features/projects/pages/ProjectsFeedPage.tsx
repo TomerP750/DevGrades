@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ProjectFeedActions } from "../components/feed_actions/ProjectFeedActions";
 import { ProjectCard } from "../components/project_card/ProjectCard";
 import { useProjectsFeed } from "../hooks/useProjectsFeed";
+import { Button } from "../../../shared/ui/Button";
 
 export default function ProjectsFeedPage() {
 
@@ -49,13 +50,14 @@ export default function ProjectsFeedPage() {
                     <p className="mt-1 text-sm text-muted-foreground">
                         Something went wrong while fetching the feed.
                     </p>
-                    <button
+                    <Button
                         type="button"
+                        size="sm"
                         onClick={() => refetch()}
-                        className="mt-4 inline-flex h-10 cursor-pointer items-center justify-center bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="mt-4 h-10"
                     >
                         Try again
-                    </button>
+                    </Button>
                 </div>
             )}
 
@@ -80,14 +82,15 @@ export default function ProjectsFeedPage() {
 
             {hasNextPage && (
                 <div className="mt-8 flex justify-center">
-                    <button
+                    <Button
                         type="button"
+                        size="sm"
                         onClick={() => fetchNextPage()}
-                        disabled={isFetchingNextPage}
-                        className="inline-flex h-10 cursor-pointer items-center justify-center bg-primary px-6 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
+                        isLoading={isFetchingNextPage}
+                        className="h-10 px-6"
                     >
                         {isFetchingNextPage ? "Loading..." : "Load more"}
-                    </button>
+                    </Button>
                 </div>
             )}
 

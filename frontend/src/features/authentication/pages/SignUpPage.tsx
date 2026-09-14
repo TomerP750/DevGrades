@@ -31,7 +31,7 @@ export default function SignUpPage() {
     const { mutate: signUpUser, isPending } = useMutation({
         mutationFn: (data: SignUpRequestDto) => authSignUp(data),
         onSuccess: () => {
-            navigate("/");
+            navigate("/feed");
         },
         onError: (error) => {
             console.error(error);

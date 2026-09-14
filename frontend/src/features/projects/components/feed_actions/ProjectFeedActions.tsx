@@ -4,6 +4,7 @@ import {
     Grid3X3,
     Plus,
 } from "lucide-react";
+import { Button } from "../../../../shared/ui/Button";
 import { SearchInput } from "../../../../shared/ui/SearchInput";
 import { CreateProjectModal } from "./CreateProjectModal";
 import { FilterMenu } from "./filters/FilterMenu";
@@ -25,16 +26,17 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
 
     return (
         <div className="mb-6 flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center">
-            <button
+            <Button
                 type="button"
+                size="sm"
                 onClick={() => setIsCreateProjectOpen(true)}
                 aria-haspopup="dialog"
                 aria-expanded={isCreateProjectOpen}
-                className="inline-flex h-10 shrink-0 cursor-pointer items-center justify-center gap-2 bg-primary px-4 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="h-10 shrink-0"
+                icon={<Plus className="size-4" />}
             >
-                <Plus aria-hidden="true" className="size-4" />
                 Create project
-            </button>
+            </Button>
 
             <SearchInput
                 onSearch={() => {}}
@@ -50,26 +52,26 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                 role="group"
                 aria-label="Project grid layout"
             >
-                <button
+                <Button
                     type="button"
+                    variant="unstyled"
                     onClick={() => onGridLayoutChange(2)}
                     aria-label="Two-column layout"
                     aria-pressed={gridLayout === 2}
                     title="Two columns"
                     className={layoutButtonClass(gridLayout === 2)}
-                >
-                    <Columns2 aria-hidden="true" className="size-4" />
-                </button>
-                <button
+                    icon={<Columns2 className="size-4" />}
+                />
+                <Button
                     type="button"
+                    variant="unstyled"
                     onClick={() => onGridLayoutChange(3)}
                     aria-label="Three-column layout"
                     aria-pressed={gridLayout === 3}
                     title="Three columns"
                     className={layoutButtonClass(gridLayout === 3)}
-                >
-                    <Grid3X3 aria-hidden="true" className="size-4" />
-                </button>
+                    icon={<Grid3X3 className="size-4" />}
+                />
 
             </div>
             <CreateProjectModal open={isCreateProjectOpen} onClose={() => setIsCreateProjectOpen(false)} />

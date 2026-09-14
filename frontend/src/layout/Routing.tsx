@@ -6,6 +6,7 @@ import { AccountSettings } from "../features/settings/components/AccountSettings
 import { DisplaySettings } from "../features/settings/components/DisplaySettings";
 import { SecuritySettings } from "../features/settings/components/SecuritySettings";
 import { ProtectedRoute } from "../features/authentication/components/ProtectedRoute";
+import { useAuth } from "../features/authentication/contexts/AuthContext";
 
 const SignInPage = lazy(() => import("../features/authentication/pages/SignInPage"));
 const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
@@ -17,17 +18,26 @@ const SettingsPage = lazy(() => import("../features/settings/pages/SettingsPage"
 
 
 export function Routing() {
+    const { user, isLoading } = useAuth();
+
     return (
         <Routes>
             
-            <Route path="/" element={<Home />} />
+            {(!user || isLoading) && (
+                <Route
+                    path="/"
+                    element={isLoading ? <div>Loading...</div> : <Home />}
+                />
+            )}
             <Route path="/sign-in" element={<SuspenseWrapper><SignInPage /></SuspenseWrapper>} />
             <Route path="/sign-up" element={<SuspenseWrapper><SignUpPage /></SuspenseWrapper>} />
 
             <Route element={<ProtectedRoute />}>
                
                 <Route element={<ProjectsLayout />}>
-                    <Route path="/feed" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+                    {user && (
+                        <Route path="/" element={<SuspenseWrapper><ProjectFeedPages /></SuspenseWrapper>} />
+                    )}
                     <Route path="/projects/:id" element={<SuspenseWrapper><ProjectDetailsPage /></SuspenseWrapper>} />
                 </Route>
 

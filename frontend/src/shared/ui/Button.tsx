@@ -6,14 +6,15 @@ export type ButtonVariant =
   | "secondary"
   | "outline"
   | "ghost"
-  | "danger";
+  | "danger"
+  | "unstyled";
 
 export type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** Decorative icon rendered before the button text. */
+  /** Decorative icon rendered after the button text. */
   icon?: ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
@@ -34,6 +35,7 @@ const variantStyles: Record<ButtonVariant, string> = {
     "bg-transparent text-foreground hover:bg-muted hover:text-muted-foreground",
   danger:
     "bg-danger text-danger-foreground shadow-sm hover:brightness-90 active:translate-y-px",
+  unstyled: "",
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -63,6 +65,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) {
     const isDisabled = disabled || isLoading;
+    const hasDefaultStyles = variant !== "unstyled";
 
     return (
       <button
@@ -71,14 +74,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isDisabled}
         aria-busy={isLoading || undefined}
         className={joinClassNames(
-          baseStyles,
+          hasDefaultStyles && baseStyles,
           variantStyles[variant],
-          sizeStyles[size],
+          hasDefaultStyles && sizeStyles[size],
           fullWidth && "w-full",
           className,
         )}
         {...props}
       >
+        {children}
+
         {isLoading ? (
           <LoaderCircle
             aria-hidden="true"
@@ -91,8 +96,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             </span>
           )
         )}
-
-        <span>{children}</span>
 
         <span className="sr-only" aria-live="polite">
           {isLoading ? "Loading" : ""}

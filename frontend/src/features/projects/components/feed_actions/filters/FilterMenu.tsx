@@ -8,19 +8,23 @@ export function FilterMenu() {
 
     return (
         <div className="relative">
-            <button
+            <Button
                 type="button"
+                variant="unstyled"
                 onClick={() => setIsOpen((open) => !open)}
                 aria-expanded={isOpen}
                 className="inline-flex h-10 w-full cursor-pointer items-center justify-center gap-2 border border-input bg-card px-3.5 text-sm font-medium text-card-foreground transition-colors hover:border-foreground/30 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-auto"
+                icon={
+                    <>
+                        <SlidersHorizontal className="size-4" />
+                        <ChevronDown
+                            className={`size-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                        />
+                    </>
+                }
             >
-                <SlidersHorizontal aria-hidden="true" className="size-4" />
                 Filter
-                <ChevronDown
-                    aria-hidden="true"
-                    className={`size-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                />
-            </button>
+            </Button>
 
             <Menu isOpen={isOpen} className="w-64 p-4">
 

@@ -6,6 +6,7 @@ import {
   type ReactNode,
 } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { Button } from "./Button";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
@@ -99,20 +100,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         />
 
         {isPassword && (
-          <button
+          <Button
             type="button"
+            variant="unstyled"
             disabled={disabled}
             onClick={() => setIsPasswordVisible((visible) => !visible)}
             aria-label={isPasswordVisible ? "Hide password" : "Show password"}
             aria-pressed={isPasswordVisible}
             className="absolute inset-y-0 right-1.5 my-auto grid size-9 place-items-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring disabled:pointer-events-none"
-          >
-            {isPasswordVisible ? (
+            icon={isPasswordVisible ? (
               <EyeOff aria-hidden="true" className="size-[1.125rem]" />
             ) : (
               <Eye aria-hidden="true" className="size-[1.125rem]" />
             )}
-          </button>
+          />
         )}
       </div>
 
