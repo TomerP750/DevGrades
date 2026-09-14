@@ -49,7 +49,7 @@
 }
 
 * {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'sans-serif', system-ui, "Segoe UI";
 }
 
 :root {

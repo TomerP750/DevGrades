@@ -1,6 +1,7 @@
 import {
     ArrowUpRightIcon,
     BookmarkIcon,
+    StarIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
@@ -23,7 +24,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const { user } = useAuth();
 
     const queryClient = useQueryClient();
-    
+
     const { mutate: toggleArchive } = useMutation({
         mutationFn: archiveProjectService.toggleArchive,
         onSuccess: () => {
@@ -87,7 +88,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             className="cursor-pointer hover:scale-110 transition-transform duration-200"
                             rightIcon={
                                 <BookmarkIcon
-                                className={`size-5 ${archived ? "fill-yellow-500 text-yellow-500" : ""}`}
+                                    className={`size-5 ${archived ? "fill-yellow-500 text-yellow-500" : ""}`}
                                 />
                             }
                         />
@@ -95,7 +96,13 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     </div>
                 </div>
 
-                <div className="mt-5 min-w-0">
+                <div className="mt-4 space-y-2 min-w-0">
+                    <div className="flex items-center gap-2">
+                        <StarIcon className="size-4 text-yellow-500 fill-yellow-500" />
+                        <p className="text-sm font-medium dark:text-white">
+                            4.5 / 5
+                        </p>
+                    </div>
                     <h2 className="min-w-0 text-xl font-bold leading-snug tracking-tight text-card-foreground">
                         <Link
                             to={projectPath}

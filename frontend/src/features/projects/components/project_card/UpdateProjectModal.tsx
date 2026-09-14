@@ -6,6 +6,9 @@ import { Modal } from "../../../../shared/ui/Modal";
 import { TextArea } from "../../../../shared/ui/TextArea";
 import type { UpdateProjectDto } from "../../models/UpdateProjectDto";
 import type { ProjectDto } from "../../models/ProjectDto";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import projectService from "../../api/projectService";
+import { toast } from "react-toastify";
 
 interface UpdateProjectModalProps {
     open: boolean;
@@ -20,6 +23,9 @@ export function UpdateProjectModal({
     onClose,
     project,
 }: UpdateProjectModalProps) {
+
+    const queryClient = useQueryClient();
+
     const {
         register,
         handleSubmit,
@@ -31,7 +37,19 @@ export function UpdateProjectModal({
             description: project.description,
             githubUrl: project.githubUrl ?? "",
             demoUrl: project.demoUrl ?? "",
-            thumbnailUrl: project.thumbnailUrl ?? "",
+            thumbnailUrl: project.imageUrl ?? "",
+        },
+    });
+
+    const { mutate: updateProject } = useMutation({
+        mutationFn: (data: UpdateProjectDto) => projectService.updateProject(project.id, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            handleClose();
+            toast.success("Project updated successfully");
+        },
+        onError: (error) => {
+            toast.error(error.message);
         },
     });
 
@@ -41,8 +59,7 @@ export function UpdateProjectModal({
     };
 
     const handleUpdateProject = (data: UpdateProjectDto) => {
-        console.log(data);
-        handleClose();
+        updateProject(data);
     };
 
     return (
