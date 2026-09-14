@@ -1,10 +1,11 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { KeyRound, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "../../../shared/ui/Button";
 import { Input } from "../../../shared/ui/Input";
-import type { ChangePasswordDto } from "../models/ChangePasswordDto";
 import userService from "../api/userService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import type { ChangePasswordDto } from "../models/ChangePasswordDto";
+import { SignOutSection } from "./SignOutSection";
 
 export function SecuritySettings() {
 
@@ -51,7 +52,6 @@ export function SecuritySettings() {
 
             <form
                 onSubmit={handleSubmit(handleChangePassword)}
-                className="border-y border-border"
                 noValidate
             >
                 <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
@@ -125,13 +125,20 @@ export function SecuritySettings() {
                     </div>
                 </div>
 
-                <div className="flex flex-col-reverse gap-3 border-t border-border px-5 py-5 sm:flex-row sm:items-center sm:justify-end sm:px-7">
-                    <Button type="button" variant="ghost" onClick={() => reset()}>
-                        Cancel
-                    </Button>
-                    <Button type="submit">Update password</Button>
+                <div className="grid gap-8 px-5 py-5 sm:px-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+                    <div aria-hidden="true" />
+                    <div className="flex max-w-2xl flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+                        <Button type="button" variant="ghost" onClick={() => reset()}>
+                            Cancel
+                        </Button>
+                        <Button type="submit">Update password</Button>
+                    </div>
                 </div>
             </form>
+
+            <hr className="my-4 h-px border-0 bg-border" />
+
+            <SignOutSection />
         </section>
     );
 }
