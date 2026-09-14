@@ -2,7 +2,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import projectService from "../api/projectService";
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 6;
 
 export const PROJECTS_FEED_QUERY_KEY = ["projects", "feed"];
 

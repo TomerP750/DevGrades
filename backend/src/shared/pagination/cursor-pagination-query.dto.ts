@@ -11,5 +11,5 @@ export class CursorPaginationQueryDto {
     @Min(1)
     @Max(50)
     @IsOptional()
-    limit: number = 10;
+    limit: number = 6;
 }
