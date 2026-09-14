@@ -51,7 +51,6 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
 
     const handleCreateProject = (data: CreateProjectDto) => {
         createProject(data);
-        handleClose();
     };
 
     return (

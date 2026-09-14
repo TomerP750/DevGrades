@@ -32,7 +32,7 @@ export class ProjectsService {
       user,
     }
     const project = this.projectsRepository.create(newProject);
-    await this.projectsRepository.save(project);
+    return await this.projectsRepository.save(project);
   }
   
   async findOne(projectId: string) {
@@ -83,6 +83,7 @@ export class ProjectsService {
       throw new ForbiddenException('You are not allowed to update this project');
     }
     await this.projectsRepository.update(projectId, updateProjectDto);
+    return await this.findOne(projectId);
   }
 
   async delete(userId: string, projectId: string) {

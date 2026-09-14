@@ -19,13 +19,13 @@ export class ProjectsController {
     return this.projectsService.findAll(query);
   }
 
-  @Get(":projectId")
+  @Get("/:projectId")
   @Serialize(ProjectDto)
   async oneProject(@Param("projectId") projectId: string): Promise<Project> {
     return this.projectsService.findOne(projectId);
   }
 
-  @Get("user/:userId")
+  @Get("/user/:userId")
   @Serialize(ProjectDto)
   async getProjectsByUserId(@Param("userId") userId: string): Promise<Project[]> {
     return this.projectsService.findAllByUserId(userId);
@@ -33,15 +33,15 @@ export class ProjectsController {
 
   @Post("/create")
   async createProject(@CurrentUserId() userId: string, @Body() createProjectDto: CreateProjectDto) {
-    this.projectsService.create(userId, createProjectDto);
+    return this.projectsService.create(userId, createProjectDto);
   }
 
-  @Put(":projectId")
+  @Put("/update/:projectId")
   async updateProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string, @Body() updateProjectDto: UpdateProjectDto) {
-    this.projectsService.update(userId, projectId, updateProjectDto);
+    return this.projectsService.update(userId, projectId, updateProjectDto);
   }
 
-  @Delete(":projectId")
+  @Delete("/delete/:projectId")
   async deleteProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string): Promise<void> {
     this.projectsService.delete(userId, projectId);
   }
