@@ -5,6 +5,7 @@ import { Input } from "../../../shared/ui/Input";
 import type { UpdateUserDto } from "../models/UpdateUserDto";
 import userService from "../api/userService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { DeleteAccountSection } from "./DeleteAccountSection";
 
 export function AccountSettings() {
 
@@ -53,7 +54,6 @@ export function AccountSettings() {
 
             <form
                 onSubmit={handleSubmit(handleUpdateUser)}
-                className="border-y border-border"
                 noValidate
             >
                 <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
@@ -89,6 +89,8 @@ export function AccountSettings() {
                         </div>
                     </div>
                 </div>
+
+                <hr className="h-px border-0 bg-border" />
 
                 <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
                     <div>
@@ -164,13 +166,18 @@ export function AccountSettings() {
                     </div>
                 </div>
 
-                <div className="flex flex-col-reverse gap-3 border-t border-border px-5 py-5 sm:flex-row sm:items-center sm:justify-end sm:px-7">
-                    <Button type="button" variant="ghost" onClick={() => reset()}>
-                        Cancel
-                    </Button>
-                    <Button type="submit">Save changes</Button>
+                <div className="grid gap-8 px-5 py-5 sm:px-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
+                    <div aria-hidden="true" />
+                    <div className="flex max-w-2xl flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
+                        <Button type="button" variant="ghost" onClick={() => reset()}>
+                            Cancel
+                        </Button>
+                        <Button type="submit">Save changes</Button>
+                    </div>
                 </div>
             </form>
+            <hr className="h-px border-0 bg-border" />
+            <DeleteAccountSection />
         </section>
     );
 }

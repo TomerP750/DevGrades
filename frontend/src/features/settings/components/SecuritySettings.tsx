@@ -82,7 +82,7 @@ export function SecuritySettings() {
                             required
                         />
 
-                        <div className="border-t border-border pt-5">
+                        <div>
                             <Input
                                 label="New password"
                                 type="password"

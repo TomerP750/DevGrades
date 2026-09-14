@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../features/authentication/contexts/AuthContext";
-import { UserMenu } from "../features/projects/components/UserMenu";
+import { UserMenu } from "./UserMenu";
 import { DeviceNavbar } from "./DeviceNavbar";
 import { Badge } from "../shared/ui/Badge";
 import { Button } from "../shared/ui/Button";

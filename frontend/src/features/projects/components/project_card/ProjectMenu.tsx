@@ -32,7 +32,7 @@ export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
                 aria-label={`Open actions for ${project.name}`}
                 title="Project actions"
                 className="cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                rightIcon={<EllipsisVerticalIcon className="size-5" />}
+                leftIcon={<EllipsisVerticalIcon className="size-5" />}
             />
             <Menu isOpen={isOpen} className="right-0 w-44 p-2">
                 <div className="grid gap-1">
@@ -44,7 +44,7 @@ export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
                             setIsUpdateModalOpen(true);
                         }}
                         className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        rightIcon={<PencilIcon className="size-4 text-muted-foreground" />}
+                        leftIcon={<PencilIcon className="size-4 text-muted-foreground" />}
                     >
                         Update project
                     </Button>
@@ -56,7 +56,7 @@ export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
                             console.log("Delete project", project.id);
                         }}
                         className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left text-sm font-medium text-danger transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        rightIcon={<Trash2Icon className="size-4" />}
+                        leftIcon={<Trash2Icon className="size-4" />}
                     >
                         Delete project
                     </Button>

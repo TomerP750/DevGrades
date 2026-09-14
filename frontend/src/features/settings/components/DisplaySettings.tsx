@@ -100,7 +100,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={language === "en"}
                             onClick={() => setLanguage("en")}
-                            className="bg-white dark:bg-stone-950 flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            className="flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                             leftIcon={
                                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
                                     <Languages className="size-5" />
@@ -130,7 +130,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={language === "he"}
                             onClick={() => setLanguage("he")}
-                            className="bg-white dark:bg-stone-950 flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            className="flex w-full items-center gap-4 p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                             leftIcon={
                                 <span
                                     lang="he"

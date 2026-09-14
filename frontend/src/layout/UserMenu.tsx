@@ -1,10 +1,10 @@
 import { LogOut, Settings, UserRound } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import type { UserDto } from "../../../shared/models/UserDto";
-import { Badge } from "../../../shared/ui/Badge";
-import { Button } from "../../../shared/ui/Button";
-import { Menu } from "../../../shared/ui/Menu";
-import { useAuth } from "../../authentication/contexts/AuthContext";
+import type { UserDto } from "../shared/models/UserDto";
+import { Badge } from "../shared/ui/Badge";
+import { Button } from "../shared/ui/Button";
+import { Menu } from "../shared/ui/Menu";
+import { useAuth } from "../features/authentication/contexts/AuthContext";
 
 interface UserMenuProps {
     isOpen: boolean;
@@ -73,7 +73,7 @@ export function UserMenu({ isOpen, user, onClose }: UserMenuProps) {
                 variant="unstyled"
                 onClick={handleLogout}
                 className={`${menuItemClassName} cursor-pointer text-danger hover:bg-muted hover:text-danger`}
-                rightIcon={<LogOut className="size-4" />}
+                leftIcon={<LogOut className="size-4" />}
             >
                 Sign out
             </Button>
