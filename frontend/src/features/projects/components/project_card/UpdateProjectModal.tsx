@@ -133,7 +133,7 @@ export function UpdateProjectModal({
                     </Button>
                     <Button
                         type="submit"
-                        icon={<Save className="size-4" />}
+                        rightIcon={<Save className="size-4" />}
                         isLoading={isSubmitting}
                     >
                         Save changes

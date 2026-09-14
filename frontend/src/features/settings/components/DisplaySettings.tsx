@@ -35,7 +35,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={theme === "light"}
                             onClick={() => setTheme("light")}
-                            icon={
+                            leftIcon={
                                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border bg-white text-zinc-700">
                                     <Sun className="size-5" />
                                 </span>
@@ -61,7 +61,7 @@ export function DisplaySettings() {
                             variant="unstyled"
                             aria-pressed={theme === "dark"}
                             onClick={() => setTheme("dark")}
-                            icon={
+                            leftIcon={
                                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-zinc-700 bg-zinc-900 text-zinc-100">
                                     <Moon className="size-5" />
                                 </span>
@@ -101,7 +101,7 @@ export function DisplaySettings() {
                             aria-pressed={language === "en"}
                             onClick={() => setLanguage("en")}
                             className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                            icon={
+                            leftIcon={
                                 <span className="grid size-10 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
                                     <Languages className="size-5" />
                                 </span>
@@ -131,7 +131,7 @@ export function DisplaySettings() {
                             aria-pressed={language === "he"}
                             onClick={() => setLanguage("he")}
                             className="flex w-full items-center gap-4 py-4 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                            icon={
+                            leftIcon={
                                 <span
                                     lang="he"
                                     dir="rtl"

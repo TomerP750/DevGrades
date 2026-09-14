@@ -133,7 +133,7 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
                     </Button>
                     <Button
                         type="submit"
-                        icon={<Rocket className="size-4" />}
+                        rightIcon={<Rocket className="size-4" />}
                         isLoading={isSubmitting}
                     >
                         Create project

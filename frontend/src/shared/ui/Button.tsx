@@ -14,8 +14,10 @@ export type ButtonSize = "sm" | "md" | "lg";
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  /** Decorative icon rendered after the button text. */
-  icon?: ReactNode;
+  /** Decorative icon rendered before the button content. */
+  leftIcon?: ReactNode;
+  /** Decorative icon rendered after the button content. */
+  rightIcon?: ReactNode;
   isLoading?: boolean;
   fullWidth?: boolean;
   children?: ReactNode;
@@ -53,7 +55,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     {
       variant = "primary",
       size = "md",
-      icon,
+      leftIcon,
+      rightIcon,
       isLoading = false,
       fullWidth = false,
       className,
@@ -82,6 +85,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         {...props}
       >
+        {!isLoading && leftIcon && (
+          <span aria-hidden="true" className="inline-flex shrink-0">
+            {leftIcon}
+          </span>
+        )}
+
         {children}
 
         {isLoading ? (
@@ -90,9 +99,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             className="size-4 shrink-0 animate-spin motion-reduce:animate-none"
           />
         ) : (
-          icon && (
+          rightIcon && (
             <span aria-hidden="true" className="inline-flex shrink-0">
-              {icon}
+              {rightIcon}
             </span>
           )
         )}

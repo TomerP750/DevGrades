@@ -108,7 +108,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             aria-label={isPasswordVisible ? "Hide password" : "Show password"}
             aria-pressed={isPasswordVisible}
             className="absolute inset-y-0 right-1.5 my-auto grid size-9 place-items-center rounded-md text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring disabled:pointer-events-none"
-            icon={isPasswordVisible ? (
+            rightIcon={isPasswordVisible ? (
               <EyeOff aria-hidden="true" className="size-[1.125rem]" />
             ) : (
               <Eye aria-hidden="true" className="size-[1.125rem]" />

@@ -71,7 +71,7 @@ export function Modal({
                         onClick={onClose}
                         aria-label="Close modal"
                         className="ml-auto grid size-8 shrink-0 cursor-pointer place-items-center text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        icon={<X className="size-5" />}
+                        rightIcon={<X className="size-5" />}
                     />
                 </div>
 

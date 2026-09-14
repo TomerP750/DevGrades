@@ -8,6 +8,7 @@ import { Button } from "../../../../shared/ui/Button";
 import { Menu } from "../../../../shared/ui/Menu";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { UpdateProjectModal } from "./UpdateProjectModal";
+import { useAuth } from "../../../authentication/contexts/AuthContext";
 
 
 interface ProjectMenuProps {
@@ -15,9 +16,16 @@ interface ProjectMenuProps {
 }
 
 export function ProjectMenu({ project }: ProjectMenuProps) {
-    
+
+    const { user } = useAuth();
+    const isOwner = user?.id === project.user.id;
+
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+
+    if (!isOwner) {
+        return null;
+    }
 
     return (
         <div className="relative flex justify-end">
@@ -28,7 +36,7 @@ export function ProjectMenu({ project }: ProjectMenuProps) {
                 aria-label={`Open actions for ${project.name}`}
                 title="Project actions"
                 className="cursor-pointer transition-transform duration-200 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                icon={<EllipsisVerticalIcon className="size-5" />}
+                rightIcon={<EllipsisVerticalIcon className="size-5" />}
             />
             <Menu isOpen={isOpen} className="right-0 w-44 p-2">
                 <div className="grid gap-1">
@@ -40,7 +48,7 @@ export function ProjectMenu({ project }: ProjectMenuProps) {
                             setIsUpdateModalOpen(true);
                         }}
                         className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        icon={<PencilIcon className="size-4 text-muted-foreground" />}
+                        rightIcon={<PencilIcon className="size-4 text-muted-foreground" />}
                     >
                         Update project
                     </Button>
@@ -52,7 +60,7 @@ export function ProjectMenu({ project }: ProjectMenuProps) {
                             console.log("Delete project", project.id);
                         }}
                         className="flex w-full cursor-pointer items-center gap-3 px-3 py-2 text-left text-sm font-medium text-danger transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        icon={<Trash2Icon className="size-4" />}
+                        rightIcon={<Trash2Icon className="size-4" />}
                     >
                         Delete project
                     </Button>

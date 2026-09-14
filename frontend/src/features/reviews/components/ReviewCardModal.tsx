@@ -122,7 +122,7 @@ export function ReviewCardModal({ open, onClose, projectId }: ReviewCardModalPro
                     </Button>
                     <Button
                         type="submit"
-                        icon={<Send className="size-4" />}
+                        rightIcon={<Send className="size-4" />}
                         isLoading={isSubmitting}
                     >
                         Submit review

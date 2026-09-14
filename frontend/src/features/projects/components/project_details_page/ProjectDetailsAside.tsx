@@ -144,7 +144,7 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                     <Button
                         type="button"
                         size="sm"
-                        icon={<ArrowUpRightIcon className="size-4" />}
+                        rightIcon={<ArrowUpRightIcon className="size-4" />}
                     >
                         Write a review
                     </Button>

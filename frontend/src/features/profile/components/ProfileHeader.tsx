@@ -40,7 +40,7 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
                                     type="button"
                                     variant="outline"
                                     size="sm"
-                                    icon={<MessageCircleIcon className="size-4" />}
+                                    rightIcon={<MessageCircleIcon className="size-4" />}
                                 >
                                     Message
                                 </Button>

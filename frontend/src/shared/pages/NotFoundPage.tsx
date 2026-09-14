@@ -58,7 +58,7 @@ export default function NotFoundPage() {
                   type="button"
                   variant="outline"
                   onClick={() => navigate(-1)}
-                  icon={<ArrowLeft className="size-4" />}
+                  rightIcon={<ArrowLeft className="size-4" />}
                 >
                   Go back
                 </Button>

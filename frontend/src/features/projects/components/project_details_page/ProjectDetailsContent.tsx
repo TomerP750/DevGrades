@@ -48,7 +48,7 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                     size="sm"
                     className="mt-6"
                     onClick={() => setIsReviewModalOpen(true)}
-                    icon={<ArrowUpRightIcon className="size-4" />}
+                    rightIcon={<ArrowUpRightIcon className="size-4" />}
                 >
                     Write a review
                 </Button>

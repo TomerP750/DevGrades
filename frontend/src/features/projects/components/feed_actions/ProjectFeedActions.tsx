@@ -33,7 +33,7 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                 aria-haspopup="dialog"
                 aria-expanded={isCreateProjectOpen}
                 className="h-10 shrink-0 rounded-none px-2"
-                icon={<Plus className="size-4" />}
+                rightIcon={<Plus className="size-4" />}
             >
                 Create project
             </Button>
@@ -60,7 +60,7 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                     aria-pressed={gridLayout === 2}
                     title="Two columns"
                     className={layoutButtonClass(gridLayout === 2)}
-                    icon={<Columns2 className="size-4" />}
+                    rightIcon={<Columns2 className="size-4" />}
                 />
                 <Button
                     type="button"
@@ -70,7 +70,7 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                     aria-pressed={gridLayout === 3}
                     title="Three columns"
                     className={layoutButtonClass(gridLayout === 3)}
-                    icon={<Grid3X3 className="size-4" />}
+                    rightIcon={<Grid3X3 className="size-4" />}
                 />
 
             </div>

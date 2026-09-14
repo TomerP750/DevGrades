@@ -73,7 +73,7 @@ export function UserMenu({ isOpen, user, onClose }: UserMenuProps) {
                 variant="unstyled"
                 onClick={handleLogout}
                 className={`${menuItemClassName} cursor-pointer text-danger hover:bg-muted hover:text-danger`}
-                icon={<LogOut className="size-4" />}
+                rightIcon={<LogOut className="size-4" />}
             >
                 Sign out
             </Button>
