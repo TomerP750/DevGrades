@@ -6,6 +6,7 @@ export type ButtonVariant =
   | "secondary"
   | "outline"
   | "ghost"
+  | "warning"
   | "danger"
   | "unstyled";
 
@@ -35,6 +36,8 @@ const variantStyles: Record<ButtonVariant, string> = {
     "border border-border bg-card text-card-foreground shadow-sm hover:border-primary/40 hover:bg-secondary",
   ghost:
     "bg-transparent text-foreground hover:bg-muted hover:text-muted-foreground",
+  warning:
+    "bg-warning text-warning-foreground shadow-sm hover:brightness-90 active:translate-y-px",
   danger:
     "bg-danger text-danger-foreground shadow-sm hover:brightness-90 active:translate-y-px",
   unstyled: "",

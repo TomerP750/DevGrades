@@ -43,7 +43,7 @@ export class ProjectsController {
 
   @Delete("/delete/:projectId")
   async deleteProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string): Promise<void> {
-    this.projectsService.delete(userId, projectId);
+    await this.projectsService.delete(userId, projectId);
   }
 
   

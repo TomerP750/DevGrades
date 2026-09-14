@@ -1,7 +1,6 @@
-import { TriangleAlert } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../../../shared/ui/Button";
-import { Modal } from "../../../shared/ui/Modal";
+import { Dialog } from "../../../shared/ui/Dialog";
 
 export function DeleteAccountSection() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,36 +33,20 @@ export function DeleteAccountSection() {
                 </div>
             </div>
 
-            <Modal
+            <Dialog
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
                 title="Delete account?"
-                className="rounded-xl"
-            >
-                <div className="flex gap-3 rounded-lg bg-danger/10 p-4">
-                    <TriangleAlert
-                        aria-hidden="true"
-                        className="mt-0.5 size-5 shrink-0 text-danger"
-                    />
-                    <p className="text-sm leading-6 text-muted-foreground">
+                variant="danger"
+                confirmLabel="Delete account"
+                onCancel={() => setIsModalOpen(false)}
+                onConfirm={() => setIsModalOpen(false)}
+                description={
+                    <>
                         Deleting your account is permanent. All of your profile
                         information, projects, and reviews will be removed.
-                    </p>
-                </div>
-
-                <div className="mt-6 flex flex-col-reverse gap-3 border-t border-border pt-5 sm:flex-row sm:justify-end">
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setIsModalOpen(false)}
-                    >
-                        Cancel
-                    </Button>
-                    <Button type="button" variant="danger">
-                        Delete account
-                    </Button>
-                </div>
-            </Modal>
+                    </>
+                }
+            />
         </>
     );
 }

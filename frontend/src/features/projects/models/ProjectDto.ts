@@ -1,4 +1,5 @@
 import type { UserDto } from "../../../shared/models/UserDto";
+import type { Status } from "./Status";
 
 
 export interface ProjectDto {
@@ -7,6 +8,7 @@ export interface ProjectDto {
     description: string;
     imageUrl: string;
     githubUrl: string;
+    status: Status;
     demoUrl: string;
     createdAt: string;
     user: UserDto;

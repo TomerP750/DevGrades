@@ -1,13 +1,11 @@
 import {
     ArrowUpRightIcon,
     BookmarkIcon,
-    CalendarDaysIcon
 } from "lucide-react";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
 import { Button } from "../../../../shared/ui/Button";
-import { formatDate } from "../../../../shared/utils/formatDate";
+import { formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
 import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
 import type { ProjectDto } from "../../models/ProjectDto";
@@ -70,8 +68,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                     className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-muted-foreground"
                                     dateTime={new Date(project.createdAt).toISOString()}
                                 >
-                                    <CalendarDaysIcon aria-hidden="true" className="size-3.5" />
-                                    {formatDate(project.createdAt)}
+                                    {formatTimeAgo(project.createdAt)}
                                 </time>
                             </div>
                             <p className="truncate text-xs text-muted-foreground">
