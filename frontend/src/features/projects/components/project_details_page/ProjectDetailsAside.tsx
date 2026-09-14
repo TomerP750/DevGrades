@@ -16,6 +16,7 @@ import type { ProjectDto } from "../../models/ProjectDto";
 
 interface ProjectDetailsAsideProps {
     project: ProjectDto;
+    isOwner: boolean;
 }
 
 const reviewScores = [
@@ -27,7 +28,7 @@ const reviewScores = [
     { label: "Documentation", value: 5 },
 ];
 
-export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
+export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsideProps) {
     const { githubUrl, demoUrl, user, createdAt } = project;
     //TODO get Review dto with tanstack query
 
@@ -141,13 +142,13 @@ export function ProjectDetailsAside({ project }: ProjectDetailsAsideProps) {
                             />
                         </li>
                     ))}
-                    <Button
+                    {!isOwner && <Button
                         type="button"
                         size="sm"
                         rightIcon={<ArrowUpRightIcon className="size-4" />}
                     >
                         Write a review
-                    </Button>
+                    </Button>}
                 </ul>
             </section>
         </aside>

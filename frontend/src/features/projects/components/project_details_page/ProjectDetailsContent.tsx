@@ -6,9 +6,10 @@ import { Button } from "../../../../shared/ui/Button";
 
 interface ProjectDetailsContentProps {
     project: ProjectDto;
+    isOwner: boolean;
 }
 
-export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
+export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsContentProps) {
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
     return (
@@ -28,7 +29,7 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                 </p>
             </section>
 
-            <section
+            {!isOwner && <section
                 aria-labelledby="review-project"
                 className="mt-12 border-l-4 border-primary bg-card px-6 py-7 shadow-sm sm:px-8"
             >
@@ -53,7 +54,7 @@ export function ProjectDetailsContent({ project }: ProjectDetailsContentProps) {
                     Write a review
                 </Button>
                 
-            </section>
+            </section>}
 
             <ReviewCardModal
                 open={isReviewModalOpen}

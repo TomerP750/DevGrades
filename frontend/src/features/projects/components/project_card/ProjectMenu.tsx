@@ -8,17 +8,13 @@ import { Button } from "../../../../shared/ui/Button";
 import { Menu } from "../../../../shared/ui/Menu";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { UpdateProjectModal } from "./UpdateProjectModal";
-import { useAuth } from "../../../authentication/contexts/AuthContext";
-
 
 interface ProjectMenuProps {
     project: ProjectDto;
+    isOwner: boolean;
 }
 
-export function ProjectMenu({ project }: ProjectMenuProps) {
-
-    const { user } = useAuth();
-    const isOwner = user?.id === project.user.id;
+export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);

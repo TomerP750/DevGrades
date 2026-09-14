@@ -11,6 +11,7 @@ import { formatDate } from "../../../../shared/utils/formatDate";
 import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
 import type { ProjectDto } from "../../models/ProjectDto";
+import { useIsOwner } from "../../hooks/useIsOwner";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -19,6 +20,8 @@ interface ProjectCardProps {
 export function ProjectCard({ project }: ProjectCardProps) {
 
     const [archived, setArchived] = useState(false);
+
+    const isOwner = useIsOwner(project);
 
     const projectPath = `/projects/${project.id}`;
 
@@ -70,7 +73,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                 />
                             }
                         />
-                        <ProjectMenu project={project} />
+                        <ProjectMenu project={project} isOwner={isOwner} />
                     </div>
                 </div>
 
@@ -89,7 +92,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     {project.description}
                 </p>
 
-                <div className="mt-auto border-t border-border/70 pt-4">
+                {!isOwner && <div className="mt-auto border-t border-border/70 pt-4">
                     <Link
                         to={projectPath}
                         className="group/review inline-flex min-h-11 w-full items-center justify-center gap-3 rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground shadow-sm transition hover:bg-primary-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-px"
@@ -100,7 +103,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                             className="size-4 transition-transform duration-200 group-hover/review:translate-x-0.5 group-hover/review:-translate-y-0.5"
                         />
                     </Link>
-                </div>
+                </div>}
             </div>
         </article>
     );

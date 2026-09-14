@@ -5,6 +5,7 @@ import { ProjectDetailsContent } from "../components/project_details_page/Projec
 import { ProjectDetailsHeader } from "../components/project_details_page/ProjectDetailsHeader";
 import { useQuery } from "@tanstack/react-query";
 import projectService from "../api/projectService";
+import { useIsOwner } from "../hooks/useIsOwner";
 
 export default function ProjectDetailsPage() {
 
@@ -21,13 +22,15 @@ export default function ProjectDetailsPage() {
         );
     }
 
+    const isOwner = useIsOwner(project);
+
     return (
         <article className="mt-4">
             <ProjectDetailsHeader project={project} />
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:gap-16">
-                <ProjectDetailsContent project={project} />
-                <ProjectDetailsAside project={project} />
+                <ProjectDetailsContent project={project} isOwner={isOwner} />
+                <ProjectDetailsAside project={project} isOwner={isOwner} />
             </div>
         </article>
     );
