@@ -22,7 +22,8 @@ export class ReviewsController {
   }
 
   @Get('/all/:projectId')
-  async findAll(@Param('projectId') projectId: string) {
+  @Serialize(ReviewDto)
+  async findAllByProjectId(@Param('projectId') projectId: string) {
     return this.reviewsService.allReviewsByProjectId(projectId);
   }
 

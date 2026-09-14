@@ -45,7 +45,12 @@ export class ReviewsService {
   }
 
   async allReviewsByProjectId(projectId: string): Promise<ReviewDto[]> {
-    return [];
+    return await this.reviewsRepository.find({
+      where: { project: { id: projectId } },
+      relations: {
+        user: true,
+      }
+    });
   }
 
   async updateReview(userId: string, reviewId: string, updateReviewDto: UpdateReviewDto): Promise<void> {
