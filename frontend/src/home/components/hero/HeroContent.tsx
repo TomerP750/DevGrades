@@ -26,7 +26,7 @@ export function HeroContent() {
 
       <Link
         to="/sign-up"
-        className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-gradient-to-r from-emerald-700 to-emerald-400 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-emerald-700/25 transition hover:-translate-y-0.5 hover:from-emerald-600 hover:to-emerald-300 hover:shadow-xl hover:shadow-emerald-600/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none"
+        className="mt-8 inline-flex min-h-12 items-center justify-center rounded-lg bg-gradient-to-r from-primary to-primary-hover px-6 py-3 text-base font-semibold text-white shadow-lg shadow-primary/25 transition hover:-translate-y-0.5 hover:from-primary-hover hover:to-primary hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:translate-y-0 motion-reduce:transform-none motion-reduce:transition-none"
       >
         Get Started
       </Link>
