@@ -88,7 +88,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 {comment}
             </p>
 
-            <dl className="mt-5 grid gap-3 sm:grid-cols-2">
+            <dl className="mt-5 grid gap-3 sm:grid-cols-3">
                 {scoreBreakdown.map(({ key, label }) => (
                     <div key={key} className="space-y-1.5">
                         <div className="flex items-center justify-between gap-2">
