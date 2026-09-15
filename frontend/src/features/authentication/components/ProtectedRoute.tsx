@@ -1,6 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../../../layout/Navbar";
+import { MessageButton } from "../../../layout/MessageButton";
 
 export function ProtectedRoute() {
 
@@ -18,6 +19,7 @@ export function ProtectedRoute() {
     return (
         <>
             <Navbar />
+            <MessageButton />
             <Outlet />
         </>
     );
