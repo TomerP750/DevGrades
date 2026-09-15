@@ -22,6 +22,10 @@ class ReviewService {
         return (await axios.get(`${baseApiUrl}/api/reviews/all/${projectId}`)).data;
     }
 
+    async getReviewStats(projectId: string) {
+        return (await axios.get(`${baseApiUrl}/api/reviews/stats/${projectId}`)).data;
+    }
+
 }
 
 const reviewService = new ReviewService();

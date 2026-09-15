@@ -13,24 +13,32 @@ import {
 import { Button } from "../../../../shared/ui/Button";
 import { formatDate } from "../../../../shared/utils/formatDate";
 import type { ProjectDto } from "../../models/ProjectDto";
+import { useQuery } from "@tanstack/react-query";
+import reviewService from "../../../reviews/api/reviewService";
+import type { ReviewStatsDto } from "../../models/ReviewStatsDto";
 
 interface ProjectDetailsAsideProps {
     project: ProjectDto;
     isOwner: boolean;
 }
 
-const reviewScores = [
-    { label: "Overall", value: 3.1 },
-    { label: "Functionality", value: 3.1 },
-    { label: "Code quality", value: 2.7 },
-    { label: "UI & UX", value: 4.4 },
-    { label: "Performance", value: 2.0 },
-    { label: "Documentation", value: 5 },
-];
 
 export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsideProps) {
     const { githubUrl, demoUrl, user, createdAt } = project;
-    //TODO get Review dto with tanstack query
+
+    const { data: reviewStats } = useQuery<ReviewStatsDto>({
+        queryKey: ["review-stats", project.id],
+        queryFn: () => reviewService.getReviewStats(project.id),
+    });
+
+    const reviewScores = [
+        { label: "Overall", value: reviewStats?.overall.averageScore ?? 0 },
+        { label: "Code Quality", value: reviewStats?.codeQuality.averageScore ?? 0 },
+        { label: "Optimization", value: reviewStats?.optimization.averageScore ?? 0 },
+        { label: "Maintainability", value: reviewStats?.maintainability.averageScore ?? 0 },
+        { label: "Scalability", value: reviewStats?.scalability.averageScore ?? 0 },
+        { label: "UI/UX", value: reviewStats?.uiux.averageScore ?? 0 },
+    ];
 
     return (
         <aside className="h-fit border-t border-border pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
