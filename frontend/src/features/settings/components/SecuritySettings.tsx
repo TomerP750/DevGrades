@@ -6,6 +6,7 @@ import { Input } from "../../../shared/ui/Input";
 import userService from "../api/userService";
 import type { ChangePasswordDto } from "../models/ChangePasswordDto";
 import { SignOutSection } from "./SignOutSection";
+import { Hr } from "../../../shared/ui/Hr";
 
 export function SecuritySettings() {
 
@@ -136,7 +137,7 @@ export function SecuritySettings() {
                 </div>
             </form>
 
-            <hr className="my-4 h-px border-0 bg-border" />
+            <Hr className="my-8" />
 
             <SignOutSection />
         </section>

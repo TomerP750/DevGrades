@@ -6,6 +6,7 @@ import type { UpdateUserDto } from "../models/UpdateUserDto";
 import userService from "../api/userService";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DeleteAccountSection } from "./DeleteAccountSection";
+import { Hr } from "../../../shared/ui/Hr";
 
 export function AccountSettings() {
 
@@ -90,7 +91,7 @@ export function AccountSettings() {
                     </div>
                 </div>
 
-                <hr className="h-px border-0 my-4 bg-border" />
+                <Hr className="my-8" />
 
                 <div className="grid gap-8 p-5 sm:p-7 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
                     <div>
@@ -177,7 +178,7 @@ export function AccountSettings() {
                 </div>
             </form>
 
-            <hr className="h-px border-0 my-4 bg-border" />
+            <Hr className="my-8" />
 
             <DeleteAccountSection />
         </section>

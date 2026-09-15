@@ -4,7 +4,6 @@ import {
     GlobeIcon,
     UserRoundIcon
 } from "lucide-react";
-import { useState } from "react";
 import { formatDate } from "../../../../shared/utils/formatDate";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { ReviewScores } from "./ReviewScores";
@@ -14,15 +13,9 @@ interface ProjectDetailsAsideProps {
     isOwner: boolean;
 }
 
-
 export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsideProps) {
     
-    // const quertClient = useQueryClient();
-
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
-    
     const { githubUrl, demoUrl, user, createdAt } = project;
-
 
     return (
         <aside className="h-fit border-t border-border pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">

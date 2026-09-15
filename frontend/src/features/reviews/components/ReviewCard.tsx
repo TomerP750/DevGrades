@@ -84,7 +84,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
                 </div>
             </div>
 
-            <p className="mt-4 text-sm leading-6 text-card-foreground">
+            <p className="mt-4 mb-2 text-sm leading-6 text-card-foreground">
                 {comment}
             </p>
 
