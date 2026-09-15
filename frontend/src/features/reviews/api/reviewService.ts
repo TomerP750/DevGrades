@@ -10,8 +10,8 @@ class ReviewService {
         return (await axios.post(`${baseApiUrl}/api/reviews/create/${projectId}`, review)).data;
     }
 
-    async updateReview(review: UpdateReviewDto) {
-        return (await axios.put(`${baseApiUrl}/api/reviews/update`, review)).data;
+    async updateReview(reviewId: string, review: UpdateReviewDto) {
+        return (await axios.put(`${baseApiUrl}/api/reviews/update/${reviewId}`, review)).data;
     }
 
     async deleteReview(reviewId: string) {
