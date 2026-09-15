@@ -2,13 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import reviewService from "../api/reviewService";
 import { ReviewCard } from "../components/ReviewCard";
 import type { ReviewDto } from "../models/ReviewDto";
+import { toast } from "react-toastify";
 
 export function ReviewsSection({ projectId }: { projectId: string }) {
 
-    const { data: reviews, isLoading } = useQuery({
+    const { data: reviews, isLoading, isError } = useQuery({
         queryKey: ["reviews", projectId],
         queryFn: () => reviewService.allReviewsByProjectId(projectId),
     });
+
+    if (isError) {
+        return toast.error("Failed to load reviews");
+    }
+
+    if (!reviews || reviews.length === 0) {
+        return (<div className="space-y-6 mt-5">
+            <p className="text-sm text-muted-foreground">The project has no reviews yet</p>
+        </div>);
+    }
 
     return (
         <div className="space-y-6 mt-5">

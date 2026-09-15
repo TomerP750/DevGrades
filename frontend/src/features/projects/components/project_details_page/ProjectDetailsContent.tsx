@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button } from "../../../../shared/ui/Button";
 import { CreateReviewModal } from "../../../reviews/components/CreateReviewModal";
 import { ReviewsSection } from "../../../reviews/pages/ReviewsSection";
+import { Hr } from "../../../../shared/ui/Hr";
 
 interface ProjectDetailsContentProps {
     project: ProjectDto;
@@ -56,6 +57,8 @@ export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsConten
                 </Button>
                 
             </section>}
+
+            <Hr className="my-8" />
 
             <ReviewsSection projectId={project.id} />
 

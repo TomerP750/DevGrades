@@ -49,7 +49,7 @@ export function CreateReviewModal({ open, onClose, projectId }: ReviewCardModalP
     } = useForm<CreateReviewDto>({ defaultValues });
 
     const { mutate: createReview, isPending } = useMutation({
-        mutationFn: (review: CreateReviewDto) => reviewService.createReview(review),
+        mutationFn: (review: CreateReviewDto) => reviewService.createReview(projectId, review),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews", projectId] });
             toast.success("Review created successfully");
@@ -66,6 +66,7 @@ export function CreateReviewModal({ open, onClose, projectId }: ReviewCardModalP
     };
 
     const handleCreateReview = (review: CreateReviewDto) => {
+        console.log(review);
         createReview(review);
     };
 

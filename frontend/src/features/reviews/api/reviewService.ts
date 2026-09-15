@@ -6,8 +6,8 @@ import type { UpdateReviewDto } from "../models/UpdateReviewDto";
 
 class ReviewService {
 
-    async createReview(review: CreateReviewDto) {
-        return (await axios.post(`${baseApiUrl}/api/reviews/create`, review)).data;
+    async createReview(projectId: string, review: CreateReviewDto) {
+        return (await axios.post(`${baseApiUrl}/api/reviews/create/${projectId}`, review)).data;
     }
 
     async updateReview(review: UpdateReviewDto) {

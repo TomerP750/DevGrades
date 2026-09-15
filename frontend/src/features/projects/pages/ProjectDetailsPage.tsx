@@ -6,7 +6,6 @@ import { ProjectDetailsHeader } from "../components/project_details_page/Project
 import { useQuery } from "@tanstack/react-query";
 import projectService from "../api/projectService";
 import { useIsOwner } from "../hooks/useIsOwner";
-import { ReviewsSection } from "../../reviews/pages/ReviewsSection";
 
 export default function ProjectDetailsPage() {
 
