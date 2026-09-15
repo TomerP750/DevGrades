@@ -23,6 +23,9 @@ export function ReviewsSection({ projectId }: { projectId: string }) {
 
     return (
         <div className="space-y-6 mt-5">
+            <h2 className="text-xl text-xs">
+                <p className="uppercase tracking-widest font-bold text-sm text-muted-foreground">Reviews ({reviews?.length})</p>
+            </h2>
             {reviews?.map((review: ReviewDto) => (
                 <ReviewCard key={review.id} review={review} />
             ))}

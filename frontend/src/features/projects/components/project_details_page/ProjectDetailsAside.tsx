@@ -16,6 +16,8 @@ import type { ProjectDto } from "../../models/ProjectDto";
 import { useQuery } from "@tanstack/react-query";
 import reviewService from "../../../reviews/api/reviewService";
 import type { ReviewStatsDto } from "../../models/ReviewStatsDto";
+import { useState } from "react";
+import { CreateReviewModal } from "../../../reviews/components/CreateReviewModal";
 
 interface ProjectDetailsAsideProps {
     project: ProjectDto;
@@ -24,6 +26,11 @@ interface ProjectDetailsAsideProps {
 
 
 export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsideProps) {
+    
+    // const quertClient = useQueryClient();
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+    
     const { githubUrl, demoUrl, user, createdAt } = project;
 
     const { data: reviewStats } = useQuery<ReviewStatsDto>({
@@ -152,6 +159,7 @@ export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsidePro
                     ))}
                     {!isOwner && <Button
                         type="button"
+                        onClick={() => setIsCreateModalOpen(true)}
                         size="md"
                         rightIcon={<ArrowUpRightIcon className="size-4" />}
                     >
@@ -159,6 +167,11 @@ export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsidePro
                     </Button>}
                 </ul>
             </section>
+            <CreateReviewModal
+                open={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                projectId={project.id}
+            />
         </aside>
     );
 }
