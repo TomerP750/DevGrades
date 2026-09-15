@@ -1,4 +1,4 @@
-import { CursorPaginatedResult } from './cursor-pagination.types';
+import { CursorPaginatedResult } from './cursor-paginated-result';
 
 /**
  * Expects `rows` to contain up to `limit + 1` items so the extra row

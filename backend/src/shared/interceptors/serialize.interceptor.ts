@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, NestInterceptor, UseInterceptors } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { map, Observable } from "rxjs";
-import { CursorPaginatedResult } from "../pagination/cursor-pagination.types";
+import { CursorPaginatedResult } from "../pagination/cursor-paginated-result";
 
 
 

@@ -5,6 +5,7 @@ import { User } from '../../users/users.entity';
 
 @Entity()
 @Index('IDX_project_feed_cursor', ['createdAt', 'id'])
+@Index('IDX_project_name_cursor', ['name', 'id'])
 export class Project {
     @PrimaryGeneratedColumn('uuid')
     id!: string;

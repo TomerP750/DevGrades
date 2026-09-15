@@ -1,15 +1,18 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateProjectDto } from './dto/create-project.dto';
-import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Project } from './entities/project.entity';
-import { UsersService } from '../users/users.service';
+import { ArchivedProject } from '../archived-projects/entities/archived-project.entity';
 import { buildCursorPage } from '../shared/pagination/build-cursor-page';
-import { decodeCursor, encodeCursor } from '../shared/pagination/cursor-codec';
-import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination-query.dto';
-import { CursorPaginatedResult } from '../shared/pagination/cursor-pagination.types';
+import { CursorPaginatedResult } from '../shared/pagination/cursor-paginated-result';
+import { SortOrder } from '../shared/pagination/sort-order';
+import { UsersService } from '../users/users.service';
 import { Status } from './Status';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
+import { Project } from './entities/project.entity';
+import { decodeProjectCursor, encodeProjectCursor } from './pagination/project-cursor-codec';
+import { ProjectSort } from './pagination/project-sort';
+import { ProjectsFiltersQueryDto } from './pagination/projects-filters-query.dto';
 
 
 @Injectable()
@@ -34,7 +37,7 @@ export class ProjectsService {
     const project = this.projectsRepository.create(newProject);
     return await this.projectsRepository.save(project);
   }
-  
+
   async findOne(projectId: string) {
     const project = await this.projectsRepository.findOne({
       where: { id: projectId },
@@ -46,26 +49,48 @@ export class ProjectsService {
     return project;
   }
 
-  async findAll({ cursor, limit }: CursorPaginationQueryDto): Promise<CursorPaginatedResult<Project>> {
+  async findAll(userId: string, filters: ProjectsFiltersQueryDto): Promise<CursorPaginatedResult<Project>> {
+
+    const { cursor, limit, search, sortBy, sortOrder, archived } = filters;
+
+    const pageSize = limit ?? 6;
+    const direction = sortOrder === SortOrder.ASC ? 'ASC' : 'DESC';
+    const op = direction === 'ASC' ? '>' : '<';
+    const sortColumn =
+      sortBy === ProjectSort.NAME ? 'project.name' : 'project.createdAt';
+
     const queryBuilder = this.projectsRepository
       .createQueryBuilder('project')
       .innerJoinAndSelect('project.user', 'user')
-      .orderBy('project.createdAt', 'DESC')
-      .addOrderBy('project.id', 'DESC')
-      .limit(limit + 1);
+      .orderBy(sortColumn, direction)
+      .addOrderBy('project.id', direction)
+      .limit(pageSize + 1);
 
     if (cursor) {
-      const { createdAt, id } = decodeCursor(cursor);
-      queryBuilder.where(
-        '(project.createdAt < :createdAt OR (project.createdAt = :createdAt AND project.id < :id))',
-        { createdAt, id },
+      const decoded = decodeProjectCursor(cursor, sortBy);
+      queryBuilder.andWhere(
+        `(${sortColumn} ${op} :cursorValue OR (${sortColumn} = :cursorValue AND project.id ${op} :cursorId))`,
+        { cursorValue: decoded.value, cursorId: decoded.id },
       );
+    }
+
+    if (archived) {
+      queryBuilder.innerJoin(
+        ArchivedProject,
+        'archived',
+        'archived.projectId = project.id AND archived.userId = :userId',
+        { userId },
+      );
+    }
+
+    if (search) {
+      queryBuilder.andWhere('INSTR(project.name, :search) > 0', { search });
     }
 
     const projects = await queryBuilder.getMany();
 
-    return buildCursorPage(projects, limit, (project) =>
-      encodeCursor({ createdAt: project.createdAt, id: project.id }),
+    return buildCursorPage(projects, pageSize, (project) =>
+      encodeProjectCursor(project, sortBy),
     );
   }
 
