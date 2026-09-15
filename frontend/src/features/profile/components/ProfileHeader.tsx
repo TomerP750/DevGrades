@@ -3,6 +3,7 @@ import { Badge } from "../../../shared/ui/Badge";
 import { Button } from "../../../shared/ui/Button";
 import type { ProfileDto } from "../models/ProfileDto";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../authentication/contexts/AuthContext";
 
 interface ProfileHeaderProps {
     profile: ProfileDto;
@@ -10,7 +11,10 @@ interface ProfileHeaderProps {
 
 export function ProfileHeader({ profile }: ProfileHeaderProps) {
 
-    const { user } = profile;
+    const { user: loggedInUser } = useAuth();
+    const { user: profileUser } = profile;
+
+    const isOwner = loggedInUser?.id === profileUser.id;
 
     return (
         <header className="overflow-hidden">
@@ -26,15 +30,16 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
 
             <div className="relative px-5 pb-6 sm:px-8 sm:pb-8">
                 <div className="absolute -top-12 left-5 z-10 grid size-24 place-items-center overflow-hidden rounded-full border-4 border-card bg-primary text-2xl font-bold text-primary-foreground shadow-md sm:-top-14 sm:left-8 sm:size-28">
-                    <Badge user={user} />
+                    <Badge user={profileUser} />
                 </div>
 
                 <div className="min-w-0 w-full pt-16 sm:pl-32 sm:pt-4">
                     <div className="flex items-center justify-between">
                         <h1 className="truncate text-2xl font-bold tracking-tight text-card-foreground sm:text-3xl">
-                            {user.firstName} {user.lastName}
+                            {profileUser.firstName} {profileUser.lastName}
                         </h1>
                         <div className="flex gap-2">
+                            {!isOwner && (
                             <Button
                                 type="button"
                                 variant="primary"
@@ -47,12 +52,13 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
                                     />
                                 }
                             >
-                                Message
-                            </Button>
+                                    Message
+                                </Button>
+                            )}
                         </div>
                     </div>
                     <p className="truncate text-sm font-medium text-muted-foreground sm:text-base">
-                        @{user.username}
+                        @{profileUser.username}
                     </p>
                     {/* links */}
                     <div className="flex flex-col gap-2 mt-2">

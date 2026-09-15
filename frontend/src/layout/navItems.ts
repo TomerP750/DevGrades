@@ -1,5 +1,5 @@
-import { BrainCog, NewspaperIcon, Settings, UserRound } from "lucide-react";
-import type { NavItem } from "../../../shared/models/NavItem";
+import { BrainCog, NewspaperIcon, Settings, UserRound, MessageSquareIcon } from "lucide-react";
+import type { NavItem } from "../shared/models/NavItem";
 
 
 export const navItems: NavItem[] = [
@@ -13,6 +13,11 @@ export const navItems: NavItem[] = [
         to: "/ai-review",
         Icon: BrainCog
     },
+    {
+        label: "Messages",
+        to: "/messages",
+        Icon: MessageSquareIcon
+    }
 ]
 
 

@@ -36,7 +36,7 @@ export function Navbar() {
                                 className={(state) => `${getActiveNavItemClasses(state)} h-full gap-1.5`}
                             >
                                 <item.Icon aria-hidden="true" className="size-5" />
-                                <span>{item.label}</span>
+                                <span className="text-xs">{item.label}</span>
                             </NavLink>
                         ))}
                     </div>
