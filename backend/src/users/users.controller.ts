@@ -1,16 +1,18 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { UserDto } from './dto/user.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+
 
 @Controller('api/users')
 @Serialize(UserDto)
 export class UsersController {
 
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get('/:id')
   async getUser(@Param('id') id: string) {
@@ -31,4 +33,5 @@ export class UsersController {
   async changePassword(@CurrentUserId() userId: string, @Body() changePasswordDto: ChangePasswordDto) {
     return this.usersService.changePassword(userId, changePasswordDto);
   }
+
 }

@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthenticationModule } from './authentication/authentication.module';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshToken } from './authentication/refresh-token/refresh-tokens.entity';
@@ -16,6 +16,7 @@ import { ArchivedProjectsModule } from './archived-projects/archived-projects.mo
 import { ArchivedProject } from './archived-projects/entities/archived-project.entity';
 import { ProfilesModule } from './profiles/profiles.module';
 import { Profile } from './profiles/entities/profile.entity';
+import { HttpExceptionFilter } from './shared/filters/http-exception-filter';
 
 @Module({
   imports: [
@@ -50,6 +51,10 @@ import { Profile } from './profiles/entities/profile.entity';
       transform: true,
       whitelist: true,
     }),
+  },
+  {
+    provide: APP_FILTER,
+    useClass: HttpExceptionFilter,
   }],
 })
 export class AppModule { }
