@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Dialog } from "../../../../shared/ui/Dialog";
 import projectService from "../../api/projectService";
 import type { ProjectDto } from "../../models/ProjectDto";
+import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 
 interface DeleteProjectDialogProps {
     open: boolean;
@@ -19,7 +20,7 @@ export function DeleteProjectDialog({
     const { mutate: deleteProject, isPending } = useMutation({
         mutationFn: () => projectService.deleteProject(project.id),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            resetProjectsFeed(queryClient);
             queryClient.removeQueries({ queryKey: ["project", project.id] });
             onClose();
         },

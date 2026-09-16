@@ -1,14 +1,11 @@
 import axios from "axios";
 import { baseApiUrl } from "../../../shared/utils/baseApi";
-import type { CursorPageResponse } from "../../../shared/models/CursorPage";
 import type { CreateProjectDto } from "../models/CreateProjectDto";
 import type { ProjectDto } from "../models/ProjectDto";
 import type { UpdateProjectDto } from "../models/UpdateProjectDto";
+import type { CursorPageResponse } from "../../../shared/models/CursorPage";
+import type { ProjectFeedParams } from "../models/ProjectFeedParams";
 
-interface ProjectFeedParams {
-    cursor?: string;
-    limit?: number;
-}
 
 class ProjectService {
 

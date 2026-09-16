@@ -3,6 +3,7 @@ import { Dialog } from "../../../../shared/ui/Dialog";
 import projectService from "../../api/projectService";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { Status } from "../../models/Status";
+import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 
 interface CloseProjectDialogProps {
     open: boolean;
@@ -21,7 +22,7 @@ export function CloseProjectDialog({
         mutationFn: () =>
             projectService.updateProject(project.id, { status: Status.CLOSED }),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            resetProjectsFeed(queryClient);
             queryClient.invalidateQueries({ queryKey: ["project", project.id] });
             onClose();
         },

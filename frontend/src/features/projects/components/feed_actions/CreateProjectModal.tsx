@@ -8,6 +8,7 @@ import { TextArea } from "../../../../shared/ui/TextArea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import projectService from "../../api/projectService";
 import { toast } from "react-toastify";
+import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 
 interface CreateProjectModalProps {
     open: boolean;
@@ -37,7 +38,7 @@ export function CreateProjectModal({ open, onClose }: CreateProjectModalProps) {
     const { mutate: createProject } = useMutation({
         mutationFn: (data: CreateProjectDto) => projectService.createProject(data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            resetProjectsFeed(queryClient);
             handleClose();
         },
         onError: (error) => {

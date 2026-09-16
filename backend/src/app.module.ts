@@ -29,6 +29,7 @@ import { HttpExceptionFilter } from './shared/filters/http-exception-filter';
     TypeOrmModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
+        timezone: 'Z',
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
         username: configService.get('DB_USER'),

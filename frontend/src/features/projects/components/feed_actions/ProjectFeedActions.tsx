@@ -8,6 +8,7 @@ import { Button } from "../../../../shared/ui/Button";
 import { SearchInput } from "../../../../shared/ui/SearchInput";
 import { CreateProjectModal } from "./CreateProjectModal";
 import { FilterMenu } from "./filters/FilterMenu";
+import { useProjectFilters } from "../../hooks/useProjectFilters";
 
 interface ProjectFeedActionsProps {
     gridLayout: 2 | 3;
@@ -17,16 +18,13 @@ interface ProjectFeedActionsProps {
 export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFeedActionsProps) {
 
     const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
+    const { filters, setSearch } = useProjectFilters();
 
     const layoutButtonClass = (active: boolean) =>
         `grid size-9 cursor-pointer place-items-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${active
             ? "bg-primary text-background"
             : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`;
-
-    function handleSearch(searchValue: string) {
-        console.log(searchValue);
-    }
 
     return (
         <div className="mb-6 flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center">
@@ -44,7 +42,8 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
 
             <SearchInput
                 label="Search projects"
-                onAfterSearch={handleSearch}
+                defaultValue={filters.search ?? ""}
+                onAfterSearch={setSearch}
                 placeholder="Search projects"
                 className="flex-1"            
             />

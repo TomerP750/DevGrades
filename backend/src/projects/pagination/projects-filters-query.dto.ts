@@ -1,22 +1,17 @@
-import { IsBoolean, IsEnum, IsOptional, IsString } from "class-validator";
-import { CursorPaginationQueryDto } from "../../shared/pagination/cursor-pagination.dto";
-import { ProjectSort } from "./project-sort";
-import { SortOrder } from "../../shared/pagination/sort-order";
-import { Transform } from "class-transformer";
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
+import { CursorPaginationQueryDto } from '../../shared/pagination/cursor-pagination-query.dto';
+import { ProjectSort } from './project-sort';
+import { Transform } from 'class-transformer';
 
 export class ProjectsFiltersQueryDto extends CursorPaginationQueryDto {
 
     @IsOptional()
     @IsString()
-    search?: string
+    search?: string;
 
     @IsOptional()
     @IsEnum(ProjectSort)
     sortBy?: ProjectSort;
-
-    @IsOptional()
-    @IsEnum(SortOrder)
-    sortOrder?: SortOrder;
 
     @IsBoolean()
     @Transform(({ value }) => {
@@ -24,10 +19,7 @@ export class ProjectsFiltersQueryDto extends CursorPaginationQueryDto {
         if (value === true || value === 'true') return true;
         if (value === false || value === 'false') return false;
         return value;
-      })
+    })
     @IsOptional()
     archived?: boolean;
-
-    
-
 }

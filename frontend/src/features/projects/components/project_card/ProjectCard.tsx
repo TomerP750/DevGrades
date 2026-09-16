@@ -14,6 +14,7 @@ import { useIsOwner } from "../../hooks/useIsOwner";
 import archiveProjectService from "../../api/archiveProjectService";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "../../../authentication/contexts/AuthContext";
+import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -28,7 +29,10 @@ export function ProjectCard({ project }: ProjectCardProps) {
     const { mutate: toggleArchive } = useMutation({
         mutationFn: archiveProjectService.toggleArchive,
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["archived-projects", user?.id, project.id] });
+            queryClient.invalidateQueries({
+                queryKey: ["archived-projects", user?.id, project.id],
+            });
+            resetProjectsFeed(queryClient);
         },
     });
 

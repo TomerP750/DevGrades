@@ -2,9 +2,22 @@ import { useState } from "react";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { Menu } from "../../../../../shared/ui/Menu";
 import { Button } from "../../../../../shared/ui/Button";
+import { useProjectFilters } from "../../../hooks/useProjectFilters";
+import { ProjectSort } from "../../../models/ProjectSort";
+
+const radioClassName =
+    "size-4 cursor-pointer accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
+
+const SORT_OPTIONS: { value: ProjectSort; label: string }[] = [
+    { value: ProjectSort.NAME, label: "Name" },
+    { value: ProjectSort.NEWEST, label: "Newest - Oldest" },
+    { value: ProjectSort.OLDEST, label: "Oldest - Newest" },
+];
 
 export function FilterMenu() {
     const [isOpen, setIsOpen] = useState(false);
+    const { filters, setFilters } = useProjectFilters();
+    const sortBy = filters.sortBy ?? ProjectSort.NEWEST;
 
     return (
         <div className="relative">
@@ -25,7 +38,6 @@ export function FilterMenu() {
             </Button>
 
             <Menu isOpen={isOpen} className="w-64 p-4">
-
                 <fieldset>
                     <legend className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
                         Filters
@@ -34,7 +46,11 @@ export function FilterMenu() {
                         Archived
                         <input
                             type="checkbox"
-                            className="size-4 cursor-pointer accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                            checked={!!filters.archived}
+                            onChange={(event) =>
+                                setFilters({ archived: event.target.checked || undefined })
+                            }
+                            className={radioClassName}
                         />
                     </label>
                 </fieldset>
@@ -46,46 +62,24 @@ export function FilterMenu() {
                         Sort by
                     </legend>
                     <div className="mt-2 grid gap-1">
-                        <label className="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm font-medium transition-colors hover:bg-muted">
-                            <input
-                                type="radio"
-                                name="project-sort"
-                                value="name"
-                                className="size-4 cursor-pointer accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                            />
-                            Name
-                        </label>
-                        <label className="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm font-medium transition-colors hover:bg-muted">
-                            <input
-                                type="radio"
-                                name="project-sort"
-                                value="newestToOldest"
-                                defaultChecked
-                                className="size-4 cursor-pointer accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                            />
-                            Newest - Oldest
-                        </label>
-                        <label className="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm font-medium transition-colors hover:bg-muted">
-                            <input
-                                type="radio"
-                                name="project-sort"
-                                value="oldestToNewest"
-                                className="size-4 cursor-pointer accent-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-                            />
-                            Oldest - Newest
-                        </label>
+                        {SORT_OPTIONS.map((option) => (
+                            <label
+                                key={option.value}
+                                className="flex cursor-pointer items-center gap-3 px-2 py-2 text-sm font-medium transition-colors hover:bg-muted"
+                            >
+                                <input
+                                    type="radio"
+                                    name="project-sort"
+                                    value={option.value}
+                                    checked={sortBy === option.value}
+                                    onChange={() => setFilters({ sortBy: option.value })}
+                                    className={radioClassName}
+                                />
+                                {option.label}
+                            </label>
+                        ))}
                     </div>
                 </fieldset>
-
-                <div className="mt-4 flex gap-2 border-t border-border pt-4">
-                    <Button type="reset" variant="outline" size="sm" fullWidth>
-                        Reset
-                    </Button>
-                    <Button type="submit" size="sm" fullWidth>
-                        Apply
-                    </Button>
-                </div>
-
             </Menu>
         </div>
     );

@@ -9,6 +9,7 @@ import type { ProjectDto } from "../../models/ProjectDto";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import projectService from "../../api/projectService";
 import { toast } from "react-toastify";
+import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 
 interface UpdateProjectModalProps {
     open: boolean;
@@ -44,7 +45,7 @@ export function UpdateProjectModal({
     const { mutate: updateProject } = useMutation({
         mutationFn: (data: UpdateProjectDto) => projectService.updateProject(project.id, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["projects"] });
+            resetProjectsFeed(queryClient);
             handleClose();
             toast.success("Project updated successfully");
         },

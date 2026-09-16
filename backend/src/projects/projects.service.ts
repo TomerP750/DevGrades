@@ -4,14 +4,13 @@ import { Repository } from 'typeorm';
 import { ArchivedProject } from '../archived-projects/entities/archived-project.entity';
 import { buildCursorPage } from '../shared/pagination/build-cursor-page';
 import { CursorPaginatedResult } from '../shared/pagination/cursor-paginated-result';
-import { SortOrder } from '../shared/pagination/sort-order';
 import { UsersService } from '../users/users.service';
 import { Status } from './Status';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 import { decodeProjectCursor, encodeProjectCursor } from './pagination/project-cursor-codec';
-import { ProjectSort } from './pagination/project-sort';
+import { resolveProjectSort } from './pagination/project-sort';
 import { ProjectsFiltersQueryDto } from './pagination/projects-filters-query.dto';
 
 
@@ -51,36 +50,38 @@ export class ProjectsService {
 
   async findAll(userId: string, filters: ProjectsFiltersQueryDto): Promise<CursorPaginatedResult<Project>> {
 
-    const { cursor, limit, search, sortBy, sortOrder, archived } = filters;
+    const { cursor, limit, search, sortBy, archived } = filters;
 
     const pageSize = limit ?? 6;
-    const direction = sortOrder === SortOrder.ASC ? 'ASC' : 'DESC';
+    const { column, direction } = resolveProjectSort(sortBy);
     const op = direction === 'ASC' ? '>' : '<';
-    const sortColumn =
-      sortBy === ProjectSort.NAME ? 'project.name' : 'project.createdAt';
 
     const queryBuilder = this.projectsRepository
       .createQueryBuilder('project')
       .innerJoinAndSelect('project.user', 'user')
-      .orderBy(sortColumn, direction)
+      .orderBy(column, direction)
       .addOrderBy('project.id', direction)
       .limit(pageSize + 1);
 
     if (cursor) {
-      const decoded = decodeProjectCursor(cursor, sortBy);
+      const decoded = decodeProjectCursor(cursor, sortBy, search, archived);
       queryBuilder.andWhere(
-        `(${sortColumn} ${op} :cursorValue OR (${sortColumn} = :cursorValue AND project.id ${op} :cursorId))`,
+        `(${column} ${op} :cursorValue OR (${column} = :cursorValue AND project.id ${op} :cursorId))`,
         { cursorValue: decoded.value, cursorId: decoded.id },
       );
     }
 
+    queryBuilder.leftJoin(
+      ArchivedProject,
+      'archived',
+      'archived.projectId = project.id AND archived.userId = :userId',
+      { userId },
+    );
+
     if (archived) {
-      queryBuilder.innerJoin(
-        ArchivedProject,
-        'archived',
-        'archived.projectId = project.id AND archived.userId = :userId',
-        { userId },
-      );
+      queryBuilder.andWhere('archived.id IS NOT NULL');
+    } else {
+      queryBuilder.andWhere('archived.id IS NULL');
     }
 
     if (search) {
@@ -90,7 +91,7 @@ export class ProjectsService {
     const projects = await queryBuilder.getMany();
 
     return buildCursorPage(projects, pageSize, (project) =>
-      encodeProjectCursor(project, sortBy),
+      encodeProjectCursor(project, sortBy, search, archived),
     );
   }
 
