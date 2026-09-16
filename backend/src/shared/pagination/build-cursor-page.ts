@@ -9,6 +9,7 @@ export function buildCursorPage<T>(
     limit: number,
     toCursor: (row: T) => string,
 ): CursorPaginatedResult<T> {
+
     const hasNextPage = rows.length > limit;
     const data = hasNextPage ? rows.slice(0, limit) : rows;
     const lastRow = data.at(-1);

@@ -48,13 +48,13 @@ export class ProjectsService {
     return project;
   }
 
-  async findAll(userId: string, filters: ProjectsFiltersQueryDto): Promise<CursorPaginatedResult<Project>> {
+  async findAll(userId: string, query: ProjectsFiltersQueryDto): Promise<CursorPaginatedResult<Project>> {
 
-    const { cursor, limit, search, sortBy, archived } = filters;
+    const { cursor, limit, search, sortBy, archived } = query;
 
     const pageSize = limit ?? 6;
     const { column, direction } = resolveProjectSort(sortBy);
-    const op = direction === 'ASC' ? '>' : '<';
+    const operator = direction === 'ASC' ? '>' : '<';
 
     const queryBuilder = this.projectsRepository
       .createQueryBuilder('project')
@@ -64,10 +64,10 @@ export class ProjectsService {
       .limit(pageSize + 1);
 
     if (cursor) {
-      const decoded = decodeProjectCursor(cursor, sortBy, search, archived);
+      const decodedCursor = decodeProjectCursor(cursor, sortBy, search, archived);
       queryBuilder.andWhere(
-        `(${column} ${op} :cursorValue OR (${column} = :cursorValue AND project.id ${op} :cursorId))`,
-        { cursorValue: decoded.value, cursorId: decoded.id },
+        `(${column} ${operator} :cursorValue OR (${column} = :cursorValue AND project.id ${operator} :cursorId))`,
+        { cursorValue: decodedCursor.sortValue, cursorId: decodedCursor.id },
       );
     }
 

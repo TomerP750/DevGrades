@@ -3,25 +3,39 @@ import { Project } from '../entities/project.entity';
 import { ProjectSort } from './project-sort';
 
 export type DecodedProjectCursor = {
-    value: string | Date;
-    id: string;
+    sortValue: string | Date; // name or createdAt
+    id: string; // tie braker when projects share the same sort value
 };
 
 type ProjectCursorPayload = {
     sortBy: ProjectSort;
-    value: string;
+    sortValue: string;
     id: string;
     search: string;
     archived: boolean;
 };
 
-function cursorFilters(search?: string, archived?: boolean) {
+/**
+ * 
+ * @param search The search to use
+ * @param archived The archived to use
+ * @returns The cursor filters
+ */
+function snapshotCursorFilters(search?: string, archived?: boolean) {
     return {
         search: search ?? '',
         archived: archived === true,
     };
 }
 
+/**
+ * 
+ * @param project The project to encode
+ * @param sortBy The sort by to use
+ * @param search The search to use
+ * @param archived The archived to use
+ * @returns The encoded cursor
+ */
 export function encodeProjectCursor(
     project: Project,
     sortBy: ProjectSort = ProjectSort.NEWEST,
@@ -30,14 +44,22 @@ export function encodeProjectCursor(
 ): string {
     const payload: ProjectCursorPayload = {
         sortBy,
-        value: sortValue(project, sortBy),
+        sortValue: extractCursorValue(project, sortBy),
         id: project.id,
-        ...cursorFilters(search, archived),
+        ...snapshotCursorFilters(search, archived),
     };
 
     return Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
 }
 
+/**
+ * 
+ * @param cursor The cursor to decode
+ * @param sortBy The sort by to use
+ * @param search The search to use
+ * @param archived The archived to use
+ * @returns The decoded cursor
+ */
 export function decodeProjectCursor(
     cursor: string,
     sortBy: ProjectSort = ProjectSort.NEWEST,
@@ -53,36 +75,42 @@ export function decodeProjectCursor(
 
     const {
         sortBy: cursorSortBy,
-        value,
+        sortValue: cursorSortValue,
         id,
         search: cursorSearch,
         archived: cursorArchived,
     } = (payload ?? {}) as Record<string, unknown>;
 
-    const expected = cursorFilters(search, archived);
+    const requestFilters = snapshotCursorFilters(search, archived);
 
     if (
         cursorSortBy !== sortBy ||
-        typeof value !== 'string' ||
+        typeof cursorSortValue !== 'string' ||
         typeof id !== 'string' ||
-        cursorSearch !== expected.search ||
-        cursorArchived !== expected.archived
+        cursorSearch !== requestFilters.search ||
+        cursorArchived !== requestFilters.archived
     ) {
         throw new BadRequestException('Invalid pagination cursor');
     }
 
     if (sortBy !== ProjectSort.NAME) {
-        const createdAt = new Date(value);
-        if (Number.isNaN(createdAt.getTime())) {
+        const parsedCreatedAt = new Date(cursorSortValue);
+        if (Number.isNaN(parsedCreatedAt.getTime())) {
             throw new BadRequestException('Invalid pagination cursor');
         }
-        return { value: createdAt, id };
+        return { sortValue: parsedCreatedAt, id };
     }
 
-    return { value, id };
+    return { sortValue: cursorSortValue, id };
 }
 
-function sortValue(project: Project, sortBy: ProjectSort): string {
+/**
+ * 
+ * @param project Extract the cursor value
+ * @param sortBy 
+ * @returns 
+ */
+function extractCursorValue(project: Project, sortBy: ProjectSort): string {
     if (sortBy === ProjectSort.NAME) {
         return project.name;
     }
