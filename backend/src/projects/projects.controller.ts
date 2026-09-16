@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { Serialize, SerializePage } from '../shared/interceptors/serialize.interceptor';
-import { CursorPaginationQueryDto } from '../shared/pagination/cursor-pagination.dto';
 import { CursorPaginatedResult } from '../shared/pagination/cursor-paginated-result';
 import { ProjectDto } from './dto/project.dto';
 import { Project } from './entities/project.entity';

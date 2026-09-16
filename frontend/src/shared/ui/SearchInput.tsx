@@ -1,53 +1,56 @@
-import debounce from "lodash/debounce";
+import { useEffect, useMemo, useRef, type ChangeEvent } from "react";
+import type { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Input, type InputProps } from "./Input";
+import { debounce } from "lodash";
 
-interface SearchInputProps {
-    onSearch: (value: string) => void;
-    placeholder?: string;
-    delay?: number;
-    label?: string;
-    className?: string;
-}
+export type SearchInputProps = Omit<InputProps, "type"> & {
+    onAfterSearch?: (searchValue: string) => void;
+    icon?: LucideIcon;
+};
 
 export function SearchInput({
-    onSearch,
-    placeholder = "Search",
-    delay = 300,
-    label = "Search",
+    onAfterSearch,
+    icon: Icon = Search,
     className = "",
+    placeholder = "Search...",
+    onChange,
+    ...props
 }: SearchInputProps) {
-    const [value, setValue] = useState("");
-    const debouncedSearch = useMemo(
-        () => debounce(onSearch, delay),
-        [delay, onSearch],
+    
+    const onAfterSearchRef = useRef(onAfterSearch);
+
+    useEffect(() => {
+        onAfterSearchRef.current = onAfterSearch;
+    }, [onAfterSearch]);
+
+    const debouncedAfterSearch = useMemo(
+        () => debounce((searchValue: string) => onAfterSearchRef.current?.(searchValue), 1000),
+        [],
     );
 
-    useEffect(
-        () => () => {
-            debouncedSearch.cancel();
-        },
-        [debouncedSearch],
-    );
+    useEffect(() => {
+        return () => debouncedAfterSearch.cancel();
+    }, [debouncedAfterSearch]);
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        onChange?.(event);
+        debouncedAfterSearch(event.target.value);
+    };
 
     return (
-        <label className={`relative block min-w-0 ${className}`}>
-            <Search
-                aria-hidden="true"
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+        <div className="relative w-full">
+            <Icon
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400 dark:text-zinc-500"
             />
-            <span className="sr-only">{label}</span>
-            <input
+            <Input
                 type="search"
-                value={value}
-                onChange={(event) => {
-                    const nextValue = event.target.value;
-                    setValue(nextValue);
-                    debouncedSearch(nextValue);
-                }}
+                className={`pl-9 appearance-none ${className}`.trim()}
                 placeholder={placeholder}
-                className="h-10 w-full border border-input bg-card pl-9 pr-3 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-ring"
+                onChange={handleChange}
+                {...props}
             />
-        </label>
+        </div>
     );
 }

@@ -24,6 +24,10 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
             : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`;
 
+    function handleSearch(searchValue: string) {
+        console.log(searchValue);
+    }
+
     return (
         <div className="mb-6 flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center">
             <Button
@@ -39,10 +43,10 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
             </Button>
 
             <SearchInput
-                onSearch={() => {}}
-                placeholder="Search projects or creators"
                 label="Search projects"
-                className="flex-1"
+                onAfterSearch={handleSearch}
+                placeholder="Search projects"
+                className="flex-1"            
             />
 
             <FilterMenu />
