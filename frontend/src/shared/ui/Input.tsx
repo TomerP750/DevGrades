@@ -10,7 +10,7 @@ import { Button } from "./Button";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
-  label: string;
+  label?: string;
   hint?: string;
   error?: string;
   leadingIcon?: ReactNode;
@@ -29,7 +29,6 @@ function joinClassNames(...classes: Array<string | false | undefined>) {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
-    label,
     hint,
     error,
     leadingIcon,
@@ -40,6 +39,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     disabled,
     className,
     "aria-describedby": ariaDescribedBy,
+    label = undefined,
     ...props
   },
   ref,

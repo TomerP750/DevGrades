@@ -15,9 +15,11 @@ const SORT_OPTIONS: { value: ProjectSort; label: string }[] = [
 ];
 
 export function FilterMenu() {
+
     const [isOpen, setIsOpen] = useState(false);
-    const { filters, setFilters } = useProjectFilters();
-    const sortBy = filters.sortBy ?? ProjectSort.NEWEST;
+
+    const { filters, setFilters, clearFilters } = useProjectFilters();
+    const selectedSortBy = filters.sortBy ?? ProjectSort.NEWEST;
 
     return (
         <div className="relative">
@@ -71,7 +73,7 @@ export function FilterMenu() {
                                     type="radio"
                                     name="project-sort"
                                     value={option.value}
-                                    checked={sortBy === option.value}
+                                    checked={selectedSortBy === option.value}
                                     onChange={() => setFilters({ sortBy: option.value })}
                                     className={radioClassName}
                                 />
@@ -80,6 +82,15 @@ export function FilterMenu() {
                         ))}
                     </div>
                 </fieldset>
+
+                <Button
+                    type="button"
+                    variant="primary"
+                    size="sm"
+                    className="mt-4 w-full"
+                    onClick={clearFilters}>
+                    Clear filters
+                </Button>
             </Menu>
         </div>
     );

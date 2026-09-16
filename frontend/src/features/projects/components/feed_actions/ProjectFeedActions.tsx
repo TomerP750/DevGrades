@@ -41,11 +41,10 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
             </Button>
 
             <SearchInput
-                label="Search projects"
                 defaultValue={filters.search ?? ""}
                 onAfterSearch={setSearch}
                 placeholder="Search projects"
-                className="flex-1"            
+                className="flex-1 rounded-none"            
             />
 
             <FilterMenu />

@@ -31,7 +31,7 @@ export function useProjectFilters() {
         if (merged.sortBy && merged.sortBy !== ProjectSort.NEWEST) {
             params.set("sortBy", merged.sortBy);
         }
-        if (merged.archived !== undefined) {
+        if (merged.archived) {
             params.set("archived", "true");
         }
 
@@ -42,5 +42,9 @@ export function useProjectFilters() {
         setFilters({ search: search.trim() || undefined });
     }
 
-    return { filters, setFilters, setSearch };
+    function clearFilters() {
+        setSearchParams(new URLSearchParams());
+    }
+
+    return { filters, setFilters, setSearch, clearFilters };
 }
