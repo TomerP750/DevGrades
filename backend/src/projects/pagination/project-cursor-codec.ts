@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Project } from '../entities/project.entity';
-import { ProjectSort } from './project-sort';
+import { ProjectSort, resolveProjectSort } from './project-sort';
 
 export type DecodedProjectCursor = {
     sortValue: string | Date; // name or createdAt
@@ -15,12 +15,7 @@ type ProjectCursorPayload = {
     archived: boolean;
 };
 
-/**
- * 
- * @param search The search to use
- * @param archived The archived to use
- * @returns The cursor filters
- */
+
 function snapshotCursorFilters(search?: string, archived?: boolean) {
     return {
         search: search ?? '',
@@ -28,14 +23,7 @@ function snapshotCursorFilters(search?: string, archived?: boolean) {
     };
 }
 
-/**
- * 
- * @param project The project to encode
- * @param sortBy The sort by to use
- * @param search The search to use
- * @param archived The archived to use
- * @returns The encoded cursor
- */
+
 export function encodeProjectCursor(
     project: Project,
     sortBy: ProjectSort = ProjectSort.NEWEST,
@@ -52,14 +40,7 @@ export function encodeProjectCursor(
     return Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
 }
 
-/**
- * 
- * @param cursor The cursor to decode
- * @param sortBy The sort by to use
- * @param search The search to use
- * @param archived The archived to use
- * @returns The decoded cursor
- */
+
 export function decodeProjectCursor(
     cursor: string,
     sortBy: ProjectSort = ProjectSort.NEWEST,
@@ -93,25 +74,22 @@ export function decodeProjectCursor(
         throw new BadRequestException('Invalid pagination cursor');
     }
 
-    if (sortBy !== ProjectSort.NAME) {
+    const { valueType } = resolveProjectSort(sortBy);
+    
+    if (valueType === 'date') {
         const parsedCreatedAt = new Date(cursorSortValue);
         if (Number.isNaN(parsedCreatedAt.getTime())) {
             throw new BadRequestException('Invalid pagination cursor');
         }
         return { sortValue: parsedCreatedAt, id };
     }
-
     return { sortValue: cursorSortValue, id };
 }
 
-/**
- * 
- * @param project Extract the cursor value
- * @param sortBy 
- * @returns 
- */
+
 function extractCursorValue(project: Project, sortBy: ProjectSort): string {
-    if (sortBy === ProjectSort.NAME) {
+    const { valueType } = resolveProjectSort(sortBy);
+    if (valueType === 'string') {
         return project.name;
     }
     const createdAt = project.createdAt instanceof Date

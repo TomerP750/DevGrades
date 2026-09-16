@@ -4,12 +4,30 @@ export enum ProjectSort {
     OLDEST = 'oldest',
 }
 
+export type ProjectSortSpec = {
+    column: 'project.name' | 'project.createdAt';
+    direction: 'ASC' | 'DESC';
+    valueType: 'string' | 'date';
+};
+
+const PROJECT_SORT: Record<ProjectSort, ProjectSortSpec> = {
+    [ProjectSort.NAME]: {
+        column: 'project.name',
+        direction: 'ASC',
+        valueType: 'string',
+    },
+    [ProjectSort.NEWEST]: {
+        column: 'project.createdAt',
+        direction: 'DESC',
+        valueType: 'date',
+    },
+    [ProjectSort.OLDEST]: {
+        column: 'project.createdAt',
+        direction: 'ASC',
+        valueType: 'date',
+    },
+};
+
 export function resolveProjectSort(sortBy: ProjectSort = ProjectSort.NEWEST) {
-    if (sortBy === ProjectSort.NAME) {
-        return { column: 'project.name' as const, direction: 'ASC' as const };
-    }
-    if (sortBy === ProjectSort.OLDEST) {
-        return { column: 'project.createdAt' as const, direction: 'ASC' as const };
-    }
-    return { column: 'project.createdAt' as const, direction: 'DESC' as const };
+    return PROJECT_SORT[sortBy];
 }
