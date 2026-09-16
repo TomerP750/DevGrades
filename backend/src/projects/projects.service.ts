@@ -71,17 +71,13 @@ export class ProjectsService {
       );
     }
 
-    queryBuilder.leftJoin(
-      ArchivedProject,
-      'archived',
-      'archived.projectId = project.id AND archived.userId = :userId',
-      { userId },
-    );
-
     if (archived) {
-      queryBuilder.andWhere('archived.id IS NOT NULL');
-    } else {
-      queryBuilder.andWhere('archived.id IS NULL');
+      queryBuilder.innerJoin(
+        ArchivedProject,
+        'archived',
+        'archived.projectId = project.id AND archived.userId = :userId',
+        { userId },
+      );
     }
 
     if (search) {
