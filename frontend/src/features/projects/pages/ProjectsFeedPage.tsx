@@ -4,6 +4,8 @@ import { ProjectCard } from "../components/project_card/ProjectCard";
 import { useProjectsFeed } from "../hooks/useProjectsFeed";
 import { Button } from "../../../shared/ui/Button";
 
+const GRID_LAYOUT_KEY = "grid-layout";
+
 export default function ProjectsFeedPage() {
 
     const [gridLayout, setGridLayout] = useState<2 | 3>(2);

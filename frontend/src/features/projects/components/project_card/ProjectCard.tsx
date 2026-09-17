@@ -14,7 +14,7 @@ import { useIsOwner } from "../../hooks/useIsOwner";
 import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
 import type { ProjectDto } from "../../models/ProjectDto";
 import { Status } from "../../models/Status";
-import { ClosedProjectDialog } from "./ClosedProjectDialog";
+import { ClosedProjectState } from "./ClosedProjectState";
 import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
 
@@ -157,7 +157,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             </div>
 
             {isClosed && (
-                <ClosedProjectDialog project={project} isOwner={isOwner} />
+                <ClosedProjectState project={project} isOwner={isOwner} />
             )}
         </article>
     );

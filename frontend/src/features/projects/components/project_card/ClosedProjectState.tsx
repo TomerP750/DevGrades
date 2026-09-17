@@ -11,7 +11,7 @@ interface CloseProjectDialogProps {
     isOwner: boolean;
 }
 
-export function ClosedProjectDialog({ project, isOwner }: CloseProjectDialogProps) {
+export function ClosedProjectState({ project, isOwner }: CloseProjectDialogProps) {
 
     const [deleteProjectDialogOpen, setDeleteProjectDialogOpen] = useState(false);
 
