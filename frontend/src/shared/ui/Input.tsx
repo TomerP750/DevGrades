@@ -55,7 +55,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
 
   return (
     <div className="w-full">
-      <label
+      {label && <label
         htmlFor={inputId}
         className="mb-2 block text-sm font-semibold text-foreground"
       >
@@ -68,7 +68,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             <span className="sr-only"> (required)</span>
           </>
         )}
-      </label>
+      </label>}
 
       <div className="relative">
         {leadingIcon && (
