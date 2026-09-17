@@ -15,9 +15,10 @@ import { DeleteProjectDialog } from "./DeleteProjectDialog";
 interface ProjectMenuProps {
     project: ProjectDto;
     isOwner: boolean;
+    isClosed: boolean;
 }
 
-export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
+export function ProjectMenu({ project, isOwner, isClosed }: ProjectMenuProps) {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
@@ -53,7 +54,7 @@ export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
                     >
                         Update project
                     </Button>
-                    <Button
+                    {!isClosed && <Button
                         type="button"
                         variant="unstyled"
                         onClick={() => {
@@ -65,6 +66,7 @@ export function ProjectMenu({ project, isOwner }: ProjectMenuProps) {
                     >
                         Close project
                     </Button>
+                    }
                     <Button
                         type="button"
                         variant="unstyled"

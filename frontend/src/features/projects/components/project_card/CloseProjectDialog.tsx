@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Dialog } from "../../../../shared/ui/Dialog";
 import projectService from "../../api/projectService";
 import type { ProjectDto } from "../../models/ProjectDto";
-import { Status } from "../../models/Status";
 import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
+import { toast } from "react-toastify";
 
 interface CloseProjectDialogProps {
     open: boolean;
@@ -20,14 +20,15 @@ export function CloseProjectDialog({
 
     const { mutate: closeProject, isPending } = useMutation({
         mutationFn: () =>
-            projectService.updateProject(project.id, { status: Status.CLOSED }),
+            projectService.closeProject(project.id),
         onSuccess: () => {
+            toast.success("Project closed successfully");
             resetProjectsFeed(queryClient);
             queryClient.invalidateQueries({ queryKey: ["project", project.id] });
             onClose();
         },
         onError: (error) => {
-            console.error(error);
+            toast.error(error.message);
         },
     });
 

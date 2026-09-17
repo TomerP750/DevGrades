@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { Serialize, SerializePage } from '../shared/interceptors/serialize.interceptor';
 import { CursorPaginatedResult } from '../shared/pagination/cursor-paginated-result';
 import { ProjectDto } from './dto/project.dto';
@@ -46,6 +46,11 @@ export class ProjectsController {
   @Delete("/delete/:projectId")
   async deleteProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string): Promise<void> {
     await this.projectsService.delete(userId, projectId);
+  }
+
+  @Patch("/close/:projectId")
+  async closeProject(@CurrentUserId() userId: string, @Param("projectId") projectId: string): Promise<void> {
+    await this.projectsService.closeProject(userId, projectId);
   }
 
   

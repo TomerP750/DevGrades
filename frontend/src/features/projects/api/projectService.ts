@@ -32,6 +32,10 @@ class ProjectService {
     async deleteProject(projectId: string) {
         return (await axios.delete(`${baseApiUrl}/api/projects/delete/${projectId}`)).data;
     }
+
+    async closeProject(projectId: string) {
+        return (await axios.patch(`${baseApiUrl}/api/projects/close/${projectId}`)).data;
+    }
 }
 
 const projectService = new ProjectService();

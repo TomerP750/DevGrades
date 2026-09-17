@@ -1,6 +1,6 @@
 
 
 export enum Status {
-    OPEN,
-    CLOSED
+    OPEN = "OPEN",
+    CLOSED = "CLOSED"
 }
