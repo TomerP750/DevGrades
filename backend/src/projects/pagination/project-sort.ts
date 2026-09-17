@@ -10,7 +10,7 @@ export type ProjectSortSpec = {
     valueType: 'string' | 'date';
 };
 
-const PROJECT_SORT: Record<ProjectSort, ProjectSortSpec> = {
+const PROJECT_SORT_MAP: Record<ProjectSort, ProjectSortSpec> = {
     [ProjectSort.NAME]: {
         column: 'project.name',
         direction: 'ASC',
@@ -29,5 +29,5 @@ const PROJECT_SORT: Record<ProjectSort, ProjectSortSpec> = {
 };
 
 export function resolveProjectSort(sortBy: ProjectSort = ProjectSort.NEWEST) {
-    return PROJECT_SORT[sortBy];
+    return PROJECT_SORT_MAP[sortBy];
 }

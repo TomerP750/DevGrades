@@ -34,8 +34,8 @@ export function ProjectFeedActions({ gridLayout, onGridLayoutChange }: ProjectFe
                 onClick={() => setIsCreateProjectOpen(true)}
                 aria-haspopup="dialog"
                 aria-expanded={isCreateProjectOpen}
-                className="h-10 shrink-0 rounded-none px-2"
-                rightIcon={<Plus className="size-4" />}
+                className="h-10 shrink-0 rounded-none px-3"
+                leftIcon={<Plus className="size-4" />}
             >
                 Create project
             </Button>

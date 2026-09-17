@@ -4,6 +4,7 @@ import { Button } from "../../../shared/ui/Button";
 import type { ProfileDto } from "../models/ProfileDto";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../authentication/contexts/AuthContext";
+import defaultBanner from "../../../assets/defaultBanner.jpg";
 
 interface ProfileHeaderProps {
     profile: ProfileDto;
@@ -19,9 +20,15 @@ export function ProfileHeader({ profile }: ProfileHeaderProps) {
     return (
         <header className="overflow-hidden">
             <div className="relative h-40 overflow-hidden bg-gradient-to-br from-primary/35 via-accent to-surface sm:h-56">
-                {profile.bannerUrl && (
+                {profile.bannerUrl ? (
                     <img
                         src={profile.bannerUrl}
+                        alt=""
+                        className="size-full object-cover"
+                    />
+                ) : (
+                    <img
+                        src={defaultBanner}
                         alt=""
                         className="size-full object-cover"
                     />
