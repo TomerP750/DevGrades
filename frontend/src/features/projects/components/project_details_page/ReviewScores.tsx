@@ -10,11 +10,14 @@ import { CreateReviewModal } from "../../../reviews/components/CreateReviewModal
 interface ReviewScoresProps {
     isOwner: boolean;
     projectId: string;
+    isClosed: boolean;
 }
 
-export function ReviewScores({ isOwner, projectId }: ReviewScoresProps) {
+export function ReviewScores({ isOwner, projectId, isClosed }: ReviewScoresProps) {
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+
+    const allowedToWriteReview = !isOwner && !isClosed;
 
     const { data: reviewStats } = useQuery<ReviewStatsDto>({
         queryKey: ["review-stats", projectId],
@@ -62,7 +65,7 @@ export function ReviewScores({ isOwner, projectId }: ReviewScoresProps) {
                         />
                     </li>
                 ))}
-                {!isOwner && <Button
+                {allowedToWriteReview && <Button
                     type="button"
                     onClick={() => setIsCreateModalOpen(true)}
                     size="md"
@@ -75,6 +78,7 @@ export function ReviewScores({ isOwner, projectId }: ReviewScoresProps) {
                 open={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
                 projectId={projectId}
+                isClosed={isClosed}
             />
         </>
     );

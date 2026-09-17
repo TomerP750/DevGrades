@@ -9,10 +9,13 @@ import { Hr } from "../../../../shared/ui/Hr";
 interface ProjectDetailsContentProps {
     project: ProjectDto;
     isOwner: boolean;
+    isClosed: boolean;
 }
 
-export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsContentProps) {
+export function ProjectDetailsContent({ project, isOwner, isClosed }: ProjectDetailsContentProps) {
     const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+
+    const allowedToWriteReview = !isOwner && !isClosed;
 
     return (
         <div>
@@ -31,7 +34,7 @@ export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsConten
                 </p>
             </section>
 
-            {!isOwner && <section
+            {allowedToWriteReview && <section
                 aria-labelledby="review-project"
                 className="mt-12 border-l-4 border-primary bg-card px-6 py-7 shadow-sm sm:px-8"
             >
@@ -66,6 +69,7 @@ export function ProjectDetailsContent({ project, isOwner }: ProjectDetailsConten
                 open={isReviewModalOpen}
                 onClose={() => setIsReviewModalOpen(false)}
                 projectId={project.id}
+                isClosed={isClosed}
             />
         </div>
     );

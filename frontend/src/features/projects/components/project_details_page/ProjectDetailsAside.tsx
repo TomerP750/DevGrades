@@ -11,10 +11,11 @@ import { ReviewScores } from "./ReviewScores";
 interface ProjectDetailsAsideProps {
     project: ProjectDto;
     isOwner: boolean;
+    isClosed: boolean;
 }
 
-export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsideProps) {
-    
+export function ProjectDetailsAside({ project, isOwner, isClosed }: ProjectDetailsAsideProps) {
+
     const { githubUrl, demoUrl, user, createdAt } = project;
 
     return (
@@ -107,10 +108,14 @@ export function ProjectDetailsAside({ project, isOwner }: ProjectDetailsAsidePro
                     </div>
                 </div>
 
-                <ReviewScores isOwner={isOwner} projectId={project.id} />
+                <ReviewScores
+                    isOwner={isOwner}
+                    projectId={project.id}
+                    isClosed={isClosed}
+                />
 
             </section>
-            
+
         </aside>
     );
 }

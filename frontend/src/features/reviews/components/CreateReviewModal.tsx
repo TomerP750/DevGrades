@@ -13,6 +13,7 @@ interface ReviewCardModalProps {
     open: boolean;
     onClose: () => void;
     projectId: string;
+    isClosed: boolean;
 }
 
 const defaultValues: CreateReviewDto = {
@@ -37,8 +38,12 @@ const scoreFields: Array<{
         { name: "uiuxScore", label: "UI/UX" },
     ];
 
-export function CreateReviewModal({ open, onClose, projectId }: ReviewCardModalProps) {
+export function CreateReviewModal({ open, onClose, projectId, isClosed }: ReviewCardModalProps) {
     
+    if (isClosed) {
+        return null;
+    }
+
     const queryClient = useQueryClient();
     
     const {
