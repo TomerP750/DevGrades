@@ -17,6 +17,7 @@ import { ArchivedProject } from './archived-projects/entities/archived-project.e
 import { ProfilesModule } from './profiles/profiles.module';
 import { Profile } from './profiles/entities/profile.entity';
 import { HttpExceptionFilter } from './shared/filters/http-exception-filter';
+import { ConversationsModule } from './conversations/conversations.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { HttpExceptionFilter } from './shared/filters/http-exception-filter';
     ProjectsModule,
     ReviewsModule,
     ArchivedProjectsModule,
-    ProfilesModule
+    ProfilesModule,
+    ConversationsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
