@@ -37,6 +37,11 @@ export const deviceNavItems = (userId: string): NavItem[] => [
         label: "Profile",
         to: `/u/${userId}`,
         Icon: UserRound
+    },
+    {
+        label: "Messages",
+        to: "/messages",
+        Icon: MessageSquareIcon
     }
     
 ]

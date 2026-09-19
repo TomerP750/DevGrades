@@ -15,7 +15,7 @@ const ProjectDetailsPage = lazy(() => import("../features/projects/pages/Project
 const ProfilePage = lazy(() => import("../features/profile/pages/ProfilePage"));
 const NotFoundPage = lazy(() => import("../shared/pages/NotFoundPage"));
 const SettingsPage = lazy(() => import("../features/settings/pages/SettingsPage"));
-
+const MessagesPage = lazy(() => import("../features/messages/pages/MessagesPage"));
 
 export function Routing() {
     const { user, isLoading } = useAuth();
@@ -49,6 +49,8 @@ export function Routing() {
                     <Route path="display" element={<SuspenseWrapper><DisplaySettings /></SuspenseWrapper>} />
                     <Route path="account" element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
                 </Route>
+
+                <Route path="/messages" element={<SuspenseWrapper><MessagesPage /></SuspenseWrapper>} />
             </Route>
 
             <Route path="*" element={<SuspenseWrapper><NotFoundPage /></SuspenseWrapper>} />

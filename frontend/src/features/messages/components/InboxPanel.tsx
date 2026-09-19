@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { XIcon } from "lucide-react";
 import { ConversationsList } from "./ConversationsList";
-import { ConversationPage } from "../pages/ConversationPage";
+import { ConversationPanel } from "../pages/ConversationPanel";
 
 type InboxView =
     | { name: "list" }
-    | { name: "conversation"; conversationId: number };
+    | { name: "conversation"; conversationId: string };
 
 interface InboxPanelProps {
     onClose: () => void;
 }
 
 export function InboxPanel({ onClose }: InboxPanelProps) {
+    
     const [view, setView] = useState<InboxView>({ name: "list" });
 
     return (
@@ -30,7 +31,7 @@ export function InboxPanel({ onClose }: InboxPanelProps) {
                     }
                 />
             ) : (
-                <ConversationPage
+                <ConversationPanel
                     conversationId={view.conversationId}
                     onBack={() => setView({ name: "list" })}
                 />

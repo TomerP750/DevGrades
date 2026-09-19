@@ -15,7 +15,7 @@ export function DeviceNavbar({ userId }: DeviceNavbarProps) {
             aria-label="Device navigation"
             className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/90 backdrop-blur-md md:hidden"
         >
-            <div className="mx-auto grid min-h-18 w-full max-w-7xl grid-cols-3 items-stretch px-4 sm:px-6">
+            <div className="mx-auto grid min-h-18 w-full max-w-7xl grid-cols-4 items-stretch px-4 sm:px-6">
                 {navItems.map(item => (
                     <NavLink
                         key={item.label}

@@ -2,29 +2,17 @@ import { MessageSquarePlusIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Button } from "../../../shared/ui/Button";
 import { SearchInput } from "../../../shared/ui/SearchInput";
-import {
-    ConversationListItem,
-    type ConversationPreview,
-} from "./ConversationListItem";
+import { ConversationListItem, } from "./ConversationListItem";
+import { dummyConversations } from "../api/dummyConversation";
 
-export const dummyConversations: ConversationPreview[] = [
-    {
-        id: 1,
-        name: "Example Name",
-        lastMessage: "Example Last Message",
-    },
-    {
-        id: 2,
-        name: "Example Name 2",
-        lastMessage: "Example Last Message 2",
-    },
-];
 
 interface ConversationsListProps {
-    onSelect: (conversationId: number) => void;
+    onSelect: (conversationId: string) => void;
+    conversationId?: string | null;
 }
 
-export function ConversationsList({ onSelect }: ConversationsListProps) {
+export function ConversationsList({ onSelect, conversationId }: ConversationsListProps) {
+
     const [query, setQuery] = useState("");
 
     const conversations = useMemo(() => {
@@ -35,7 +23,7 @@ export function ConversationsList({ onSelect }: ConversationsListProps) {
         return dummyConversations.filter(
             (conversation) =>
                 conversation.name.toLowerCase().includes(normalizedQuery) ||
-                conversation.lastMessage.toLowerCase().includes(normalizedQuery),
+                conversation.lastMessage?.content.toLowerCase().includes(normalizedQuery) || false,
         );
     }, [query]);
 
@@ -63,7 +51,8 @@ export function ConversationsList({ onSelect }: ConversationsListProps) {
                     <ConversationListItem
                         key={conversation.id}
                         conversation={conversation}
-                        onSelect={onSelect}
+                        onSelect={onSelect} 
+                        isSelected={conversationId === conversation.id}
                     />
                 ))}
             </ul>
