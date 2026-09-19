@@ -1,7 +1,7 @@
 import { ConversationListItem } from "../ConversationListItem";
 import { dummyConversations } from "../../api/dummyConversation";
 import { Button } from "../../../../shared/ui/Button";
-import { MessageSquarePlusIcon, PlusIcon } from "lucide-react";
+import { MessageSquarePlusIcon } from "lucide-react";
 import { SearchInput } from "../../../../shared/ui/SearchInput";
 
 interface MessagesAsideProps {
@@ -24,7 +24,7 @@ export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) 
                     onClick={() => { }}
                 />
             </div>
-            
+
             <ul className="space-y-0.5 overflow-y-auto">
                 {dummyConversations.map((conversation) => (
                     <ConversationListItem

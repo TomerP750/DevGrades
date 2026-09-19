@@ -23,6 +23,6 @@ export function useProjectsFeed() {
             }),
         initialPageParam: undefined as string | undefined,
         getNextPageParam: (lastPage) => lastPage.pageInfo.nextCursor ?? undefined,
-        staleTime: 60_000,
+        staleTime: 60_000, // 1 minute
     });
 }
