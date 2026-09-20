@@ -26,7 +26,7 @@ describe('ReviewsService', () => {
     findOne: jest.fn<ProjectsService['findOne']>(),
   };
   const mockUsersService = {
-    findOneUser: jest.fn<UsersService['findOneUser']>(),
+    findOneUserById: jest.fn<UsersService['findOneUserById']>(),
   };
 
   let user: User;
@@ -84,7 +84,7 @@ describe('ReviewsService', () => {
     };
 
     mockProjectsService.findOne.mockResolvedValue(project);
-    mockUsersService.findOneUser.mockResolvedValue(user);
+    mockUsersService.findOneUserById.mockResolvedValue(user);
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [

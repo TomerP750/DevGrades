@@ -66,13 +66,13 @@ describe('UsersService', () => {
 
     it('should return a user', async () => {
       mockUsersRepository.findOne.mockResolvedValue(user);
-      const result = await service.findOneUser('1');
+      const result = await service.findOneUserById('1');
       expect(result).toEqual(user);
     })
 
     it('should throw an error if the user is not found', async () => {
       mockUsersRepository.findOne.mockResolvedValue(null);
-      await expect(service.findOneUser('1')).rejects.toThrow(NotFoundException);
+      await expect(service.findOneUserById('1')).rejects.toThrow(NotFoundException);
     })
 
   })
