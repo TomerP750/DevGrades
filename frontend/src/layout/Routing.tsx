@@ -7,6 +7,7 @@ import { DisplaySettings } from "../features/settings/components/DisplaySettings
 import { SecuritySettings } from "../features/settings/components/SecuritySettings";
 import { ProtectedRoute } from "../features/authentication/components/ProtectedRoute";
 import { useAuth } from "../features/authentication/contexts/AuthContext";
+import AiReviewPage from "../features/ai_review/pages/AiReviewPage";
 
 const SignInPage = lazy(() => import("../features/authentication/pages/SignInPage"));
 const SignUpPage = lazy(() => import("../features/authentication/pages/SignUpPage"));
@@ -49,6 +50,8 @@ export function Routing() {
                     <Route path="display" element={<SuspenseWrapper><DisplaySettings /></SuspenseWrapper>} />
                     <Route path="account" element={<SuspenseWrapper><AccountSettings /></SuspenseWrapper>} />
                 </Route>
+
+                <Route path="/ai-review" element={<SuspenseWrapper><AiReviewPage /></SuspenseWrapper>} />
 
                 <Route path="/messages" element={<SuspenseWrapper><MessagesPage /></SuspenseWrapper>} />
             </Route>
