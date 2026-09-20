@@ -80,6 +80,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } finally {
             accessTokenStore.remove();
             sessionHintStore.clear();
+            queryClient.clear();
         }
     }, [queryClient]);
 
