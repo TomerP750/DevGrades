@@ -2,7 +2,6 @@ import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/commo
 import { Conversation } from './entities/conversation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from '../users/users.entity';
 import { UsersService } from '../users/users.service';
 
 
@@ -11,7 +10,6 @@ export class ConversationsService {
     constructor(
         @InjectRepository(Conversation)
         private conversationRepository: Repository<Conversation>,
-        private usersService: UsersService,
     ) {}
 
     // EMPTY FUNCTIONS COMPLETING THE SERVICE
@@ -20,20 +18,27 @@ export class ConversationsService {
     }
 
     async getConversationById(userId: string, id: string): Promise<Conversation | null> {
-        const conversation = await this.conversationRepository.findOne({ where: { id } });
-
-        if (conversation?.user.id !== userId) {
-            throw new ForbiddenException('You are not allowed to access this conversation');
-        }
+        const conversation = await this.conversationRepository.findOne({ 
+            where: { id }, 
+            relations: {
+                users: true,
+                messages: true
+            }
+        });
 
         if (!conversation) {
             return null;
         }
+
+        if (!conversation?.users.some((participant) => participant.id === userId)) {
+            throw new ForbiddenException('You are not allowed to access this conversation');
+        }
+
         return conversation;
     }
 
     async getAllConversationsByUserId(userId: string): Promise<Conversation[]> {
-        return this.conversationRepository.find({ where: { user: { id: userId } } });
+        return this.conversationRepository.find({ where: { users: { id: userId } } });
     }
 
 

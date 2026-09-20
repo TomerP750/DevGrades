@@ -1,28 +1,24 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToOne, OneToOne, JoinColumn, ManyToMany, JoinTable } from "typeorm";
 import { User } from "../../users/users.entity";
 import { Message } from "../../messages/entities/message.entity";
 
 @Entity()
 export class Conversation {
+
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
-    content!: string;
+    @ManyToMany(() => User, { nullable: false })
+    @JoinTable({ name: 'conversation_users' })
+    users!: User[];
 
-    @ManyToOne(() => User, { nullable: false })
-    user!: User;
-
-    //TODO db aggregation or object attribute?
-    // @OneToOne(() => Message, { nullable: true })
-    // @JoinColumn()
-    // lastMessage!: Message | null;
+    @OneToMany(() => Message, (message) => message.conversation)
+    messages!: Message[];
 
     @CreateDateColumn({ type: "timestamp" })
     createdAt!: Date;
 
     @UpdateDateColumn({ type: "timestamp" })
     updatedAt!: Date;
-
-    
 
 }

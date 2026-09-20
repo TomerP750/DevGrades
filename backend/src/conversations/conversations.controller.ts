@@ -3,6 +3,7 @@ import { ConversationsService } from './conversations.service';
 import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { ConversationDto } from './dto/conversation.dto';
+import { Conversation } from './entities/conversation.entity';
 
 @Controller('/api/conversations')
 export class ConversationsController {
@@ -16,7 +17,7 @@ export class ConversationsController {
 
   @Get("/all")
   @Serialize(ConversationDto)
-  async getAllConversations(@CurrentUserId() userId: string): Promise<ConversationDto[]> {
+  async getAllConversations(@CurrentUserId() userId: string) {
     return this.conversationsService.getAllConversationsByUserId(userId);
   }
 
