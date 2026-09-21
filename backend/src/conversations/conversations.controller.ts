@@ -12,13 +12,13 @@ export class ConversationsController {
   @Get("/:id")
   @Serialize(ConversationDto)
   async getConversationById(@CurrentUserId() userId: string, @Param("id") id: string) {
-    return this.conversationsService.getConversationById(userId, id);
+    return this.conversationsService.findOneById(userId, id);
   }
 
   @Get("/all")
   @Serialize(ConversationDto)
   async getAllConversations(@CurrentUserId() userId: string) {
-    return this.conversationsService.getAllConversationsByUserId(userId);
+    return this.conversationsService.findAllByUserId(userId);
   }
 
 }

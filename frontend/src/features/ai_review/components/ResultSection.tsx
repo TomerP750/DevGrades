@@ -5,6 +5,7 @@ import {
     Palette,
     WandSparkles,
     Wrench,
+    type LucideIcon,
 } from "lucide-react";
 import { ProgressBar } from "../../../shared/ui/ProgressBar";
 import { getScoreColor } from "../../../shared/utils/getScoreColor";
@@ -16,7 +17,7 @@ interface ResultSectionProps {
 
 const categories: Array<{
     label: string;
-    icon: typeof Code2;
+    icon: LucideIcon;
     key: keyof Pick<
         AiReviewProjectResponse,
         | "codeQualityScore"

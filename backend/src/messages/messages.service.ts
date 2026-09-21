@@ -18,31 +18,26 @@ export class MessagesService {
   ) {}
 
   async createMessage(userId: string, createMessageDto: CreateMessageDto) {
-    
-    const user = await this.usersService.findOneUserById(userId);
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
 
-    const { conversationId } = createMessageDto;
+    const { recipientId, content } = createMessageDto;
+    let conversation = await this.conversationsService
+    .findByUserIdAndRecipientId(userId, recipientId);
 
-    const conversation = await this.conversationsService
-    .getConversationById(userId, conversationId);
     if (!conversation) {
-      throw new NotFoundException('Conversation not found');
-    }
-    if (!conversation.users.some(user => user.id === userId)) {
-      throw new ForbiddenException('You are not allowed to send messages to this conversation');
+      conversation = await this.conversationsService.createConversation({
+        userId,
+        recipientId,
+      });
     }
 
-    const newMessage = {
-      ...createMessageDto,
-      conversation,
-      user,
-    };
-    const message = this.messageRepository.create(newMessage);
-    return await this.messageRepository.save(message);
+    const newMessage = this.messageRepository.create({
+      content,
+      user: { id: userId },
+      conversation: conversation,
+    });
     
+    return await this.messageRepository.save(newMessage);
+
   }
 
   async deleteMessage(userId: string, deleteMessageDto: DeleteMessageDto) {
@@ -55,7 +50,7 @@ export class MessagesService {
     const { messageId, conversationId } = deleteMessageDto;
 
     const conversation = await this.conversationsService
-    .getConversationById(userId, conversationId);
+    .findOneById(userId, conversationId);
     
     if (!conversation) {
       throw new NotFoundException('Conversation not found');
