@@ -1,11 +1,12 @@
 import { StarIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../../shared/ui/Badge";
-import { ProgressBar, getScoreColor } from "../../../shared/ui/ProgressBar";
+import { ProgressBar } from "../../../shared/ui/ProgressBar";
 import { formatTimeAgo } from "../../../shared/utils/formatTimeAgo";
 import type { ReviewDto } from "../models/ReviewDto";
 import { ReviewCardMenu } from "./ReviewCardMenu";
 import { useAuth } from "../../authentication/contexts/AuthContext";
+import { getScoreColor } from "../../../shared/utils/getScoreColor";
 
 interface ReviewCardProps {
     review: ReviewDto;

@@ -8,17 +8,23 @@ export function MessageButton() {
     const [isInboxOpen, setIsInboxOpen] = useState(false);
 
     return (
-        <>
-            {!isInboxOpen
-                ? <Button variant="unstyled" onClick={() => setIsInboxOpen(true)}>
-                    <figure className="fixed bottom-5 right-5 rounded-full 
-        p-4 bg-linear-to-r from-primary to-primary/50 shadow-lg
-        hover:scale-105 transition-all duration-300">
-                        <MessageSquareIcon className="size-5" />
-                    </figure>
-                </Button>
-                :
-                <InboxPanel onClose={() => setIsInboxOpen(false)} />}
-        </>
+        <div className="z-50 fixed bottom-5 right-5">
+            {
+                !isInboxOpen
+                    ? <Button
+                        variant="unstyled"
+                        onClick={() => setIsInboxOpen(true)}
+                        rightIcon={<MessageSquareIcon className="size-5" />}
+                        className="p-4 relative cursor-pointer overflow-hidden rounded-full 
+                bg-gradient-to-r from-primary to-primary/50 shadow-lg
+                hover:scale-105 transition-all duration-300"
+                    />
+                    :
+                    <InboxPanel
+                        onClose={() => setIsInboxOpen(false)}
+                    />
+            }
+
+        </div>
     );
 }

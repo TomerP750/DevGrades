@@ -1,8 +1,6 @@
 import { Check, Star } from "lucide-react";
-import {
-  getScoreColor,
-  ProgressBar,
-} from "../../../shared/ui/ProgressBar";
+import { ProgressBar } from "../../../shared/ui/ProgressBar";
+import { getScoreColor } from "../../../shared/utils/getScoreColor";
 
 const ratings = [
   { label: "UI / UX", value: 4.8 },
