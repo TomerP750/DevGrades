@@ -8,7 +8,7 @@ export function MessageButton() {
     const [isInboxOpen, setIsInboxOpen] = useState(false);
 
     return (
-        <div className="z-50 fixed bottom-5 right-5">
+        <div className="hidden z-50 md:block fixed bottom-5 right-5">
             {
                 !isInboxOpen
                     ? <Button

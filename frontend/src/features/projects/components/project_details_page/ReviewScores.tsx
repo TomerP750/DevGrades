@@ -1,6 +1,7 @@
 import { ArrowUpRightIcon } from "lucide-react";
 import { Button } from "../../../../shared/ui/Button";
-import { getScoreColor, ProgressBar } from "../../../../shared/ui/ProgressBar";
+import { ProgressBar } from "../../../../shared/ui/ProgressBar";
+import { getScoreColor } from "../../../../shared/utils/getScoreColor";
 import { useState } from "react";
 import type { ReviewStatsDto } from "../../models/ReviewStatsDto";
 import { useQuery } from "@tanstack/react-query";
