@@ -7,7 +7,14 @@ import { Conversation } from './entities/conversation.entity';
 
 @Controller('/api/conversations')
 export class ConversationsController {
+  
   constructor(private readonly conversationsService: ConversationsService) {}
+
+  @Get("/all")
+  @Serialize(ConversationDto)
+  async getAllConversations(@CurrentUserId() userId: string) {
+    return this.conversationsService.findAllByUserId(userId);
+  }
 
   @Get("/:id")
   @Serialize(ConversationDto)
@@ -15,10 +22,6 @@ export class ConversationsController {
     return this.conversationsService.findOneById(userId, id);
   }
 
-  @Get("/all")
-  @Serialize(ConversationDto)
-  async getAllConversations(@CurrentUserId() userId: string) {
-    return this.conversationsService.findAllByUserId(userId);
-  }
+  
 
 }

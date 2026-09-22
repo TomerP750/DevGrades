@@ -19,6 +19,8 @@ import { Profile } from './profiles/entities/profile.entity';
 import { HttpExceptionFilter } from './shared/filters/http-exception-filter';
 import { ConversationsModule } from './conversations/conversations.module';
 import { MessagesModule } from './messages/messages.module';
+import { Message } from './messages/entities/message.entity';
+import { Conversation } from './conversations/entities/conversation.entity';
 
 @Module({
   imports: [
@@ -37,7 +39,8 @@ import { MessagesModule } from './messages/messages.module';
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, RefreshToken, Project, Review, ArchivedProject, Profile],
+        entities: [User, RefreshToken, Project, Review, 
+          ArchivedProject, Profile, Conversation, Message],
         synchronize: true, 
       }),
       inject: [ConfigService],

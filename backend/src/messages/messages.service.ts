@@ -15,46 +15,34 @@ export class MessagesService {
     private messageRepository: Repository<Message>,
     private conversationsService: ConversationsService,
     private usersService: UsersService,
-  ) {}
+  ) { }
 
   async createMessage(userId: string, createMessageDto: CreateMessageDto) {
 
     const { recipientId, content } = createMessageDto;
-    let conversation = await this.conversationsService
-    .findByUserIdAndRecipientId(userId, recipientId);
-
-    if (!conversation) {
-      conversation = await this.conversationsService.createConversation({
-        userId,
-        recipientId,
-      });
-    }
+    const conversation = await this.conversationsService
+      .getOrCreateConversation(userId, recipientId);
 
     const newMessage = this.messageRepository.create({
       content,
       user: { id: userId },
       conversation: conversation,
     });
-    
-    return await this.messageRepository.save(newMessage);
+
+    const savedMessage = await this.messageRepository.save(newMessage);
+    await this.conversationsService.updateConversation(conversation.id);
+    return savedMessage;
 
   }
 
   async deleteMessage(userId: string, deleteMessageDto: DeleteMessageDto) {
-    
+
     const user = await this.usersService.findOneUserById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     const { messageId, conversationId } = deleteMessageDto;
-
-    const conversation = await this.conversationsService
-    .findOneById(userId, conversationId);
-    
-    if (!conversation) {
-      throw new NotFoundException('Conversation not found');
-    }
 
     const message = await this.findOneMessageById(messageId);
     if (!message || message.conversation.id !== conversationId) {
@@ -69,7 +57,7 @@ export class MessagesService {
   }
 
   async findOneMessageById(messageId: string): Promise<Message | null> {
-    return await this.messageRepository.findOne({ 
+    return await this.messageRepository.findOne({
       where: { id: messageId },
       relations: {
         user: true,
