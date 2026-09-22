@@ -12,7 +12,7 @@ export class Conversation {
     @JoinTable({ name: 'conversation_users' })
     users!: User[];
 
-    @OneToMany(() => Message, (message) => message.conversation)
+    @OneToMany(() => Message, (message) => message.conversation, { cascade: true })
     messages!: Message[];
 
     @CreateDateColumn({ type: "timestamp" })

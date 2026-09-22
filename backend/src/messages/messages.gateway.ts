@@ -7,7 +7,9 @@ import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { DeleteMessageDto } from './dto/delete-message.dto';
 
 
-@WebSocketGateway()
+@WebSocketGateway({
+  namespace: 'messages',
+})
 export class MessagesGateway {
   constructor(private readonly messagesService: MessagesService) { }
 
