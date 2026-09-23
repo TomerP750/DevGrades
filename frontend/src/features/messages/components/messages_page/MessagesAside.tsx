@@ -7,11 +7,11 @@ import { useQuery } from "@tanstack/react-query";
 import conversationService from "../../api/conversationService";
 
 interface MessagesAsideProps {
-    conversationId: string | null;
+    recipientId: string | null;
     onSelect: (conversationId: string) => void;
 }
 
-export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) {
+export function MessagesAside({ recipientId, onSelect }: MessagesAsideProps) {
 
     const { data: conversations } = useQuery<ConversationDto[]>({
         queryKey: ["conversations"],
@@ -41,8 +41,8 @@ export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) 
                             key={conversation.id}
                             conversation={conversation}
                             onSelect={onSelect}
-                            isSelected={conversationId === conversation.id}
-                            user={conversation.users[0]}
+                            isSelected={false}
+                            user={conversation.users.find(user => user.id !== recipientId)!}
                         />
                     ))
                     : <div className="p-4 text-sm text-muted-foreground">

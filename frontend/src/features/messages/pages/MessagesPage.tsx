@@ -4,8 +4,8 @@ import { ConversationPanel } from "./ConversationPanel";
 
 export default function MessagesPage() {
 
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
+    const [selectedRecipientId, setSelectedRecipientId] = useState<string | null>(null);
+    
     return (
         <section
             aria-label="Messages"
@@ -13,27 +13,27 @@ export default function MessagesPage() {
             <div className="flex min-h-0 flex-1 overflow-hidden rounded-xl border border-border bg-card">
                 <div
                     className={
-                        selectedId
+                        selectedRecipientId
                             ? "hidden min-h-0 md:flex md:w-80 md:shrink-0"
                             : "flex min-h-0 min-w-0 flex-1 md:w-80 md:flex-none md:shrink-0"
                     }
                 >
                     <MessagesAside
-                        conversationId={selectedId}
-                        onSelect={setSelectedId}
+                        recipientId={selectedRecipientId}
+                        onSelect={setSelectedRecipientId}
                     />
                 </div>
 
                 <div
                     className={
-                        selectedId
+                        selectedRecipientId
                             ? "flex min-h-0 min-w-0 flex-1"
                             : "hidden min-h-0 min-w-0 flex-1 md:flex"
                     }
                 >
                     <ConversationPanel
-                        conversationId={selectedId}
-                        onBack={() => setSelectedId(null)}
+                        recipientId={selectedRecipientId}
+                        onBack={() => setSelectedRecipientId(null)}
                     />
                 </div>
             </div>

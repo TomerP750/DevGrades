@@ -4,6 +4,7 @@ import { Button } from "../../../../shared/ui/Button";
 import conversationService from "../../api/conversationService";
 import type { ConversationDto } from "../../models/ConversationDto";
 import { ConversationListItem, } from "./ConversationListItem";
+import { SearchInput } from "../../../../shared/ui/SearchInput";
 
 
 interface ConversationsListProps {
@@ -22,6 +23,7 @@ export function ConversationsList({ onSelect, conversationId }: ConversationsLis
     return (
         <div className="flex min-h-0 flex-1 flex-col px-4 py-5 rounded-lg">
             <div className="mb-4 flex items-center gap-4">
+                <SearchInput placeholder="Search users" />
                 <Button
                     type="button"
                     variant="unstyled"

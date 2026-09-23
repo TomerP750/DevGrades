@@ -3,7 +3,7 @@ import axios from "axios";
 
 class ConversationService {
 
-  async findOneByUserIdAndRecipientId(recipientId: string) {
+  async findByRecipientId(recipientId: string) {
     return (await axios.get(`${baseApiUrl}/conversations/${recipientId}`)).data;
   }
 

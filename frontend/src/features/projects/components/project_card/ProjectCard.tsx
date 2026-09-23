@@ -17,6 +17,7 @@ import { Status } from "../../models/Status";
 import { ClosedProjectState } from "./ClosedProjectState";
 import { ProjectMenu } from "./ProjectMenu";
 import { Thumbnail } from "./Thumbnail";
+import { titleCase } from "../../../../shared/utils/titleCase";
 
 interface ProjectCardProps {
     project: ProjectDto;
@@ -79,7 +80,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                                         className="min-w-0"
                                         to={`/u/${project.user.id}`}>
                                         <p className="truncate text-sm font-semibold text-card-foreground">
-                                            {project.user.firstName} {project.user.lastName}
+                                            {titleCase(project.user.firstName)} {titleCase(project.user.lastName)}
                                         </p>
                                     </Link>
                                     <span aria-hidden="true" className="shrink-0 text-xs text-muted-foreground">
@@ -130,9 +131,9 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         <h2 className="min-w-0 text-xl font-bold leading-snug tracking-tight text-card-foreground">
                             <Link
                                 to={projectPath}
-                                className="rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                className="tracking-wide font-medium rounded-sm transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                             >
-                                {project.name}
+                                {titleCase(project.name)}
                             </Link>
                         </h2>
                     </div>

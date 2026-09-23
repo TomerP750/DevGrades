@@ -11,29 +11,33 @@ import type { CreateMessageDto } from "../models/CreateMessageDto";
 import { useForm } from "react-hook-form";
 
 interface ConversationPanelProps {
-    conversationId: string | null;
+    recipientId: string | null;
     onBack: () => void;
 }
 
-export function ConversationPanel({ conversationId, onBack }: ConversationPanelProps) {
+export function ConversationPanel({ recipientId, onBack }: ConversationPanelProps) {
 
     const { register, handleSubmit, reset, watch } = useForm<CreateMessageDto>();
 
     const content = watch("content");
 
     const { data: conversation } = useQuery<ConversationDto>({
-        queryKey: ["conversation", conversationId],
-        queryFn: () => conversationService.findById(conversationId ?? ""),
+        queryKey: ["conversation", recipientId],
+        queryFn: () => conversationService.findByRecipientId(recipientId ?? ""),
         enabled: false,
     });
 
     const conversationName = conversation ? conversation.users.find(
-        (user) => user.id !== user.id
+        (user) => user.id !== recipientId
     )?.username : "";
 
     const handleSendMessage = (data: CreateMessageDto) => {
         console.log(data);
         reset();
+    }
+
+    if (!conversation) {
+        return null;
     }
 
     return (
@@ -51,7 +55,7 @@ export function ConversationPanel({ conversationId, onBack }: ConversationPanelP
                     className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
 
-                {conversation && <Badge size="lg" user={conversation.users[0]} />}
+                <Badge size="lg" user={conversation.users[0]} />
 
                 <h1 className="min-w-0 truncate text-sm font-semibold text-card-foreground">
                     {conversationName}

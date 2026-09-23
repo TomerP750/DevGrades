@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './users.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { SignUpRequestDto } from '../authentication/dtos/signup.dto';
@@ -90,6 +90,13 @@ export class UsersService {
 
         const hashedPassword = await hash(changePasswordDto.newPassword, 12);
         await this.usersRepository.update(id, { password: hashedPassword });
+    }
+
+    async searchUsers(query: string) {
+        return await this.usersRepository.find({ where: { 
+            username: Like(`%${query}%`) 
+        } 
+        });
     }
 
     /** `addSelect` re-adds the `select: false` password column on top of the

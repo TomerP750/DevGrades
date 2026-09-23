@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Put, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
@@ -32,6 +32,12 @@ export class UsersController {
   @Patch("/change-password")
   async changePassword(@CurrentUserId() userId: string, @Body() changePasswordDto: ChangePasswordDto) {
     return this.usersService.changePassword(userId, changePasswordDto);
+  }
+
+  @Get('/search')
+  @Serialize(UserDto)
+  async searchUsers(@Query('query') query: string) {
+    return this.usersService.searchUsers(query);
   }
 
 }
