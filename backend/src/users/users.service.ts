@@ -92,9 +92,9 @@ export class UsersService {
         await this.usersRepository.update(id, { password: hashedPassword });
     }
 
-    async searchUsers(query: string) {
+    async searchUsers(query: string): Promise<User[]> {
         return await this.usersRepository.find({ where: { 
-            username: Like(`%${query}%`) 
+            username: Like(`%${query.toLocaleLowerCase()}%`) 
         } 
         });
     }

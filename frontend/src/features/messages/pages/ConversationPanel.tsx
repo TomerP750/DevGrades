@@ -9,35 +9,32 @@ import { useQuery } from "@tanstack/react-query";
 import type { ConversationDto } from "../models/ConversationDto";
 import type { CreateMessageDto } from "../models/CreateMessageDto";
 import { useForm } from "react-hook-form";
+import type { UserDto } from "../../../shared/models/UserDto";
 
 interface ConversationPanelProps {
-    recipientId: string | null;
+    recipient: UserDto | null;
     onBack: () => void;
 }
 
-export function ConversationPanel({ recipientId, onBack }: ConversationPanelProps) {
+export function ConversationPanel({ recipient, onBack }: ConversationPanelProps) {
 
     const { register, handleSubmit, reset, watch } = useForm<CreateMessageDto>();
 
     const content = watch("content");
 
     const { data: conversation } = useQuery<ConversationDto>({
-        queryKey: ["conversation", recipientId],
-        queryFn: () => conversationService.findByRecipientId(recipientId ?? ""),
+        queryKey: ["conversation", recipient?.id],
+        queryFn: () => conversationService.findByRecipientId(recipient?.id ?? ""),
         enabled: false,
     });
 
     const conversationName = conversation ? conversation.users.find(
-        (user) => user.id !== recipientId
+        (user) => user.id !== recipient?.id
     )?.username : "";
 
     const handleSendMessage = (data: CreateMessageDto) => {
-        console.log(data);
+        
         reset();
-    }
-
-    if (!conversation) {
-        return null;
     }
 
     return (
@@ -55,10 +52,10 @@ export function ConversationPanel({ recipientId, onBack }: ConversationPanelProp
                     className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 />
 
-                <Badge size="lg" user={conversation.users[0]} />
+                <Badge size="lg" user={recipient!} />
 
                 <h1 className="min-w-0 truncate text-sm font-semibold text-card-foreground">
-                    {conversationName}
+                    {recipient?.username}
                 </h1>
             </header>
 

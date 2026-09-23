@@ -14,6 +14,12 @@ export class UsersController {
 
   constructor(private readonly usersService: UsersService) { }
 
+  @Get('/search')
+  @Serialize(UserDto)
+  async searchUsers(@Query('query') query: string) {
+    return this.usersService.searchUsers(query);
+  }
+
   @Get('/:id')
   async getUser(@Param('id') id: string) {
     return this.usersService.findOneUserById(id);
@@ -34,10 +40,6 @@ export class UsersController {
     return this.usersService.changePassword(userId, changePasswordDto);
   }
 
-  @Get('/search')
-  @Serialize(UserDto)
-  async searchUsers(@Query('query') query: string) {
-    return this.usersService.searchUsers(query);
-  }
+  
 
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 class UserService {
 
     async searchUsers(query: string) {
-        const response = await axios.get(`${baseApiUrl}/users/search?query=${query}`);
+        const response = await axios.get(`${baseApiUrl}/api/users/search?query=${query}`);
         return response.data;
     }
 }
