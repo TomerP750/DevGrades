@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { XIcon } from "lucide-react";
-import { ConversationsList } from "./ConversationsList";
+import { ConversationsList } from "./shared/ConversationsList";
 import { ConversationPanel } from "../pages/ConversationPanel";
 
 type InboxView =

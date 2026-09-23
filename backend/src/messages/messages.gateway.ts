@@ -9,6 +9,10 @@ import { DeleteMessageDto } from './dto/delete-message.dto';
 
 @WebSocketGateway({
   namespace: 'messages',
+  cors: {
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  }
 })
 export class MessagesGateway {
   constructor(private readonly messagesService: MessagesService) { }

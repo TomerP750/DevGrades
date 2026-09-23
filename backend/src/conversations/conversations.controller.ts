@@ -16,12 +16,28 @@ export class ConversationsController {
     return this.conversationsService.findAllByUserId(userId);
   }
 
-  @Get("/:id")
+  @Get("/:conversationId")
   @Serialize(ConversationDto)
   async getConversationById(@CurrentUserId() userId: string, @Param("id") id: string) {
     return this.conversationsService.findOneById(userId, id);
   }
 
+  @Get("/:recipientId")
+  @Serialize(ConversationDto)
+  async findByUserIdAndRecipientId(
+    @CurrentUserId() userId: string,
+    @Param("recipientId") recipientId: string
+  ) {
+    return this.conversationsService.findByUserIdAndRecipientId(
+      userId, recipientId
+    );
+  }
+
+  @Get("/user")
+  @Serialize(ConversationDto)
+  async findAllByCurrentUser(@CurrentUserId() userId: string) {
+    return this.conversationsService.findAllByUserId(userId);
+  }
   
 
 }

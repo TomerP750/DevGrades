@@ -1,6 +1,6 @@
-import { formatTimeAgo } from "../../../shared/utils/formatTimeAgo";
-import type { ConversationDto } from "../models/ConversationDto";
-import type { MessageDto } from "../models/MessageDto";
+import { formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
+import type { ConversationDto } from "../../models/ConversationDto";
+import type { MessageDto } from "../../models/MessageDto";
 
 
 interface MessageBoxProps {

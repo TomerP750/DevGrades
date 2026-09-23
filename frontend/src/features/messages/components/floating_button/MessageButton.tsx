@@ -1,7 +1,7 @@
 import { MessageSquareIcon } from "lucide-react";
 import { useState } from "react";
-import { InboxPanel } from "./InboxPanel";
-import { Button } from "../../../shared/ui/Button";
+import { InboxPanel } from "../InboxPanel";
+import { Button } from "../../../../shared/ui/Button";
 
 export function MessageButton() {
 

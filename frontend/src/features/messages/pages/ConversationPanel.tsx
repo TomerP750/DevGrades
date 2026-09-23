@@ -1,11 +1,14 @@
 import { ArrowLeftIcon, SendIcon } from "lucide-react";
-import { useState, type KeyboardEvent } from "react";
-import { Button } from "../../../shared/ui/Button";
-import { dummyConversations } from "../api/dummyConversation";
-import { TextArea } from "../../../shared/ui/TextArea";
-import { dummyMessages } from "../api/dummyMessages";
 import { Badge } from "../../../shared/ui/Badge";
-import { MessageBox } from "../components/MessageBox";
+import { Button } from "../../../shared/ui/Button";
+import { TextArea } from "../../../shared/ui/TextArea";
+// import { messagesSocket } from "../api/messagesSocket";
+import { MessageBox } from "../components/shared/MessageBox";
+import conversationService from "../api/conversationService";
+import { useQuery } from "@tanstack/react-query";
+import type { ConversationDto } from "../models/ConversationDto";
+import type { CreateMessageDto } from "../models/CreateMessageDto";
+import { useForm } from "react-hook-form";
 
 interface ConversationPanelProps {
     conversationId: string | null;
@@ -14,28 +17,24 @@ interface ConversationPanelProps {
 
 export function ConversationPanel({ conversationId, onBack }: ConversationPanelProps) {
 
-    const [draft, setDraft] = useState("");
+    const { register, handleSubmit, reset, watch } = useForm<CreateMessageDto>();
 
-    const conversation = dummyConversations.find(
-        (item) => item.id === conversationId,
-    );
+    const content = watch("content");
 
-    if (!conversation) {
-        return (
-            <p className="p-4 text-sm text-muted-foreground">
-                Conversation not found.
-            </p>
-        );
+    const { data: conversation } = useQuery<ConversationDto>({
+        queryKey: ["conversation", conversationId],
+        queryFn: () => conversationService.findById(conversationId ?? ""),
+        enabled: false,
+    });
+
+    const conversationName = conversation ? conversation.users.find(
+        (user) => user.id !== user.id
+    )?.username : "";
+
+    const handleSendMessage = (data: CreateMessageDto) => {
+        console.log(data);
+        reset();
     }
-
-    const conversationName = conversation.name;
-
-    const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            event.currentTarget.form?.requestSubmit();
-        }
-    };
 
     return (
         <section
@@ -48,12 +47,11 @@ export function ConversationPanel({ conversationId, onBack }: ConversationPanelP
                     variant="unstyled"
                     aria-label="Back to inbox"
                     onClick={onBack}
+                    leftIcon={<ArrowLeftIcon className="size-5" />}
                     className="grid size-9 shrink-0 cursor-pointer place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                >
-                    <ArrowLeftIcon className="size-5" />
-                </Button>
+                />
 
-                <Badge size="lg" user={conversation.users[0]} />
+                {conversation && <Badge size="lg" user={conversation.users[0]} />}
 
                 <h1 className="min-w-0 truncate text-sm font-semibold text-card-foreground">
                     {conversationName}
@@ -61,37 +59,38 @@ export function ConversationPanel({ conversationId, onBack }: ConversationPanelP
             </header>
 
             <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
-                {dummyMessages.map((message) => (
+                {conversation ? conversation.messages.map((message) => (
                     <MessageBox
                         key={message.id}
                         message={message}
                         conversation={conversation}
                     />
-                ))}
+                ))
+                    : <div className="p-4 text-sm text-muted-foreground">
+                        No messages found
+                    </div>}
             </ul>
 
             <form
-                onSubmit={() => { }}
+                onSubmit={handleSubmit(handleSendMessage)}
                 className="border-t border-border p-3"
             >
                 <div className="relative flex items-end gap-2">
                     <TextArea
                         rows={1}
-                        value={draft}
-                        onChange={(event) => setDraft(event.target.value)}
-                        onKeyDown={handleKeyDown}
+                        {...register("content")}
                         placeholder="Write a message"
                     />
                     <Button
                         type="submit"
                         variant="unstyled"
                         aria-label="Send message"
-                        disabled={!draft.trim()}
+                        disabled={!content?.trim()}
+                        rightIcon={<SendIcon className="size-4" />}
                         className="absolute top-1/2 right-0 -translate-y-1/2 size-12 shrink-0 cursor-pointer place-items-center rounded-xl text-primary-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                        <SendIcon className="size-4" />
-                    </Button>
+                    />
                 </div>
+
             </form>
         </section>
     );

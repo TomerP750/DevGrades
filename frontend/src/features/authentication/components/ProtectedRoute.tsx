@@ -1,7 +1,7 @@
 import { useAuth } from "../contexts/AuthContext";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Navbar } from "../../../layout/Navbar";
-import { MessageButton } from "../../messages/components/MessageButton";
+import { MessageButton } from "../../messages/components/floating_button/MessageButton";
 
 export function ProtectedRoute() {
 

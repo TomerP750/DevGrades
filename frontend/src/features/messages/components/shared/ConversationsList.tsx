@@ -1,17 +1,17 @@
-import { ConversationListItem } from "../shared/ConversationListItem";
-import { Button } from "../../../../shared/ui/Button";
-import { MessageSquarePlusIcon } from "lucide-react";
-import { SearchInput } from "../../../../shared/ui/SearchInput";
-import type { ConversationDto } from "../../models/ConversationDto";
 import { useQuery } from "@tanstack/react-query";
+import { MessageSquarePlusIcon } from "lucide-react";
+import { Button } from "../../../../shared/ui/Button";
 import conversationService from "../../api/conversationService";
+import type { ConversationDto } from "../../models/ConversationDto";
+import { ConversationListItem, } from "./ConversationListItem";
 
-interface MessagesAsideProps {
-    conversationId: string | null;
+
+interface ConversationsListProps {
     onSelect: (conversationId: string) => void;
+    conversationId?: string | null;
 }
 
-export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) {
+export function ConversationsList({ onSelect, conversationId }: ConversationsListProps) {
 
     const { data: conversations } = useQuery<ConversationDto[]>({
         queryKey: ["conversations"],
@@ -20,21 +20,19 @@ export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) 
     });
 
     return (
-        <aside
-            aria-label="Conversations"
-            className="py-3 flex min-h-0 w-full flex-col border-b border-border md:border-b-0 md:border-r"
-        >
-            <div className="flex gap-3 items-center justify-between p-4">
-                <SearchInput />
+        <div className="flex min-h-0 flex-1 flex-col px-4 py-5 rounded-lg">
+            <div className="mb-4 flex items-center gap-4">
                 <Button
+                    type="button"
                     variant="unstyled"
-                    className="cursor-pointer hover:text-primary"
-                    leftIcon={<MessageSquarePlusIcon className="size-5" />}
-                    onClick={() => { }}
-                />
+                    aria-label="New message"
+                    className="cursor-pointer"
+                >
+                    <MessageSquarePlusIcon className="size-5" />
+                </Button>
             </div>
 
-            <ul className="space-y-0.5 overflow-y-auto">
+            <ul className="min-h-0 flex-1 space-y-0.5 overflow-y-auto" aria-label="Conversations">
                 {conversations
                     ? conversations.map((conversation) => (
                         <ConversationListItem
@@ -49,6 +47,6 @@ export function MessagesAside({ conversationId, onSelect }: MessagesAsideProps) 
                         No conversations found
                     </div>}
             </ul>
-        </aside>
+        </div>
     );
 }
