@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from './users.service';
 import { describe, beforeEach, it, expect, jest } from '@jest/globals';
 import { User } from './users.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Role } from '../authentication/types/role';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
@@ -24,6 +24,7 @@ describe('UsersService', () => {
   const mockUsersRepository = {
     save: jest.fn<Repository<User>['save']>(),
     findOne: jest.fn<Repository<User>['findOne']>(),
+    find: jest.fn<Repository<User>['find']>(),
     update: jest.fn<Repository<User>['update']>(),
     delete: jest.fn<Repository<User>['delete']>(),
   };
@@ -52,7 +53,7 @@ describe('UsersService', () => {
       firstName: 'test',
       lastName: 'user',
       role: Role.USER,
-      username: '',
+      username: 'userTest',
       version: 0,
     };
     service = module.get<UsersService>(UsersService);
@@ -200,6 +201,30 @@ describe('UsersService', () => {
         .rejects.toThrow(BadRequestException);
       expect(mockUsersRepository.update).not.toHaveBeenCalled();
     });
+  });
+
+  describe('searchUsers', () => {
+
+    const users: User[] = [
+      user,
+      {
+        ...user,
+        email: 'userTest@user.com',
+        username: 'userTest2',
+      }
+    ]
+
+    const query = "userTest";
+
+    it('should search for users', async () => {
+      mockUsersRepository.find.mockResolvedValue(users);
+      const result = await service.searchUsers(query);
+      expect(result).toEqual(users);
+      expect(mockUsersRepository.find).toHaveBeenCalledWith({ where: { 
+        username: Like(`%${query.toLocaleLowerCase()}%`) 
+      } });
+    });
+
   });
 
 
