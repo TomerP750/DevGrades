@@ -20,7 +20,6 @@ export function MessagesAside({ recipient, onSelect }: MessagesAsideProps) {
     const { data: conversations } = useQuery<ConversationDto[]>({
         queryKey: ["conversations"],
         queryFn: () => conversationService.findAllByForCurrentUser(),
-        enabled: false,
     });
 
     const { data: users } = useQuery<UserDto[]>({

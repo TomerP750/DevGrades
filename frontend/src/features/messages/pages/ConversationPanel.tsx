@@ -2,7 +2,6 @@ import { ArrowLeftIcon, SendIcon } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge";
 import { Button } from "../../../shared/ui/Button";
 import { TextArea } from "../../../shared/ui/TextArea";
-// import { messagesSocket } from "../api/messagesSocket";
 import { MessageBox } from "../components/shared/MessageBox";
 import conversationService from "../api/conversationService";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +9,7 @@ import type { ConversationDto } from "../models/ConversationDto";
 import type { CreateMessageDto } from "../models/CreateMessageDto";
 import { useForm } from "react-hook-form";
 import type { UserDto } from "../../../shared/models/UserDto";
+import { messagesSocket } from "../api/messagesSocket";
 
 interface ConversationPanelProps {
     recipient: UserDto | null;
@@ -33,7 +33,13 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
     )?.username : "";
 
     const handleSendMessage = (data: CreateMessageDto) => {
-        
+        if (!recipient) return;
+
+        messagesSocket.emit("createMessage", {
+            recipientId: recipient.id,
+            content: data.content,
+        });
+
         reset();
     }
 

@@ -3,7 +3,7 @@ import { ConversationsService } from './conversations.service';
 import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { ConversationDto } from './dto/conversation.dto';
-import { Conversation } from './entities/conversation.entity';
+
 
 @Controller('/api/conversations')
 export class ConversationsController {
@@ -22,7 +22,7 @@ export class ConversationsController {
     return this.conversationsService.findOneById(userId, id);
   }
 
-  @Get("/:recipientId")
+  @Get("/recipient/:recipientId")
   @Serialize(ConversationDto)
   async findByUserIdAndRecipientId(
     @CurrentUserId() userId: string,
@@ -32,12 +32,5 @@ export class ConversationsController {
       userId, recipientId
     );
   }
-
-  @Get("/user")
-  @Serialize(ConversationDto)
-  async findAllByCurrentUser(@CurrentUserId() userId: string) {
-    return this.conversationsService.findAllByUserId(userId);
-  }
-  
 
 }
