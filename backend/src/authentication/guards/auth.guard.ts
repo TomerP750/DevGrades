@@ -2,7 +2,9 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { JwtService } from "@nestjs/jwt";
 import { Request } from "express";
 import { Reflector } from "@nestjs/core";
-
+import { JwtPayload } from "../types/jwt-payload";
+import { AuthenticatedSocket } from "../types/authenticated-socket";
+import { ConfigService } from "@nestjs/config";
 
 const IS_PUBLIC_KEY = 'isPublic';
 
@@ -11,7 +13,8 @@ export class AuthGuard implements CanActivate {
 
     constructor(
         private readonly jwtService: JwtService, 
-        private readonly reflector: Reflector
+        private readonly reflector: Reflector,
+        private readonly configService: ConfigService
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -24,21 +27,42 @@ export class AuthGuard implements CanActivate {
             return true;
         }
 
-        const request: Request = context.switchToHttp().getRequest();
-        const token = this.extractTokenFromHeader(request);
+        const { token, setUser } = this.getAuthContext(context);
+
         if (!token) {
             throw new UnauthorizedException('Unauthorized');
         }
         try {
             const payload = await this.jwtService.verifyAsync(token, {
-                secret: process.env.JWT_SECRET,
+                secret: this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET'),
             });
-            request.user = payload;
-
+            setUser(payload);
         } catch (error) {
             throw new UnauthorizedException('Unauthorized');
         }
         return true;
+    }
+
+    private getAuthContext(context: ExecutionContext) {
+        if (context.getType() === 'ws') {
+            const client = context.switchToWs().getClient<AuthenticatedSocket>();
+
+            return {
+                token: client.handshake.auth?.token,
+                setUser: (payload: JwtPayload) => {
+                    client.user = payload;
+                },
+            };
+        }
+
+        const request = context.switchToHttp().getRequest<Request>();
+
+        return {
+            token: this.extractTokenFromHeader(request),
+            setUser: (payload: JwtPayload) => {
+                request.user = payload;
+            },
+        };
     }
 
     private extractTokenFromHeader(request: Request): string | undefined {

@@ -22,3 +22,10 @@ export function formatTimeAgo(date: string | number | Date): string {
         unit.unit,
     );
 }
+
+export function formatMessageTime(date: string | Date): string {
+  return new Intl.DateTimeFormat("en-IL", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(new Date(date));
+}

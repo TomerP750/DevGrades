@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useCallback, useState } from "react";
+import { createContext, useContext, useMemo, useCallback, useState, useEffect } from "react";
 import type { UserDto } from "../../../shared/models/UserDto";
 import type { SignInRequestDto } from "../models/SignInRequestDto";
 import type { SignUpRequestDto } from "../models/SignUpRequestDto";
@@ -10,7 +10,7 @@ import { accessTokenStore } from "./accessTokenStore";
 import sessionHint from "./sessionHint";
 import axios from "axios";
 import { refreshSession } from "../api/refreshSession";
-
+import { messagesSocket } from "../../messages/api/messagesSocket";
 
 const USER_QUERY_KEY = ["auth", "user"];
 
@@ -55,6 +55,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
         retry: false,
         staleTime: Infinity,
     });
+
+    
+    useEffect(() => {
+        if (isLoading) {
+            return;
+        }
+        if (!user) {
+            messagesSocket.disconnect();
+            return;
+        }
+        messagesSocket.connect();
+
+        return () => {
+            messagesSocket.disconnect();
+        };
+    }, [user, isLoading]);
 
     const applyAuthResponse = useCallback(({ accessToken, user }: AuthResponseDto) => {
         accessTokenStore.set(accessToken);

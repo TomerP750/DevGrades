@@ -19,19 +19,19 @@ export class ConversationsService {
         if (conversation.userId === conversation.recipientId) {
             throw new BadRequestException('You cannot create a conversation with yourself');
         }
-    
+
         const [user, recipient] = await Promise.all([
             this.usersService.findOneUserById(conversation.userId),
             this.usersService.findOneUserById(conversation.recipientId),
         ]);
-    
+
         if (!user) {
             throw new NotFoundException('User not found');
         }
         if (!recipient) {
             throw new NotFoundException('Recipient not found');
         }
-    
+
         const newConversation = this.conversationRepository.create({
             users: [user, recipient],
             messages: [],
@@ -40,7 +40,7 @@ export class ConversationsService {
     }
 
     async getOrCreateConversation(userId: string, recipientId: string): Promise<Conversation> {
-        
+
         if (!userId || !recipientId) {
             throw new BadRequestException('User ID and recipient ID are required');
         }
@@ -48,12 +48,12 @@ export class ConversationsService {
         if (userId === recipientId) {
             throw new BadRequestException('You cannot create a conversation with yourself');
         }
-    
+
         const existing = await this.findByUserIdAndRecipientId(userId, recipientId);
         if (existing) {
             return existing;
         }
-    
+
         return this.createConversation({ userId, recipientId });
     }
 
@@ -89,25 +89,25 @@ export class ConversationsService {
     }
 
     async findByUserIdAndRecipientId(userId: string, recipientId: string): Promise<Conversation | null> {
-        
+
         if (userId === recipientId) {
             return null;
         }
 
         return this.conversationRepository
             .createQueryBuilder('conversation')
-            .innerJoin('conversation.users', 'sender')
-            .innerJoin('conversation.users', 'recipient')
+            .innerJoin('conversation.users', 'user1', 'user1.id = :userId', { userId })
+            .innerJoin('conversation.users', 'user2', 'user2.id = :recipientId', { recipientId })
             .leftJoinAndSelect('conversation.users', 'participants')
             .leftJoinAndSelect('conversation.messages', 'messages')
-            .where('sender.id = :userId', { userId })
-            .andWhere('recipient.id = :recipientId', { recipientId })
+            .leftJoinAndSelect('messages.user', 'messageUser')
+            .orderBy('messages.createdAt', 'ASC')
             .getOne();
     }
 
     async updateConversation(conversationId: string) {
-        await this.conversationRepository.update(conversationId, { 
-            updatedAt: new Date() 
+        await this.conversationRepository.update(conversationId, {
+            updatedAt: new Date()
         });
     }
 

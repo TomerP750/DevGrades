@@ -5,12 +5,14 @@ import { CurrentUserId } from '../authentication/decorators/current-user.decorat
 import { MessageDto } from './dto/message.dto';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { DeleteMessageDto } from './dto/delete-message.dto';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../authentication/guards/auth.guard';
 
 
 @WebSocketGateway({
   namespace: 'messages',
   cors: {
-    origin: process.env.FRONTEND_URL,
+    origin: 'http://localhost:5173',
     credentials: true,
   }
 })
@@ -19,7 +21,8 @@ export class MessagesGateway {
 
   @SubscribeMessage('createMessage')
   @Serialize(MessageDto)
-  createMessage(
+  @UseGuards(AuthGuard)
+  async createMessage(
     @CurrentUserId() userId: string,
     @MessageBody() createMessageDto: CreateMessageDto) {
     return this.messagesService.createMessage(userId, createMessageDto);
@@ -27,7 +30,8 @@ export class MessagesGateway {
 
   @SubscribeMessage('deleteMessage')
   @Serialize(MessageDto)
-  deleteMessage(
+  @UseGuards(AuthGuard)
+  async deleteMessage(
     @CurrentUserId() userId: string,
     @MessageBody() deleteMessageDto: DeleteMessageDto) {
     return this.messagesService.deleteMessage(userId, deleteMessageDto);

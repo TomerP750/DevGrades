@@ -1,16 +1,17 @@
-import { formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
-import type { ConversationDto } from "../../models/ConversationDto";
+import { formatMessageTime, formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
+import { useAuth } from "../../../authentication/contexts/AuthContext";
 import type { MessageDto } from "../../models/MessageDto";
 
 
 interface MessageBoxProps {
     message: MessageDto;
-    conversation: ConversationDto;
 }
 
-export function MessageBox({ message, conversation }: MessageBoxProps) {
+export function MessageBox({ message }: MessageBoxProps) {
 
-    const isMessageOwner = message.user.id === conversation.users[0].id;
+    const { user: currentUser } = useAuth();
+
+    const isMessageOwner = message.user.id === currentUser?.id;
 
     return (
         <li
@@ -30,7 +31,7 @@ export function MessageBox({ message, conversation }: MessageBoxProps) {
                             : "text-muted-foreground"
                         }`}
                 >
-                    {formatTimeAgo(message.createdAt)}
+                    {formatMessageTime(message.createdAt)}
                 </span>
             </p>
         </li>

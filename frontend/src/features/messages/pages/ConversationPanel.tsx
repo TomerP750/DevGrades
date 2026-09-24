@@ -10,6 +10,7 @@ import type { CreateMessageDto } from "../models/CreateMessageDto";
 import { useForm } from "react-hook-form";
 import type { UserDto } from "../../../shared/models/UserDto";
 import { messagesSocket } from "../api/messagesSocket";
+import type { MessageDto } from "../models/MessageDto";
 
 interface ConversationPanelProps {
     recipient: UserDto | null;
@@ -25,12 +26,7 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
     const { data: conversation } = useQuery<ConversationDto>({
         queryKey: ["conversation", recipient?.id],
         queryFn: () => conversationService.findByRecipientId(recipient?.id ?? ""),
-        enabled: false,
     });
-
-    const conversationName = conversation ? conversation.users.find(
-        (user) => user.id !== recipient?.id
-    )?.username : "";
 
     const handleSendMessage = (data: CreateMessageDto) => {
         if (!recipient) return;
@@ -42,11 +38,11 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
 
         reset();
     }
-
+ 
     return (
         <section
             className="flex min-h-0 flex-1 flex-col"
-            aria-label={`Conversation with ${conversationName}`}
+            aria-label={`Conversation with ${recipient?.username}`}
         >
             <header className="flex items-center gap-3 border-b border-border px-3 py-3">
                 <Button
@@ -66,11 +62,11 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
             </header>
 
             <ul className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
-                {conversation ? conversation.messages.map((message) => (
+                {conversation ? conversation.messages.map((message: MessageDto) => (
+                    console.log('MESSAGE:', message),
                     <MessageBox
                         key={message.id}
                         message={message}
-                        conversation={conversation}
                     />
                 ))
                     : <div className="p-4 text-sm text-muted-foreground">

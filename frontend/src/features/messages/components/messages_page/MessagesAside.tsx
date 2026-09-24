@@ -7,15 +7,18 @@ import conversationService from "../../api/conversationService";
 import type { ConversationDto } from "../../models/ConversationDto";
 import { ConversationListItem } from "../shared/ConversationListItem";
 import { UserSearchResult } from "./UserSearchResult";
+import { useAuth } from "../../../authentication/contexts/AuthContext";
 
 interface MessagesAsideProps {
     recipient: UserDto | null;
     onSelect: (recipient: UserDto) => void;
 }
 
-export function MessagesAside({ recipient, onSelect }: MessagesAsideProps) {
+export function MessagesAside({ onSelect }: MessagesAsideProps) {
 
     const [query, setQuery] = useState<string>("");
+
+    const { user: currentUser } = useAuth();
 
     const { data: conversations } = useQuery<ConversationDto[]>({
         queryKey: ["conversations"],
@@ -27,6 +30,10 @@ export function MessagesAside({ recipient, onSelect }: MessagesAsideProps) {
         queryFn: () => userService.searchUsers(query),
         enabled: query.trim().length > 0,
     });
+
+    if (conversations) {
+        console.log(conversations);
+    }
 
     return (
         <aside
@@ -67,7 +74,7 @@ export function MessagesAside({ recipient, onSelect }: MessagesAsideProps) {
                                     onSelect={(user) => onSelect(user)}
                                     isSelected={false}
                                     recipient={conversation.users.find(
-                                        (user) => user.id !== recipient?.id
+                                        (user) => user.id !== currentUser?.id
                                     )!}
                                 />
                             ))

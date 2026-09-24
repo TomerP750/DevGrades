@@ -39,5 +39,6 @@ import { RefreshToken } from './refresh-token/refresh-tokens.entity';
       useClass: AdminGuard,
     }
   ],
+  exports: [JwtModule]
 })
 export class AuthenticationModule { }
