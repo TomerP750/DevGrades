@@ -1,4 +1,4 @@
-import { formatMessageTime, formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
+import { formatMessageTime } from "../../../../shared/utils/formatTimeAgo";
 import { useAuth } from "../../../authentication/contexts/AuthContext";
 import type { MessageDto } from "../../models/MessageDto";
 

@@ -1,11 +1,17 @@
 import { MessageSquareIcon } from "lucide-react";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { InboxPanel } from "../InboxPanel";
 import { Button } from "../../../../shared/ui/Button";
 
 export function MessageButton() {
 
+    const { pathname } = useLocation();
     const [isInboxOpen, setIsInboxOpen] = useState(false);
+
+    if (pathname === "/messages") {
+        return null;
+    }
 
     return (
         <div className="hidden z-50 md:block fixed bottom-5 right-5">

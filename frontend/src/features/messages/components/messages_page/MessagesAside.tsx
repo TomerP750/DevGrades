@@ -14,79 +14,98 @@ interface MessagesAsideProps {
     onSelect: (recipient: UserDto) => void;
 }
 
-export function MessagesAside({ onSelect }: MessagesAsideProps) {
+export function MessagesAside({ recipient, onSelect }: MessagesAsideProps) {
 
     const [query, setQuery] = useState<string>("");
+    const [searchKey, setSearchKey] = useState(0);
 
     const { user: currentUser } = useAuth();
 
-    const { data: conversations } = useQuery<ConversationDto[]>({
+    const {
+        data: conversations,
+        isLoading: isLoadingConversations,
+        isError: isConversationsError,
+    } = useQuery<ConversationDto[]>({
         queryKey: ["conversations"],
         queryFn: () => conversationService.findAllByForCurrentUser(),
     });
 
-    const { data: users } = useQuery<UserDto[]>({
+    const {
+        data: users,
+        isLoading: isSearching,
+        isError: isSearchError,
+    } = useQuery<UserDto[]>({
         queryKey: ["messages-users", query],
         queryFn: () => userService.searchUsers(query),
         enabled: query.trim().length > 0,
     });
 
-    if (conversations) {
-        console.log(conversations);
-    }
+    const matches = (users ?? []).filter((user) => user.id !== currentUser?.id);
+    const isSearchingUsers = query.trim().length > 0;
 
     return (
         <aside
             aria-label="Conversations"
-            className="py-3 flex min-h-0 w-full flex-col border-b border-border md:border-b-0 md:border-r"
+            className="flex min-h-0 w-full flex-1 flex-col border-b border-border py-3 md:border-b-0 md:border-r"
         >
-            <div className="p-4 flex items-center justify-between">
-                <SearchInput onAfterSearch={setQuery} />
+            <div className="flex items-center justify-between p-4">
+                <SearchInput
+                    key={searchKey}
+                    onAfterSearch={setQuery}
+                />
             </div>
 
-            <div className="relative">
-                {query.trim().length > 0 ? (
-                    users && users.length > 0 ? (
-                        <div className="absolute right-4 top-full z-50 mt-2 w-72 rounded-lg border bg-background p-1 shadow-lg">
-                            {users.map((user) => (
+            <div className="relative min-h-0 flex-1">
+                {isSearchingUsers ? (
+                    <div className="absolute inset-x-4 top-0 z-50 rounded-lg border bg-background p-1 shadow-lg">
+                        {isSearching ? (
+                            <p className="p-4 text-sm text-muted-foreground">Searching…</p>
+                        ) : isSearchError ? (
+                            <p className="p-4 text-sm text-muted-foreground">Couldn&apos;t search users.</p>
+                        ) : matches.length > 0 ? (
+                            matches.map((user) => (
                                 <UserSearchResult
                                     key={user.id}
                                     user={user}
                                     onSelect={(user) => {
                                         setQuery("");
-                                        onSelect(user)
+                                        setSearchKey((key) => key + 1);
+                                        onSelect(user);
                                     }}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="absolute right-4 top-full z-50 mt-2 w-72 rounded-lg border bg-background p-4 text-sm text-muted-foreground shadow-lg">
-                            No users found
-                        </div>
-                    )
-                ) : (
-                    <ul className="space-y-0.5 overflow-y-auto">
-                        {conversations?.length ? (
-                            conversations.map((conversation) => (
-                                <ConversationListItem
-                                    key={conversation.id}
-                                    conversation={conversation}
-                                    onSelect={(user) => onSelect(user)}
-                                    isSelected={false}
-                                    recipient={conversation.users.find(
-                                        (user) => user.id !== currentUser?.id
-                                    )!}
                                 />
                             ))
                         ) : (
-                            <div className="p-4 text-sm text-muted-foreground">
-                                No conversations found
-                            </div>
+                            <p className="p-4 text-sm text-muted-foreground">No users found</p>
+                        )}
+                    </div>
+                ) : (
+                    <ul className="h-full space-y-0.5 overflow-y-auto">
+                        {isLoadingConversations ? (
+                            <li className="p-4 text-sm text-muted-foreground">Loading conversations…</li>
+                        ) : isConversationsError ? (
+                            <li className="p-4 text-sm text-muted-foreground">Couldn&apos;t load conversations.</li>
+                        ) : conversations?.length ? (
+                            conversations.map((conversation) => {
+                                const otherUser = conversation.users.find(
+                                    (user) => user.id !== currentUser?.id,
+                                );
+                                if (!otherUser) return null;
+                                return (
+                                    <ConversationListItem
+                                        key={conversation.id}
+                                        conversation={conversation}
+                                        onSelect={onSelect}
+                                        isSelected={recipient?.id === otherUser.id}
+                                        recipient={otherUser}
+                                    />
+                                );
+                            })
+                        ) : (
+                            <li className="p-4 text-sm text-muted-foreground">No conversations found</li>
                         )}
                     </ul>
                 )}
             </div>
-
         </aside>
     );
 }

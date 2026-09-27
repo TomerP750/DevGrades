@@ -18,8 +18,11 @@ export class ConversationsController {
 
   @Get("/:conversationId")
   @Serialize(ConversationDto)
-  async getConversationById(@CurrentUserId() userId: string, @Param("id") id: string) {
-    return this.conversationsService.findOneById(userId, id);
+  async getConversationById(
+    @CurrentUserId() userId: string,
+    @Param("conversationId") conversationId: string,
+  ) {
+    return this.conversationsService.findOneById(userId, conversationId);
   }
 
   @Get("/recipient/:recipientId")

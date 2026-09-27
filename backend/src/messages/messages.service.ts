@@ -31,7 +31,12 @@ export class MessagesService {
 
     const savedMessage = await this.messageRepository.save(newMessage);
     await this.conversationsService.updateConversation(conversation.id);
-    return savedMessage;
+
+    const message = await this.findOneMessageById(savedMessage.id);
+    if (!message) {
+      throw new NotFoundException('Message not found');
+    }
+    return message;
 
   }
 

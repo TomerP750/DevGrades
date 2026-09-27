@@ -1,10 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { Request } from "express";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
-import { JwtPayload } from "../types/jwt-payload";
+import { Request } from "express";
+import { AuthenticationService } from "../authentication.service";
 import { AuthenticatedSocket } from "../types/authenticated-socket";
-import { ConfigService } from "@nestjs/config";
+import { JwtPayload } from "../types/jwt-payload";
 
 const IS_PUBLIC_KEY = 'isPublic';
 
@@ -12,10 +11,9 @@ const IS_PUBLIC_KEY = 'isPublic';
 export class AuthGuard implements CanActivate {
 
     constructor(
-        private readonly jwtService: JwtService, 
         private readonly reflector: Reflector,
-        private readonly configService: ConfigService
-    ) {}
+        private readonly authenticationService: AuthenticationService
+    ) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
@@ -28,18 +26,11 @@ export class AuthGuard implements CanActivate {
         }
 
         const { token, setUser } = this.getAuthContext(context);
-
         if (!token) {
-            throw new UnauthorizedException('Unauthorized');
+            return false;
         }
-        try {
-            const payload = await this.jwtService.verifyAsync(token, {
-                secret: this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET'),
-            });
-            setUser(payload);
-        } catch (error) {
-            throw new UnauthorizedException('Unauthorized');
-        }
+        const payload = await this.authenticationService.verifyAccessToken(token);
+        setUser(payload);
         return true;
     }
 
@@ -69,6 +60,6 @@ export class AuthGuard implements CanActivate {
         const [type, token] = request.headers.authorization?.split(' ') ?? [];
         return type === 'Bearer' ? token : undefined;
     }
-    
+
 }
 

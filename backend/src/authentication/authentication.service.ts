@@ -7,6 +7,8 @@ import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { User } from '../users/users.entity';
 import { InternalAuthResponseDto } from './dtos/internal-auth-response.dto';
 import { compare } from 'bcrypt';
+import { JwtPayload } from './types/jwt-payload';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,6 +17,7 @@ export class AuthenticationService {
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
         private readonly refreshTokenService: RefreshTokenService,
+        private readonly configService: ConfigService,
     ) { }
 
     async signIn(signInRequestDto: SignInRequestDto): Promise<InternalAuthResponseDto> {
@@ -57,6 +60,19 @@ export class AuthenticationService {
     async signOut(rawRefreshToken: string) {
         await this.refreshTokenService.revokeRefreshToken(rawRefreshToken);
     }
+
+    async verifyAccessToken(token?: string): Promise<JwtPayload> {
+        if (!token) {
+          throw new UnauthorizedException('Unauthorized');
+        }
+        try {
+          return await this.jwtService.verifyAsync<JwtPayload>(token, {
+            secret: this.configService.getOrThrow('JWT_ACCESS_TOKEN_SECRET'),
+          });
+        } catch {
+          throw new UnauthorizedException('Unauthorized');
+        }
+      }
 
     async signOutAll(userId: string) {
         await this.refreshTokenService.revokeAllForUser(userId);

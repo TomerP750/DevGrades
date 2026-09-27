@@ -77,15 +77,33 @@ export class ConversationsService {
         return conversation;
     }
 
-    async findAllByUserId(userId: string): Promise<Conversation[]> {
-        return this.conversationRepository
+    async findAllByUserId(userId: string) {
+        const conversations = await this.conversationRepository
             .createQueryBuilder('conversation')
             .innerJoin('conversation.users', 'member')
             .leftJoinAndSelect('conversation.users', 'participants')
-            .leftJoinAndSelect('conversation.messages', 'messages')
+            .leftJoinAndSelect(
+                'conversation.messages',
+                'lastMessage',
+                `lastMessage.id = (
+                    SELECT latest.id FROM messages latest
+                    WHERE latest.conversationId = conversation.id
+                    ORDER BY latest.createdAt DESC
+                    LIMIT 1
+                )`,
+            )
+            .leftJoinAndSelect('lastMessage.user', 'messageAuthor')
             .where('member.id = :userId', { userId })
             .orderBy('conversation.updatedAt', 'DESC')
             .getMany();
+
+        return conversations.map((conversation) => ({
+            id: conversation.id,
+            createdAt: conversation.createdAt,
+            users: conversation.users,
+            messages: [] as Conversation['messages'],
+            lastMessage: conversation.messages?.[0] ?? null,
+        }));
     }
 
     async findByUserIdAndRecipientId(userId: string, recipientId: string): Promise<Conversation | null> {

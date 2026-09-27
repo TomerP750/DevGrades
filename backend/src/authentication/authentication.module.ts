@@ -11,6 +11,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AdminGuard } from './guards/admin.guard';
 import { RefreshToken } from './refresh-token/refresh-tokens.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RefreshToken } from './refresh-token/refresh-tokens.entity';
         },
       }),
     }),
+    ConfigModule,
   ],
   controllers: [AuthenticationController],
   providers: [
@@ -39,6 +41,6 @@ import { RefreshToken } from './refresh-token/refresh-tokens.entity';
       useClass: AdminGuard,
     }
   ],
-  exports: [JwtModule]
+  exports: [JwtModule, AuthenticationService]
 })
 export class AuthenticationModule { }

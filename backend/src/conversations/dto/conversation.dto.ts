@@ -19,5 +19,8 @@ export class ConversationDto {
     @Expose()
     @Type(() => MessageDto)
     messages!: MessageDto[];
-    
+
+    @Expose()
+    @Type(() => MessageDto)
+    lastMessage!: MessageDto | null;
 }
