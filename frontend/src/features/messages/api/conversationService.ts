@@ -7,10 +7,6 @@ class ConversationService {
     return (await axios.get(`${baseApiUrl}/api/conversations/recipient/${recipientId}`)).data;
   }
 
-  async findById(conversationId: string) {
-    return (await axios.get(`${baseApiUrl}/api/conversations/${conversationId}`)).data;
-  }
-
   async findAllByForCurrentUser() {
     return (await axios.get(`${baseApiUrl}/api/conversations/all`)).data;
   }

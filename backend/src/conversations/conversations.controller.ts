@@ -16,15 +16,6 @@ export class ConversationsController {
     return this.conversationsService.findAllByUserId(userId);
   }
 
-  @Get("/:conversationId")
-  @Serialize(ConversationDto)
-  async getConversationById(
-    @CurrentUserId() userId: string,
-    @Param("conversationId") conversationId: string,
-  ) {
-    return this.conversationsService.findOneById(userId, conversationId);
-  }
-
   @Get("/recipient/:recipientId")
   @Serialize(ConversationDto)
   async findByUserIdAndRecipientId(

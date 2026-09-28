@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { ArrowLeftIcon, SendIcon } from "lucide-react";
 import { Badge } from "../../../shared/ui/Badge";
 import { Button } from "../../../shared/ui/Button";
@@ -21,8 +21,9 @@ interface ConversationPanelProps {
 export function ConversationPanel({ recipient, onBack }: ConversationPanelProps) {
 
     const listRef = useRef<HTMLUListElement>(null);
-    const { register, handleSubmit, formState: { isSubmitting }, reset, watch } = useForm<CreateMessageDto>();
-
+    const [isSending, setIsSending] = useState(false);
+    
+    const { register, handleSubmit, reset, watch } = useForm<CreateMessageDto>();
     const content = watch("content");
 
     const { data: conversation, isLoading, isError } = useQuery<ConversationDto | null>({
@@ -40,21 +41,41 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
     }, [messages.length, recipient?.id]);
 
     const handleSendMessage = (data: CreateMessageDto) => {
-
-        if (!recipient || isSubmitting) return;
-        
+        if (!recipient || isSending) return;
         const trimmed = data.content.trim();
         if (!trimmed) return;
 
+        setIsSending(true);
         messagesSocket.timeout(8000).emit(
             "createMessage",
             { recipientId: recipient.id, content: trimmed },
             (error: unknown, response?: { status?: string }) => {
+                setIsSending(false);
                 if (error) return;
-                if (response && typeof response === "object" && response.status === "error") return;
+                if (response && typeof response === "object"
+                    && response.status === "error") return;
                 reset();
             },
         );
+    };
+
+    const renderMessages = () => {
+        if (isLoading) {
+            return (
+                <li className="p-4 animate-pulse rounded-bl-md bg-muted text-foreground">
+                    Loading conversation…
+                </li>
+            );
+        }
+        if (isError) {
+            return <li className="p-4 text-sm text-muted-foreground">Couldn&apos;t load this conversation.</li>;
+        }
+        if (messages.length === 0) {
+            return <li className="p-4 text-sm text-muted-foreground">No messages yet</li>;
+        }
+        return messages.map((message: MessageDto) => (
+            <MessageBox key={message.id} message={message} />
+        ));
     };
 
     return (
@@ -80,20 +101,7 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
             </header>
 
             <ul ref={listRef} className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
-                {isLoading ? (
-                    <li className="p-4 text-sm text-muted-foreground">Loading conversation…</li>
-                ) : isError ? (
-                    <li className="p-4 text-sm text-muted-foreground">Couldn&apos;t load this conversation.</li>
-                ) : messages.length === 0 ? (
-                    <li className="p-4 text-sm text-muted-foreground">No messages yet</li>
-                ) : (
-                    messages.map((message: MessageDto) => (
-                        <MessageBox
-                            key={message.id}
-                            message={message}
-                        />
-                    ))
-                )}
+                {renderMessages()}
             </ul>
 
             <form
@@ -103,15 +111,16 @@ export function ConversationPanel({ recipient, onBack }: ConversationPanelProps)
                 <div className="relative flex items-end gap-2">
                     <TextArea
                         rows={1}
-                        {...register("content")}
+                        {...register("content", { maxLength: 1000 })}
                         placeholder="Write a message"
                         className="pr-14"
+                        helperText={`${content?.length ?? 0}/1000`}
                     />
                     <Button
                         type="submit"
                         variant="unstyled"
                         aria-label="Send message"
-                        disabled={!content?.trim() || isSubmitting}
+                        disabled={!content?.trim() || isSending}
                         rightIcon={<SendIcon className="size-4" />}
                         className="absolute top-1/2 right-0 grid size-12 shrink-0 -translate-y-1/2 cursor-pointer place-items-center rounded-xl text-primary-foreground transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
                     />

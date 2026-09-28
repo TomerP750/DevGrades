@@ -15,11 +15,8 @@ export class ConversationsService {
         private usersService: UsersService,
     ) { }
 
-    async createConversation(conversation: CreateConversationDto): Promise<Conversation> {
-        if (conversation.userId === conversation.recipientId) {
-            throw new BadRequestException('You cannot create a conversation with yourself');
-        }
-
+    private async createConversation(conversation: CreateConversationDto): Promise<Conversation> {
+        
         const [user, recipient] = await Promise.all([
             this.usersService.findOneUserById(conversation.userId),
             this.usersService.findOneUserById(conversation.recipientId),
@@ -55,26 +52,6 @@ export class ConversationsService {
         }
 
         return this.createConversation({ userId, recipientId });
-    }
-
-    async findOneById(userId: string, id: string): Promise<Conversation | null> {
-        const conversation = await this.conversationRepository.findOne({
-            where: { id },
-            relations: {
-                users: true,
-                messages: true
-            }
-        });
-
-        if (!conversation) {
-            throw new NotFoundException('Conversation not found');
-        }
-
-        if (!conversation.users.some((participant) => participant.id === userId)) {
-            throw new ForbiddenException('You are not allowed to access this conversation');
-        }
-
-        return conversation;
     }
 
     async findAllByUserId(userId: string) {
