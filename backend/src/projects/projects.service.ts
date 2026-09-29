@@ -109,14 +109,16 @@ export class ProjectsService {
   }
 
   async delete(userId: string, projectId: string) {
-    if (!await this.isPermittedToOperateProject(userId, projectId)) {
+    const permitted = await this.isPermittedToOperateProject(userId, projectId);
+    if (!permitted) {
       throw new ForbiddenException('You are not allowed to delete this project');
     }
     await this.projectsRepository.delete(projectId);
   }
 
   async closeProject(userId: string, projectId: string) {
-    if (!await this.isPermittedToOperateProject(userId, projectId)) {
+    const permitted = await this.isPermittedToOperateProject(userId, projectId);
+    if (!permitted) {
       throw new ForbiddenException('You are not allowed to close this project');
     }
     await this.projectsRepository.update(projectId, { status: Status.CLOSED });
