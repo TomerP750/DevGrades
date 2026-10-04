@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     ArrowUpRightIcon,
     BookmarkIcon,
@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import { Badge } from "../../../../shared/ui/Badge";
 import { Button } from "../../../../shared/ui/Button";
 import { formatTimeAgo } from "../../../../shared/utils/formatTimeAgo";
-import { useAuth } from "../../../authentication/contexts/AuthContext";
 import archiveProjectService from "../../api/archiveProjectService";
 import { useIsOwner } from "../../hooks/useIsOwner";
 import { resetProjectsFeed } from "../../hooks/useProjectsFeed";
@@ -25,20 +24,14 @@ interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps) {
 
-    const { user } = useAuth();
-
-    const { status } = project;
+    const { status, overallAverageRating } = project;
     const isClosed = status === Status.CLOSED;
 
     const queryClient = useQueryClient();
 
-    const { mutate: toggleArchive } = useMutation({
+    const { mutate: toggleArchive, data: toggledArchiveState } = useMutation({
         mutationFn: archiveProjectService.toggleArchive,
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["archived-projects", user?.id, project.id],
-            });
-            resetProjectsFeed(queryClient);
         },
     });
 
@@ -46,10 +39,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         toggleArchive(project.id);
     }
 
-    const { data: archived } = useQuery({
-        queryKey: ["archived-projects", user?.id, project.id],
-        queryFn: () => archiveProjectService.isArchived(project.id),
-    });
+    const archived = toggledArchiveState ?? project.isArchived ?? false;
 
     const isOwner = useIsOwner(project);
 
@@ -124,9 +114,11 @@ export function ProjectCard({ project }: ProjectCardProps) {
                     <div className="mt-4 space-y-2 min-w-0">
                         <div className="flex items-center gap-2">
                             <StarIcon className="size-4 text-yellow-500 fill-yellow-500" />
-                            <p className="text-sm font-medium dark:text-white">
-                                4.5 / 5
-                            </p>
+                            {overallAverageRating ? <p className="text-sm font-medium dark:text-white">
+                                {overallAverageRating.toFixed(1)} / 5
+                            </p> : <p className="text-sm opacity-50 font-light tracking-wide dark:text-white">
+                                No reviews yet
+                            </p>}
                         </div>
                         <h2 className="min-w-0 text-xl font-bold leading-snug tracking-tight text-card-foreground">
                             <Link

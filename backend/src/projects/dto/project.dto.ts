@@ -22,4 +22,8 @@ export class ProjectDto {
     user!: UserDto;
     @Expose()
     createdAt!: Date;
+    @Expose()
+    overallAverageRating?: number;
+    @Expose()
+    isArchived?: boolean;
 }

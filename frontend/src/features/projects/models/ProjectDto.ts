@@ -12,4 +12,6 @@ export interface ProjectDto {
     demoUrl: string;
     createdAt: string;
     user: UserDto;
+    overallAverageRating?: number;
+    isArchived?: boolean;
 }

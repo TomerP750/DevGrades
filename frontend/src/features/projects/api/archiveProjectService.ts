@@ -4,11 +4,11 @@ import { baseApiUrl } from "../../../shared/utils/baseApi";
 
 class ArchiveProjectService {
 
-    async toggleArchive(projectId: string) {
+    async toggleArchive(projectId: string): Promise<boolean> {
         return (await axios.post(`${baseApiUrl}/api/archived-projects/toggle/${projectId}`)).data;
     }
 
-    async isArchived(projectId: string) {
+    async isArchived(projectId: string): Promise<boolean> {
         return (await axios.get(`${baseApiUrl}/api/archived-projects/is-archived/${projectId}`)).data;
     }
 }

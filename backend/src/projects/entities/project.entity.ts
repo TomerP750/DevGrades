@@ -43,9 +43,9 @@ export class Project {
     @IsString()
     imageUrl!: string;
 
-    @CreateDateColumn({ type: 'timestamp', precision: 3 })
+    @CreateDateColumn({ type: 'timestamp'})
     createdAt!: Date;
 
-    @UpdateDateColumn({ type: 'timestamp', precision: 3 })
+    @UpdateDateColumn({ type: 'timestamp'})
     updatedAt!: Date;
 }
