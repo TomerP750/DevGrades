@@ -4,22 +4,25 @@ import { ProjectSort, resolveProjectSort } from './project-sort';
 
 export type DecodedProjectCursor = {
     sortValue: string | Date; // name or createdAt
-    id: string; // tie braker when projects share the same sort value
+    id: string; // tie-breaker when projects share the same sort value
 };
 
 type ProjectCursorPayload = {
+    version: 1;
     sortBy: ProjectSort;
-    sortValue: string;
+    value: string;
     id: string;
-    search: string;
-    archived: boolean;
+    filters: {
+        search: string;
+        archivedOnly: boolean;
+    };
 };
 
 
-function snapshotCursorFilters(search?: string, archived?: boolean) {
+function snapshotCursorFilters(search?: string, archivedOnly?: boolean) {
     return {
         search: search ?? '',
-        archived: archived === true,
+        archivedOnly: archivedOnly === true,
     };
 }
 
@@ -28,13 +31,14 @@ export function encodeProjectCursor(
     project: Project,
     sortBy: ProjectSort = ProjectSort.NEWEST,
     search?: string,
-    archived?: boolean,
+    archivedOnly?: boolean,
 ): string {
     const payload: ProjectCursorPayload = {
+        version: 1,
         sortBy,
-        sortValue: extractCursorValue(project, sortBy),
+        value: extractCursorValue(project, sortBy),
         id: project.id,
-        ...snapshotCursorFilters(search, archived),
+        filters: snapshotCursorFilters(search, archivedOnly),
     };
 
     return Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
@@ -45,7 +49,7 @@ export function decodeProjectCursor(
     cursor: string,
     sortBy: ProjectSort = ProjectSort.NEWEST,
     search?: string,
-    archived?: boolean,
+    archivedOnly?: boolean,
 ): DecodedProjectCursor {
     let payload: unknown;
     try {
@@ -55,21 +59,25 @@ export function decodeProjectCursor(
     }
 
     const {
+        version,
         sortBy: cursorSortBy,
-        sortValue: cursorSortValue,
+        value: cursorSortValue,
         id,
-        search: cursorSearch,
-        archived: cursorArchived,
+        filters,
     } = (payload ?? {}) as Record<string, unknown>;
 
-    const requestFilters = snapshotCursorFilters(search, archived);
+    const cursorFilters = filters && typeof filters === 'object' && !Array.isArray(filters)
+        ? filters as Record<string, unknown>
+        : undefined;
+    const requestFilters = snapshotCursorFilters(search, archivedOnly);
 
     if (
+        version !== 1 ||
         cursorSortBy !== sortBy ||
         typeof cursorSortValue !== 'string' ||
         typeof id !== 'string' ||
-        cursorSearch !== requestFilters.search ||
-        cursorArchived !== requestFilters.archived
+        cursorFilters?.search !== requestFilters.search ||
+        cursorFilters?.archivedOnly !== requestFilters.archivedOnly
     ) {
         throw new BadRequestException('Invalid pagination cursor');
     }

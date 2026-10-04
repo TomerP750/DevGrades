@@ -10,7 +10,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project } from './entities/project.entity';
 import { decodeProjectCursor, encodeProjectCursor } from './pagination/project-cursor-codec';
-import { resolveProjectSort } from './pagination/project-sort';
+import { ProjectSort, resolveProjectSort } from './pagination/project-sort';
 import { ProjectsFiltersQueryDto } from './pagination/projects-filters-query.dto';
 
 
@@ -50,11 +50,16 @@ export class ProjectsService {
 
   async findAll(userId: string, query: ProjectsFiltersQueryDto): Promise<CursorPaginatedResult<Project>> {
 
-    const { cursor, limit, search, sortBy, archived } = query;
-
-    const pageSize = limit ?? 6;
+    const options = {
+      limit: query.limit ?? 6,
+      sortBy: query.sortBy ?? ProjectSort.NEWEST,
+      search: query.search?.trim() || undefined,
+      archivedOnly: query.archived ?? false,
+    };
+    const { limit: pageSize, sortBy, search, archivedOnly } = options;
     const { column, direction } = resolveProjectSort(sortBy);
     const operator = direction === 'ASC' ? '>' : '<';
+    const cursor = query.cursor;
 
     const queryBuilder = this.projectsRepository
       .createQueryBuilder('project')
@@ -64,14 +69,14 @@ export class ProjectsService {
       .limit(pageSize + 1);
 
     if (cursor) {
-      const decodedCursor = decodeProjectCursor(cursor, sortBy, search, archived);
+      const decodedCursor = decodeProjectCursor(cursor, sortBy, search, archivedOnly);
       queryBuilder.andWhere(
         `(${column} ${operator} :cursorValue OR (${column} = :cursorValue AND project.id ${operator} :cursorId))`,
         { cursorValue: decodedCursor.sortValue, cursorId: decodedCursor.id },
       );
     }
 
-    if (archived) {
+    if (archivedOnly) {
       queryBuilder.innerJoin(
         ArchivedProject,
         'archived',
@@ -87,7 +92,7 @@ export class ProjectsService {
     const projects = await queryBuilder.getMany();
 
     return buildCursorPage(projects, pageSize, (project) =>
-      encodeProjectCursor(project, sortBy, search, archived),
+      encodeProjectCursor(project, sortBy, search, archivedOnly),
     );
   }
 
