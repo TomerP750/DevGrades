@@ -21,6 +21,7 @@ import { ConversationsModule } from './conversations/conversations.module';
 import { MessagesModule } from './messages/messages.module';
 import { Message } from './messages/entities/message.entity';
 import { Conversation } from './conversations/entities/conversation.entity';
+import { FollowsModule } from './follows/follows.module';
 
 @Module({
   imports: [
@@ -50,7 +51,8 @@ import { Conversation } from './conversations/entities/conversation.entity';
     ArchivedProjectsModule,
     ProfilesModule,
     ConversationsModule,
-    MessagesModule
+    MessagesModule,
+    FollowsModule
   ],
   controllers: [AppController],
   providers: [AppService, {
