@@ -3,7 +3,7 @@ import { Follow } from './entities/follow.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UsersService } from '../users/users.service';
-import { FollowDto } from './dtos/follow.dto';
+import { User } from '../users/users.entity';
 
 @Injectable()
 export class FollowsService {
@@ -11,7 +11,8 @@ export class FollowsService {
     constructor(
         @InjectRepository(Follow)
         private followRepository: Repository<Follow>,
-        private usersService: UsersService,
+        @InjectRepository(User)
+        private userRepository: Repository<User>,
     ) {}
 
     async follow(followerId: string, followedId: string): Promise<boolean> {
@@ -19,16 +20,13 @@ export class FollowsService {
             throw new BadRequestException('You cannot follow yourself');
         }
         const [follower, followed] = await Promise.all([
-            this.usersService.findOneUserById(followerId),
-            this.usersService.findOneUserById(followedId),
+            this.userRepository.findOne({ where: { id: followerId } }),
+            this.userRepository.findOne({ where: { id: followedId } }),
         ]);
         if (!follower || !followed) {
             throw new NotFoundException('User not found');
         }
-        const follow = await this.followRepository.findOne({
-            where: { follower: { id: followerId }, followed: { id: followedId } },
-        });
-
+        
         await this.followRepository.save({ follower, followed });
         return true;
 
@@ -64,6 +62,18 @@ export class FollowsService {
     async isFollowing(followerId: string, followedId: string): Promise<boolean> {
         return this.followRepository.exists({
             where: { follower: { id: followerId }, followed: { id: followedId } },
+        });
+    }
+
+    async getFollowersCount(userId: string): Promise<number> {
+        return this.followRepository.count({
+            where: { followed: { id: userId } },
+        });
+    }
+
+    async getFollowingsCount(userId: string): Promise<number> {
+        return this.followRepository.count({
+            where: { follower: { id: userId } },
         });
     }
 }

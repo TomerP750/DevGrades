@@ -15,4 +15,10 @@ export class ProfileDto {
     
     @Expose()
     aboutBio?: string;
+
+    @Expose()
+    followerCount?: number;
+
+    @Expose()
+    followingCount?: number;
 }

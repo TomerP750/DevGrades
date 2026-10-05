@@ -5,4 +5,6 @@ export interface ProfileDto {
     aboutBio: string;
     gitHubUrl: string;
     user: UserDto;
+    followerCount: number;
+    followingCount: number;
 }

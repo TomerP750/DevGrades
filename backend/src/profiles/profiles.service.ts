@@ -3,6 +3,7 @@ import { Profile } from './entities/profile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/users.entity';
+import { FollowsService } from '../follows/follows.service';
 
 @Injectable()
 export class ProfilesService {
@@ -10,9 +11,10 @@ export class ProfilesService {
   constructor(
     @InjectRepository(Profile)
     private readonly profileRepository: Repository<Profile>,
+    private readonly followsService: FollowsService,
   ) {}
 
-  async findOneProfileByUserId(userId: string): Promise<Profile> {
+  async findOneProfileByUserId(userId: string): Promise<Profile & { followerCount: number, followingCount: number }> {
     const profile = await this.profileRepository.findOne({ 
       where: { 
         user: { id: userId } },
@@ -21,7 +23,16 @@ export class ProfilesService {
     if (!profile) {
       throw new NotFoundException('Profile not found');
     }
-    return profile;
+
+    const [followersCount, followingsCount] = await Promise.all([
+      this.followsService.getFollowersCount(userId),
+      this.followsService.getFollowingsCount(userId),
+    ]);
+  
+    return { ...profile, 
+      followerCount: followersCount, 
+      followingCount: followingsCount
+     };
   }
 
   async createProfile(user: User): Promise<void> {

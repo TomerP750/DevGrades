@@ -22,6 +22,7 @@ import { MessagesModule } from './messages/messages.module';
 import { Message } from './messages/entities/message.entity';
 import { Conversation } from './conversations/entities/conversation.entity';
 import { FollowsModule } from './follows/follows.module';
+import { Follow } from './follows/entities/follow.entity';
 
 @Module({
   imports: [
@@ -41,8 +42,8 @@ import { FollowsModule } from './follows/follows.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [User, RefreshToken, Project, Review, 
-          ArchivedProject, Profile, Conversation, Message],
-        synchronize: true, 
+          ArchivedProject, Profile, Conversation, Message, Follow],
+        synchronize: true, // false in production
       }),
       inject: [ConfigService],
     }),
