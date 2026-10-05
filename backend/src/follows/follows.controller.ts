@@ -1,19 +1,27 @@
-import { Body, Controller, Get, Post, Param, Query, UseGuards } from '@nestjs/common';
-import { FollowsService } from './follows.service';
+import { Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
+import { AuthGuard } from '../authentication/guards/auth.guard';
 import { Serialize } from '../shared/interceptors/serialize.interceptor';
 import { FollowDto } from './dtos/follow.dto';
-import { AuthGuard } from '../authentication/guards/auth.guard';
-import { CurrentUserId } from '../authentication/decorators/current-user.decorator';
+import { FollowsService } from './follows.service';
 
 @Controller('/api/follows')
 export class FollowsController {
   constructor(private readonly followsService: FollowsService) {
   }
 
-  @Post('/toggle')
+  @Post('/follow/:followedId')
   @UseGuards(AuthGuard)
-  async toggleFollow(@Body() body: { followerId: string, followedId: string }): Promise<boolean> {
-    return this.followsService.toggleFollow(body.followerId, body.followedId);
+  async follow(
+    @CurrentUserId() userId: string,
+    @Param('followedId') followedId: string): Promise<boolean> {
+    return this.followsService.follow(userId, followedId);
+  }
+
+  @Delete('/unfollow/:followedId')
+  @UseGuards(AuthGuard)
+  async unfollow(@CurrentUserId() userId: string, @Param('followedId') followedId: string): Promise<boolean> {
+    return this.followsService.unfollow(userId, followedId);
   }
 
   @Get('/followers/:userId')
@@ -33,8 +41,8 @@ export class FollowsController {
   @Get("/is-following/:followedId")
   @UseGuards(AuthGuard)
   async isFollowing(
-    @Param('followedId') followedId: string, 
-  @CurrentUserId() userId: string): Promise<boolean> {
+    @Param('followedId') followedId: string,
+    @CurrentUserId() userId: string): Promise<boolean> {
     return this.followsService.isFollowing(userId, followedId);
   }
 }

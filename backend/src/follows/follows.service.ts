@@ -14,12 +14,10 @@ export class FollowsService {
         private usersService: UsersService,
     ) {}
 
-    async toggleFollow(followerId: string, followedId: string): Promise<boolean> {
-        
+    async follow(followerId: string, followedId: string): Promise<boolean> {
         if (followerId === followedId) {
             throw new BadRequestException('You cannot follow yourself');
         }
-
         const [follower, followed] = await Promise.all([
             this.usersService.findOneUserById(followerId),
             this.usersService.findOneUserById(followedId),
@@ -27,17 +25,24 @@ export class FollowsService {
         if (!follower || !followed) {
             throw new NotFoundException('User not found');
         }
-        
         const follow = await this.followRepository.findOne({
             where: { follower: { id: followerId }, followed: { id: followedId } },
         });
-        if (follow) {
-            await this.followRepository.delete(follow.id);
-            return false;
-        }
 
         await this.followRepository.save({ follower, followed });
         return true;
+
+    }
+
+    async unfollow(followerId: string, followedId: string): Promise<boolean> {
+        const follow = await this.followRepository.findOne({
+            where: { follower: { id: followerId }, followed: { id: followedId } },
+        });
+        if (!follow) {
+            return false;
+        }
+        await this.followRepository.delete(follow.id);
+        return false; // false = not following
     }
 
     async getFollowers(userId: string): Promise<Follow[]> {
