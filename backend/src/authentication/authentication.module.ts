@@ -3,19 +3,17 @@ import { AuthenticationService } from './authentication.service';
 import { AuthenticationController } from './authentication.controller';
 import { UsersModule } from '../users/users.module';
 import { ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { RefreshTokenService } from './refresh-token/refresh-token.service';
 import { JwtModule } from '@nestjs/jwt';
 import type { StringValue } from 'ms';
 import { AuthGuard } from './guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { AdminGuard } from './guards/admin.guard';
-import { RefreshToken } from './refresh-token/refresh-tokens.entity';
 import { ConfigModule } from '@nestjs/config';
+import { RedisService } from '../redis/redis.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([RefreshToken]),
     UsersModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
@@ -31,6 +29,7 @@ import { ConfigModule } from '@nestjs/config';
   controllers: [AuthenticationController],
   providers: [
     AuthenticationService,
+    RedisService,
     RefreshTokenService,
     {
       provide: APP_GUARD,
