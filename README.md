@@ -1,25 +1,33 @@
 # DevGrades
 
-DevGrades is a full-stack platform where developers can share projects, receive structured peer reviews, browse other submissions, and communicate through real-time messaging. It combines a React and TypeScript frontend with a modular NestJS API, MySQL persistence, JWT authentication, and Socket.IO.
+DevGrades is a full-stack platform where developers can publish projects, receive structured peer reviews, discover other developers, and communicate through real-time direct messaging.
 
-## Features
+The project combines a React and TypeScript single-page application with a modular NestJS API, PostgreSQL persistence, Redis-backed refresh-token rotation, and Socket.IO messaging.
 
-- User registration, sign-in, session restoration, and logout
-- Project creation, editing, closing, deletion, and archiving
-- Searchable and sortable project feed with cursor-based pagination
-- Project profiles with repository and demo links
-- Peer reviews across six criteria: overall score, code quality, optimization, maintainability, scalability, and UI/UX
-- Review statistics calculated from submitted scores
-- Ownership-based authorization for projects and reviews
-- User profiles and account, password, and theme settings
-- Real-time one-to-one messaging with conversation history
+## Key Features
+
+- User registration, sign-in, session restoration, and account management
+- Project creation, editing, closing, deletion, and per-user archiving
+- Searchable and sortable project feed
+- Keyset-based cursor pagination
+- Project repository, demo, description, and image metadata
+- Structured reviews across six scoring categories
+- Aggregated review statistics
+- Review ownership, duplicate-review, and self-review restrictions
+- Developer profiles with follower and following counts
+- Follow and unfollow functionality
+- Real-time one-to-one messaging with persisted conversation history
 - Responsive navigation and light/dark themes
-- AI review interface prototype using mock review results; no AI backend integration is currently implemented
+- AI review interface prototype using local mock data
 
-## Tech Stack
+> The AI review page is currently a frontend prototype. It does not call an AI model or backend review service.
+
+## Technology Stack
 
 ### Frontend
-- React 19 and TypeScript
+
+- React 19
+- TypeScript
 - Vite
 - Tailwind CSS
 - React Router
@@ -27,77 +35,140 @@ DevGrades is a full-stack platform where developers can share projects, receive 
 - Axios
 - React Hook Form
 - Socket.IO Client
+- React Toastify
 
 ### Backend
-- NestJS
+
+- NestJS 11
 - TypeScript
 - TypeORM
 - REST APIs
 - Socket.IO gateways
-- Class Validator and Class Transformer
+- Class Validator
+- Class Transformer
+- bcrypt
+- JSON Web Tokens
 
-### Database
-- MySQL
-- TypeORM entities and relations
+### Data Stores
 
-### Authentication and Security
-- JWT access tokens
-- Rotating refresh tokens
-- HTTP-only, SameSite refresh-token cookies
-- bcrypt password hashing
-- Global authentication guard
-- Resource ownership checks
-- Request validation and response serialization
+- PostgreSQL for application data
+- Redis for hashed refresh tokens and per-user token indexes
 
-### Testing
+### Testing and Tooling
+
 - Jest
 - NestJS Testing utilities
 - Supertest
+- ESLint
+- Prettier
 
-### DevOps and CI/CD
-- Dockerfiles for the frontend and backend
-- GitHub Actions
-- ESLint and Prettier
+### Infrastructure
 
-## Architecture / Technical Overview
+- Backend and frontend Dockerfiles
+- Docker Compose development scaffold
+- GitHub Actions build and test workflows
 
-The frontend is a React single-page application organized into feature-based modules for authentication, projects, reviews, profiles, settings, and messaging. React Context manages authentication and theme state, while TanStack Query handles server state, request caching, mutations, and paginated project data.
+## Architecture
 
-The NestJS backend is divided into modules for users, authentication, projects, reviews, archived projects, profiles, conversations, and messages. REST controllers handle account and project-related operations, while a Socket.IO gateway provides real-time messaging.
+The repository contains separate frontend and backend applications.
 
-TypeORM maps users, profiles, projects, reviews, archived projects, conversations, messages, and refresh tokens to MySQL. Relationships connect project and review ownership, user profiles, archived projects, conversation participants, and messages.
+The frontend uses a feature-oriented structure for authentication, projects, reviews, profiles, settings, messaging, and the AI review prototype. TanStack Query manages server state, caching, mutations, and infinite project-feed queries. Authentication and theme preferences are managed through React Context.
 
-## Key Technical Decisions
+The backend is divided into NestJS modules for:
 
-### Authentication
+- Authentication
+- Users
+- Profiles
+- Projects
+- Reviews
+- Archived projects
+- Follows
+- Conversations
+- Messages
+- Redis integration
 
-Access tokens are stored in frontend memory and attached to API requests. Refresh tokens are generated from cryptographically random values, stored as SHA-256 hashes in the database, and sent through HTTP-only cookies. Refresh-token rotation uses a database transaction and pessimistic lock before revoking the previous token.
+REST controllers handle account, profile, project, review, follow, and conversation operations. A Socket.IO gateway handles real-time message creation and deletion.
 
-A global NestJS guard protects routes by default, with selected authentication endpoints marked as public. Project and review services apply additional ownership checks before allowing updates or deletions.
+## Important Technical Decisions
 
-### Data Fetching and State Management
+### Keyset Pagination
 
-TanStack Query manages API data and mutation invalidation. Authentication and theme preferences use React Context, while project feed filters are stored in URL search parameters so search, sorting, and archive filters remain represented in the route.
+The project feed uses keyset pagination instead of offset pagination.
 
-Incoming Socket.IO messages update conversation data directly in the query cache and move updated conversations to the top of the conversation list.
+Each cursor contains:
 
-### Cursor Pagination
+- The selected sort mode
+- The current sort value
+- The project ID used as a deterministic tie-breaker
+- The search and archived-project filters active when the cursor was created
 
-The project feed uses keyset-based cursor pagination rather than offset pagination. Cursors contain the current sort value, project ID, and active filter state. The backend requests one additional record to determine whether another page exists, while the frontend loads subsequent pages through `useInfiniteQuery`.
+The backend rejects cursors that do not match the current sorting and filter configuration. It requests one additional row to determine whether another page is available.
 
-### API and Database Design
+PostgreSQL indexes support pagination by project creation date and project name.
 
-The backend exposes REST resources for authentication, users, profiles, projects, reviews, archived projects, and conversations. Project and review services enforce ownership and review eligibility rules.
+### Server-State Management
 
-The MySQL model includes one-to-one, many-to-one, many-to-many, and unique relationships. Examples include user profiles, project ownership, reviews, archived project bookmarks, conversation participants, and messages.
+TanStack Query manages API data, mutations, cache invalidation, and infinite project-feed loading.
 
-### Validation and Error Handling
+Project filters are represented in URL search parameters. Search, sorting, and archived-only state therefore remain visible in the route rather than existing only in component state.
 
-NestJS applies a global validation pipe with DTO transformation and property whitelisting. DTOs validate authentication input, project URLs, review score ranges, comments, pagination limits, and filters. A global exception filter provides consistent HTTP error response metadata.
+Incoming Socket.IO messages update the corresponding conversation cache and move the updated conversation to the beginning of the conversation list.
 
-### Real-Time Messaging
+### Response Serialization
 
-The Socket.IO gateway authenticates connections using the current JWT, places each user in an ID-based room, persists messages through the backend service, and emits created messages to both conversation participants.
+NestJS interceptors transform entities into explicit response DTOs. This limits returned fields and prevents internal entity properties from being exposed accidentally.
+
+The user password column is also excluded from normal TypeORM queries and is selected explicitly only during credential and password operations.
+
+## Authentication and Security
+
+- Passwords are hashed with bcrypt using a cost factor of 12.
+- JWT access tokens contain the user ID, email, and role.
+- Access tokens are held in frontend memory and attached to Axios requests.
+- Refresh tokens are sent through HTTP-only, SameSite cookies.
+- Raw refresh tokens are not stored server-side.
+- SHA-256 token hashes are stored in Redis with expiration times.
+- Refresh-token rotation consumes the current token and creates its replacement through an atomic Redis Lua operation.
+- A global NestJS authentication guard protects routes unless they are explicitly marked public.
+- WebSocket connections and message events require a valid access token.
+- Project, review, and message services enforce resource ownership.
+- Review creation prevents self-reviews and multiple reviews by the same user for one project.
+
+Global request validation enables DTO transformation and removes properties that are not declared by the DTO. A global exception filter returns consistent status, timestamp, and request-path metadata.
+
+### Current Authentication Limitation
+
+Refresh-token rotation is implemented, but the server-side methods for revoking an individual refresh token and revoking all tokens for a user are not yet complete. Logout clears the browser cookie and frontend authentication state, but complete server-side token revocation should be finished before treating the authentication flow as production-ready.
+
+## Data Model
+
+The main entities are:
+
+- **User** — account identity, credentials, role, and avatar
+- **Profile** — one-to-one profile information associated with a user
+- **Project** — project metadata and its owner
+- **Review** — category scores, comments, reviewer, and reviewed project
+- **ArchivedProject** — unique per-user project bookmark
+- **Follow** — unique follower/followed relationship between users
+- **Conversation** — participants in a direct conversation
+- **Message** — persisted message, author, and conversation
+
+Notable constraints include unique archived-project pairs and unique follower/followed pairs.
+
+## Engineering Highlights
+
+- Modular NestJS backend with explicit domain boundaries
+- Feature-oriented React application structure
+- Filter-aware keyset pagination
+- Indexed pagination columns
+- Redis Lua script for atomic refresh-token replacement
+- Authenticated Socket.IO rooms
+- Persisted real-time messages
+- Client-side real-time cache synchronization
+- Explicit response DTO serialization
+- Resource-level authorization rules
+- URL-backed feed filters
+- Parallel database lookups where operations are independent
 
 ## Project Structure
 
@@ -105,22 +176,28 @@ The Socket.IO gateway authenticates connections using the current JWT, places ea
 DevGrades/
 ├── backend/
 │   ├── src/
-│   │   ├── authentication/    # JWT and refresh-token authentication
-│   │   ├── users/             # User accounts and password management
-│   │   ├── projects/          # Project CRUD, filtering, and pagination
-│   │   ├── reviews/           # Reviews, permissions, and score statistics
-│   │   ├── archived-projects/ # Per-user project bookmarks
-│   │   ├── profiles/          # User profile data
-│   │   ├── conversations/     # Conversation queries and participants
-│   │   ├── messages/          # Socket.IO gateway and message persistence
-│   │   └── shared/            # Pagination, filters, and serialization
-│   └── test/                  # Backend end-to-end test setup
+│   │   ├── authentication/     # JWT and refresh-token authentication
+│   │   ├── archived-projects/  # Per-user project bookmarks
+│   │   ├── conversations/      # Direct conversations and history
+│   │   ├── follows/            # User follow relationships
+│   │   ├── messages/           # Socket.IO gateway and persistence
+│   │   ├── profiles/           # Profile data and follow statistics
+│   │   ├── projects/           # Project CRUD, search, sorting, and pagination
+│   │   ├── redis/              # Redis client lifecycle
+│   │   ├── reviews/            # Reviews, authorization, and score statistics
+│   │   ├── shared/             # Pagination, serialization, and error handling
+│   │   ├── users/              # User and password management
+│   │   ├── app.module.ts
+│   │   └── main.ts
+│   ├── test/                   # End-to-end test configuration
+│   └── Dockerfile
 ├── frontend/
-│   └── src/
-│       ├── features/          # Feature-based application modules
-│       ├── shared/            # Reusable UI, models, contexts, and utilities
-│       ├── layout/            # Routing and navigation
-│       └── home/              # Public landing page
-└── .github/
-    ├── workflows/             # CI and artifact workflow definitions
-    └── actions/               # Custom action work in progress
+│   ├── src/
+│   │   ├── features/           # Feature-specific UI, API clients, and hooks
+│   │   ├── home/               # Public landing page
+│   │   ├── layout/             # Application routing and navigation
+│   │   └── shared/             # Shared contexts, models, utilities, and UI
+│   └── Dockerfile
+├── .github/
+│   └── workflows/              # CI and artifact workflow definitions
+└── docker-compose.yml
