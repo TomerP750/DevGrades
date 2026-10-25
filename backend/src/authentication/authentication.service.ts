@@ -84,6 +84,7 @@ export class AuthenticationService {
 
         const user = await this.usersService.findOneUserById(userId);
         if (!user) {
+            await this.refreshTokenService.revokeRefreshToken(refreshToken);
             throw new NotFoundException('User not found');
         }
 
