@@ -55,6 +55,14 @@ export class AuthenticationController {
 
   }
 
+  @Post("/logout-all")
+  @Public()
+  async signOutAll(@Req() request: Request, @Res({ passthrough: true }) response: Response): Promise<void> {
+    const rawRefreshToken = request.cookies.refresh_token;
+    await this.authenticationService.signOutAll(rawRefreshToken);
+    response.clearCookie('refresh_token', { path: '/api/auth' });
+  }
+
   @Post("/refresh-token")
   @Public()
   @Serialize(AuthResponseDto)

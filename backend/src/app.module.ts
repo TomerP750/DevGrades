@@ -6,7 +6,6 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { APP_PIPE, APP_FILTER } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RefreshToken } from './authentication/refresh-token/refresh-tokens.entity';
 import { User } from './users/users.entity';
 import { ProjectsModule } from './projects/projects.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -40,7 +39,7 @@ import { Follow } from './follows/entities/follow.entity';
         username: configService.getOrThrow<string>('DB_USER'),
         password: configService.getOrThrow<string>('DB_PASSWORD'),
         database: configService.getOrThrow<string>('DB_NAME'),
-        entities: [User, RefreshToken, Project, Review, 
+        entities: [User, Project, Review, 
           ArchivedProject, Profile, Conversation, Message, Follow],
         synchronize: true, // false in production
       }),
